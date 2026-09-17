@@ -19,6 +19,8 @@ const { title, subtitle, icon } = defineProps(["title", "subtitle", "icon"]);
   border: 1px solid #c3c6d796;
   border-radius: 10px;
   padding: 10px 0px 20px 0px;
+  min-width: 300px;
+  max-width: 500px;
 }
 
 .title {
@@ -27,6 +29,7 @@ const { title, subtitle, icon } = defineProps(["title", "subtitle", "icon"]);
 
 .sub {
   font-size: 1.2rem;
+  white-space: normal;
 }
 
 .icon {

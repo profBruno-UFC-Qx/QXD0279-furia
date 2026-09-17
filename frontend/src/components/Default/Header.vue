@@ -25,7 +25,7 @@ const loged = ref(false);
         />
       </div>
       <div class="buttons" v-else>
-        <v-btn class="logIn">Log in</v-btn>
+        <v-btn class="logIn" to="login">Log in</v-btn>
         <v-btn class="signUp">Sign up</v-btn>
       </div>
     </div>

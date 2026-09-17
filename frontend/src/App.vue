@@ -11,7 +11,13 @@
 </script>
 
 <style>
-h1 {
+h1,
+p,
+ul,
+li,
+a {
+  text-decoration: none;
+  padding: 0;
   margin: 0;
 }
 </style>

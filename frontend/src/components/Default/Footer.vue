@@ -1,30 +1,28 @@
 <script lang="ts" setup></script>
 
 <template>
-  <footer class="footer-container">
-    <div class="footer-left">
-      <h2 class="brand-title">valiAe</h2>
-      <p class="copyright-text">
-        © 2026 valiAe Academic Platform. All rights reserved.
-      </p>
-    </div>
+  <footer class="bg">
+    <div class="footer-container">
+      <div class="footer-left">
+        <h2 class="brand-title">valiAe</h2>
+        <p class="copyright-text">
+          © 2026 valiAe Academic Platform. All rights reserved.
+        </p>
+      </div>
 
-    <nav class="footer-nav">
-      <a href="#about" class="footer-link">About Us</a>
-      <a href="#terms" class="footer-link">Terms of Service</a>
-      <a href="#privacy" class="footer-link">Privacy Policy</a>
-      <a href="#support" class="footer-link">Contact Support</a>
-      <a href="#guidelines" class="footer-link">Academic Guidelines</a>
-    </nav>
+      <nav class="footer-nav">
+        <a href="#about" class="footer-link">About Us</a>
+        <a href="#terms" class="footer-link">Terms of Service</a>
+        <a href="#privacy" class="footer-link">Privacy Policy</a>
+        <a href="#support" class="footer-link">Contact Support</a>
+        <a href="#guidelines" class="footer-link">Academic Guidelines</a>
+      </nav>
+    </div>
   </footer>
 </template>
 
 <style scoped>
-.footer-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 32px 48px;
+.bg {
   background-color: #f3f5fd;
   border-top: 1px solid #e0e4f0;
   font-family:
@@ -34,8 +32,16 @@
     "Segoe UI",
     Roboto,
     sans-serif;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32px 0px;
   box-sizing: border-box;
-  width: 100%;
+  max-width: 1200px;
+  margin: 0px auto;
 }
 
 .footer-left {

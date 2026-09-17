@@ -53,8 +53,6 @@ materiais de estudo."
 <style lang="css" scoped>
 .heroPage {
   margin-bottom: 100px;
-  display: flex;
-  flex-direction: column;
   gap: 180px;
 }
 
