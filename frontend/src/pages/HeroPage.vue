@@ -63,6 +63,7 @@ materiais de estudo."
   flex-direction: column;
   align-items: center;
   margin: 0px auto;
+  gap: 20px;
 }
 
 .buttons {
