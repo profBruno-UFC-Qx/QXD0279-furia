@@ -70,11 +70,12 @@ function required(v: string) {
       <v-btn
         rounded="10"
         block
-        text="Sign In"
+        text="Log In"
         :disabled="!form"
         :loading="loading"
         color="#004AC6"
         type="submit"
+        to="/home"
       >
       </v-btn>
     </div>
