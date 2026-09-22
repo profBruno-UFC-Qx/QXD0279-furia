@@ -11,6 +11,7 @@ import AuthLayout from "@/layout/AuthLayout.vue";
 import Login from "@/pages/Auth/Login.vue";
 import Register from "@/pages/Auth/Register.vue";
 import HeroPage from "@/pages/HeroPage.vue";
+import Home from "@/pages/Student/Home.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,6 +23,10 @@ const router = createRouter({
         {
           path: "",
           component: HeroPage,
+        },
+        {
+          path: "student/home",
+          component: Home,
         },
       ],
     },

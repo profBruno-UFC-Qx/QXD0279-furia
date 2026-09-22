@@ -4,7 +4,7 @@ import CategoryCard from "@/components/Cards/CategoryCard.vue";
 </script>
 
 <template>
-  <div class="heroPage">
+  <div class="heroPage container">
     <div class="hero">
       <h1 class="title">Sua jornada acadêmica, compartilhada.</h1>
       <p class="desc">
@@ -52,6 +52,8 @@ materiais de estudo."
 
 <style lang="css" scoped>
 .heroPage {
+  display: flex;
+  flex-direction: column;
   margin-bottom: 100px;
   gap: 180px;
 }

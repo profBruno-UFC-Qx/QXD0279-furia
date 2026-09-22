@@ -75,7 +75,7 @@ function required(v: string) {
         :loading="loading"
         color="#004AC6"
         type="submit"
-        to="/home"
+        to="/student/home"
       >
       </v-btn>
     </div>

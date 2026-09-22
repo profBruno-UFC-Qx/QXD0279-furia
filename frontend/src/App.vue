@@ -11,6 +11,13 @@
 </script>
 
 <style>
+.container {
+  max-width: 1220px;
+  margin: 0px auto;
+  padding: 0px 20px;
+  width: 100%;
+}
+
 h1,
 p,
 ul,

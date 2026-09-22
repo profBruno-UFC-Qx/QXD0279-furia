@@ -23,7 +23,7 @@ function required(v: string) {
 }
 
 watch(isTeacher, () => {
-  course.value = null;
+  course.value = null
 });
 </script>
 
