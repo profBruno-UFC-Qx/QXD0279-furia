@@ -23,10 +23,18 @@ const router = createRouter({
         {
           path: "",
           component: HeroPage,
+          name: "heroPage",
         },
+      ],
+    },
+    {
+      path: "/student",
+      component: DefaultLayout,
+      children: [
         {
-          path: "student/home",
+          path: "home",
           component: Home,
+          name: "studentHome",
         },
       ],
     },
@@ -37,10 +45,12 @@ const router = createRouter({
         {
           path: "enter",
           component: Login,
+          name: "login",
         },
         {
           path: "register",
           component: Register,
+          name: "register",
         },
       ],
     },

@@ -26,5 +26,6 @@ a {
   text-decoration: none;
   padding: 0;
   margin: 0;
+  list-style-type: none;
 }
 </style>

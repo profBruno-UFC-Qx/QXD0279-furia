@@ -101,7 +101,7 @@ watch(isTeacher, () => {
     </div>
 
     <div class="infos">
-      <p>Já tem uma conta? <RouterLink to="enter">Log In</RouterLink></p>
+      <p>Já tem uma conta? <RouterLink :to="{ name: 'login' }">Log In</RouterLink></p>
     </div>
   </v-form>
 </template>

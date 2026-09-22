@@ -1,20 +1,29 @@
 <script setup lang="ts">
-import { RouterView } from "vue-router";
 import { RouterLink } from "vue-router";
-
+import { authStore } from "@/stores/StoreAuth";
 import { ref } from "vue";
+import router from "@/router";
 
 const form = ref(false);
 const isTeacher = ref(false);
-const email = ref(null);
-const password = ref(null);
+const email = ref("");
+const password = ref("");
 const loading = ref(false);
+const storeAuth = authStore();
+const error = ref({ error: false, msg: "" });
 
-function onSubmit(e: SubmitEvent) {
-  e.preventDefault();
+async function onSubmit() {
   if (!form.value) return;
-  loading.value = true;
-  setTimeout(() => (loading.value = false), 2000);
+  try {
+    loading.value = true;
+    await storeAuth.login({ email: email.value, password: password.value });
+    router.push("/student/home");
+  } catch (Error) {
+    error.value.msg = (Error as Error).message;
+    error.value.error = true;
+  } finally {
+    loading.value = false;
+  }
 }
 function required(v: string) {
   return !!v || "Field is required";
@@ -22,7 +31,7 @@ function required(v: string) {
 </script>
 
 <template>
-  <v-form @submit="onSubmit" class="form" v-model="form">
+  <v-form @submit.prevent="onSubmit" class="form" v-model="form">
     <label for="email" class="input">
       Email
       <v-text-field
@@ -53,16 +62,11 @@ function required(v: string) {
       ></v-text-field>
     </label>
 
-    <div class="actions">
-      <v-switch
-        v-model="isTeacher"
-        clearable
-        label="Sou um professor"
-        true-icon="mdi-check"
-        false-icon="mdi-close"
-        hide-details
-      ></v-switch>
+    <div class="error" v-if="error.error">
+      <p>{{ error.msg }}</p>
+    </div>
 
+    <div class="actions">
       <v-btn text="Forgot password?" variant="text" color="#004AC6"> </v-btn>
     </div>
 
@@ -75,20 +79,24 @@ function required(v: string) {
         :loading="loading"
         color="#004AC6"
         type="submit"
-        to="/student/home"
       >
       </v-btn>
     </div>
 
     <div class="infos">
       <p>
-        Don't have an account? <RouterLink to="register">Create One</RouterLink>
+        Don't have an account?
+        <RouterLink :to="{ name: 'register' }">Create One</RouterLink>
       </p>
     </div>
   </v-form>
 </template>
 
 <style lang="css" scoped>
+.error {
+  color: red;
+}
+
 .infos {
   margin-top: 28px;
   text-align: center;
