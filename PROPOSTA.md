@@ -8,8 +8,8 @@ Matrícula: 565288
 Nome: Narciso Roberto de Souza
 Curso: Sistemas de informação
 
-Matrícula: [informar]
-Nome: [informar]
+Matrícula: 567856
+Nome: Julio Emanuel Pereira da Silva
 Curso: Sistemas de informação
 
 ## :bulb: Objetivo Geral
