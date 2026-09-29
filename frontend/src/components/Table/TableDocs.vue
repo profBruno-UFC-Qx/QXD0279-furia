@@ -53,7 +53,6 @@ const boats = [
     <v-data-table-virtual
       :headers="headers"
       :items="boats"
-      height="400"
       item-value="name"
       fixed-header
       class="tabela"

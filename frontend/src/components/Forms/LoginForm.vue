@@ -11,7 +11,7 @@ const password = ref("");
 const loading = ref(false);
 const storeAuth = authStore();
 const error = ref({ error: false, msg: "" });
-
+console.log("OIE");
 async function onSubmit() {
   if (!form.value) return;
   try {

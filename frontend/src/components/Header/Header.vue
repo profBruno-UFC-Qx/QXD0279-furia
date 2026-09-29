@@ -14,6 +14,7 @@ const { title, description } = defineProps(["title", "description"]);
 <style lang="css" scoped>
 .header {
   margin: 10px 0px;
+  border-radius: 10px;
 }
 
 .description {
