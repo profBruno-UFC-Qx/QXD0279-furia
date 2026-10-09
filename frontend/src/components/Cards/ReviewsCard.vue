@@ -1,18 +1,24 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+defineProps<{
+  teacherName: string;
+  dicipline: string;
+  rating: number;
+  comment: string;
+  date: string;
+}>();
+</script>
 
 <template>
   <v-card class="card" rounded="10">
     <div class="info">
-      <h1>Dr. Helena Martins</h1>
-      <span>Data Structures</span>
-      <span>Nota: ⭐⭐⭐⭐⭐</span>
-      <p>
-        "Great methodology and very clear explanations. The practical exercises
-        were extremely helpful for understanding complex algorithms."
-      </p>
+      <h1>{{ teacherName }}</h1>
+      <span>{{ dicipline }}</span>
+      <span>Nota: {{ "⭐".repeat(rating) }}</span>
+      <p>"{{ comment }}"</p>
     </div>
+
     <div class="extraInfo">
-      <span>Oct 15, 2023</span>
+      <span>{{ date }}</span>
     </div>
   </v-card>
 </template>

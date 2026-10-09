@@ -11,7 +11,9 @@ import AuthLayout from "@/layout/AuthLayout.vue";
 import Login from "@/pages/Auth/Login.vue";
 import Register from "@/pages/Auth/Register.vue";
 import HeroPage from "@/pages/HeroPage.vue";
-import Home from "@/pages/Student/Home.vue";
+
+// Student pages
+import StudentHome from "@/pages/Student/StudentHome.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,7 +35,7 @@ const router = createRouter({
       children: [
         {
           path: "home",
-          component: Home,
+          component: StudentHome,
           name: "studentHome",
         },
       ],
