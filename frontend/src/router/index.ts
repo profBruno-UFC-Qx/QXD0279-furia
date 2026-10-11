@@ -14,6 +14,7 @@ import HeroPage from "@/pages/HeroPage.vue";
 
 // Student pages
 import StudentHome from "@/pages/Student/StudentHome.vue";
+import StudentDocuments from "@/pages/Student/StudentDocuments.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -37,6 +38,11 @@ const router = createRouter({
           path: "home",
           component: StudentHome,
           name: "studentHome",
+        },
+        {
+          path: "documents",
+          component: StudentDocuments,
+          name: "studentDocuments",
         },
       ],
     },

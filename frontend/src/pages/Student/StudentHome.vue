@@ -4,6 +4,7 @@ import Header from "@/components/Header/Header.vue";
 import StatsCard from "@/components/Cards/StatsCard.vue";
 import TableDocs from "@/components/Table/TableDocs.vue";
 import ReviewsCard from "@/components/Cards/ReviewsCard.vue";
+import Ornament from "@/components/Ornament/Ornament.vue";
 
 const boats = [
   {
@@ -30,7 +31,7 @@ const boats = [
 </script>
 
 <template>
-  <div class="home container">
+  <div class="content container">
     <Header
       title="Olá, Bruno!"
       description="Here's what's happening with your academic journey today."
@@ -41,53 +42,40 @@ const boats = [
       <StatsCard title="Documents Downloaded" value="45" icon="mdi-upload" />
     </div>
 
-    <div class="ornament">
-      <div class="header">
-        <h1>My Reviews</h1>
-      </div>
-      <div>
-        <TableDocs :documents="boats" />
-      </div>
-    </div>
+    <Ornament :text="'My documents'">
+      <template #content>
+        <div>
+          <TableDocs :documents="boats" />
+        </div>
+      </template>
+    </Ornament>
 
-    <div class="ornament">
-      <div class="header">
-        <h1>My Reviews</h1>
-      </div>
-      <div class="reviews">
-        <ReviewsCard
-          teacher-name="Dr. Helena Martins"
-          dicipline="Data Structures"
-          :rating="4"
-          comment="Great methodology and very clear explanations. The practical exercises were extremely helpful for understanding complex
+    <Ornament :text="'My reviews'">
+      <template #content>
+        <div class="reviews">
+          <ReviewsCard
+            teacher-name="Dr. Helena Martins"
+            dicipline="Data Structures"
+            :rating="4"
+            comment="Great methodology and very clear explanations. The practical exercises were extremely helpful for understanding complex
 algorithms."
-          date="Oct 15, 2023"
-        />
-        <ReviewsCard
-          teacher-name="Dr. Helena Martins"
-          dicipline="Data Structures"
-          :rating="4"
-          comment="Great methodology and very clear explanations. The practical exercises were extremely helpful for understanding complex
+            date="Oct 15, 2023"
+          />
+          <ReviewsCard
+            teacher-name="Dr. Helena Martins"
+            dicipline="Data Structures"
+            :rating="4"
+            comment="Great methodology and very clear explanations. The practical exercises were extremely helpful for understanding complex
 algorithms."
-          date="Oct 15, 2023"
-        />
-      </div>
-    </div>
+            date="Oct 15, 2023"
+          />
+        </div>
+      </template>
+    </Ornament>
   </div>
 </template>
 
 <style lang="css" scoped>
-.ornament {
-  border-radius: 10px;
-  overflow: hidden;
-  border: 1px solid #c3c6d7;
-}
-
-.header {
-  padding: 24px;
-  background-color: #f2f3ff;
-}
-
 .reviews {
   padding: 24px;
   display: flex;
@@ -95,7 +83,7 @@ algorithms."
   gap: 20px;
 }
 
-.home {
+.content {
   display: flex;
   flex-direction: column;
   gap: 24px;

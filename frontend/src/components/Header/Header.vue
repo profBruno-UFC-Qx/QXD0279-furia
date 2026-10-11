@@ -15,6 +15,8 @@ const { title, description } = defineProps(["title", "description"]);
 .header {
   margin: 10px 0px;
   border-radius: 10px;
+  padding: 24px;
+  background-color: #f2f3ff;
 }
 
 .description {
