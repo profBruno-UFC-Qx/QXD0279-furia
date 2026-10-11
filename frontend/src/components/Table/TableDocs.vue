@@ -22,37 +22,13 @@ const headers = [
     sortable: false,
   },
 ] as any;
-
-const boats = [
-  {
-    nome: "1 Speedster",
-    disciplina: "matematica",
-    data: "03/06/2026",
-  },
-  {
-    nome: "2 Speedster",
-    disciplina: "matematica",
-    data: "03/06/2026",
-  },
-  {
-    nome: "3 Speedster",
-    disciplina: "matematica",
-    data: "03/06/2026",
-  },
-  {
-    nome: "4 Speedster",
-    disciplina: "matematica",
-    data: "03/06/2026",
-  },
-];
 </script>
 
 <template>
   <div class="tableComponente">
-    <h1>Meus Uploads</h1>
     <v-data-table-virtual
       :headers="headers"
-      :items="boats"
+      :items="documents"
       item-value="name"
       fixed-header
       class="tabela"
@@ -79,8 +55,7 @@ const boats = [
 }
 
 .tabela :deep(table) {
-  border: 1px solid #c3c6d7;
-  border-radius: 10px;
+  border-top: 1px solid #c3c6d7;
   overflow: hidden;
 }
 </style>
