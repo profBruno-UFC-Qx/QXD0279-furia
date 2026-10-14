@@ -2,6 +2,8 @@
 import { ref } from "vue";
 import Header from "@/components/Header/Header.vue";
 import Filters from "@/components/Filters/Filters.vue";
+import TeacherCard from "@/components/Cards/TeacherCard.vue";
+import Ornament from "@/components/Ornament/Ornament.vue";
 
 interface InputItem {
   type: "text" | "select";
@@ -29,6 +31,45 @@ and more to find the right academic fit."
         teacher: false,
       }"
     />
+
+    <div class="teacherTable">
+      <Ornament>
+        <template #content>
+          <div class="headerTable">
+            <h1>Professores buscados:</h1>
+            <p>Total: 12 resultados</p>
+          </div>
+        </template>
+      </Ornament>
+
+      <div class="table">
+        <TeacherCard
+          :name="'Aragão'"
+          :grade="5"
+          :diciplines="['Matemática', 'Física']"
+        />
+        <TeacherCard
+          :name="'Ana Clara'"
+          :grade="4.8"
+          :diciplines="['História', 'Geografia']"
+        />
+        <TeacherCard
+          :name="'Carlos Santos'"
+          :grade="4.5"
+          :diciplines="['Biologia', 'Química']"
+        />
+        <TeacherCard
+          :name="'Mariana Souza'"
+          :grade="5"
+          :diciplines="['Português', 'Literatura']"
+        />
+        <TeacherCard
+          :name="'Roberto Lima'"
+          :grade="4.2"
+          :diciplines="['Inglês']"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -38,4 +79,25 @@ and more to find the right academic fit."
   flex-direction: column;
   gap: 24px;
 }
+
+.table {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+.teacherTable {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* .headerTable h1 {
+  font-size: 3rem;
+}
+
+.headerTable p {
+  font-size: 1.3rem;
+} */
 </style>
