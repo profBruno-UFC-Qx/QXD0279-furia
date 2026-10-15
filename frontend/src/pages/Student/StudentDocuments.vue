@@ -4,6 +4,8 @@ import Header from "@/components/Header/Header.vue";
 import TableDocs from "@/components/Table/TableDocs.vue";
 import Ornament from "@/components/Ornament/Ornament.vue";
 import Filters from "@/components/Filters/Filters.vue";
+import UploadDocument from "@/components/Modais/UploadDocument.vue";
+import DocumentForm from "@/components/Forms/DocumentForm.vue";
 
 const boats = [
   {
@@ -27,6 +29,8 @@ const boats = [
     data: "03/06/2026",
   },
 ];
+
+const modal = ref(false);
 </script>
 <template>
   <div class="content container">
@@ -43,7 +47,12 @@ const boats = [
         teacher: true,
       }"
     />
-    
+
+    <button class="addDocument" @click="modal = true">
+      <v-icon icon="mdi-upload" />
+      Upload a new Document
+    </button>
+
     <Ornament :text="'Documents'">
       <template #content>
         <div>
@@ -52,9 +61,29 @@ const boats = [
       </template>
     </Ornament>
   </div>
+  <UploadDocument
+    :modelValue="modal"
+    :title="'Faça o upload de um documento'"
+    v-model:modal="modal"
+  >
+    <DocumentForm />
+  </UploadDocument>
 </template>
 
 <style lang="css" scoped>
+.addDocument {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+  background-color: rgb(26 105 195);
+  padding: 20px;
+  color: #fff;
+  border: 1px solid #f2f3ffd0;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
 .filters {
   display: flex;
   flex-direction: column;
