@@ -11,7 +11,6 @@ interface InputItems {
 const { inputs } = defineProps<{
   inputs: InputItems;
 }>();
-
 </script>
 <template>
   <Ornament :text="'Filtros para busca'">
@@ -71,6 +70,7 @@ const { inputs } = defineProps<{
   flex-direction: column;
   gap: 30px;
   border-radius: 10px;
+  padding: 20px;
 }
 
 .buttons {

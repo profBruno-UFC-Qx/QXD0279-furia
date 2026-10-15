@@ -33,10 +33,9 @@ and more to find the right academic fit."
     />
 
     <div class="teacherTable">
-      <Ornament>
+      <Ornament :text="'Professores buscados:'">
         <template #content>
           <div class="headerTable">
-            <h1>Professores buscados:</h1>
             <p>Total: 12 resultados</p>
           </div>
         </template>
@@ -93,11 +92,12 @@ and more to find the right academic fit."
   gap: 30px;
 }
 
-/* .headerTable h1 {
-  font-size: 3rem;
+.headerTable {
+  padding-left: 20px;
+  padding-bottom: 20px;
 }
 
-.headerTable p {
+/* .headerTable p {
   font-size: 1.3rem;
-} */
+}  */
 </style>
