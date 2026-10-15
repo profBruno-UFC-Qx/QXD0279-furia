@@ -1,9 +1,11 @@
 <script setup lang="ts">
-const { text } = defineProps(["text"]);
+const { text } = defineProps({
+  text: String,
+});
 </script>
 <template>
-  <div class="ornament">
-    <div class="header">
+  <div :class="{ separe: text ? true : false, ornament: true }">
+    <div>
       <h1>{{ text }}</h1>
     </div>
     <slot name="content" />
@@ -15,10 +17,13 @@ const { text } = defineProps(["text"]);
   border-radius: 10px;
   overflow: hidden;
   border: 1px solid #c3c6d7;
-}
-
-.header {
   padding: 24px;
   background-color: #f2f3ff;
+}
+
+.separe {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 </style>
