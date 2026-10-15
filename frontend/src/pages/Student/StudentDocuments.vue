@@ -3,6 +3,7 @@ import { ref } from "vue";
 import Header from "@/components/Header/Header.vue";
 import TableDocs from "@/components/Table/TableDocs.vue";
 import Ornament from "@/components/Ornament/Ornament.vue";
+import Filters from "@/components/Filters/Filters.vue";
 
 const boats = [
   {
@@ -34,36 +35,15 @@ const boats = [
       description="Browse, filter, and download study materials from your institution."
     />
 
-    <div class="filters">
-      <div class="inputs">
-        <v-text-field
-          class="text"
-          placeholder="Title, concept, or topic..."
-          prepend-inner-icon="mdi-magnify"
-          variant="outlined"
-          density="compact"
-          hide-details
-        />
-        <v-select
-          placeholder="All Disciplines"
-          :items="[]"
-          variant="outlined"
-          density="compact"
-          hide-details
-        />
-        <v-select
-          placeholder="All Professors"
-          :items="[]"
-          variant="outlined"
-          density="compact"
-          hide-details
-        />
-      </div>
-      <div class="buttons">
-        <v-btn variant="outlined" class="mr-2 text-none"> Clear Filters </v-btn>
-        <v-btn color="primary" variant="flat" class="text-none"> Buscar </v-btn>
-      </div>
-    </div>
+    <Filters
+      :inputs="{
+        text: true,
+        dicipline: true,
+        course: false,
+        teacher: true,
+      }"
+    />
+    
     <Ornament :text="'Documents'">
       <template #content>
         <div>
