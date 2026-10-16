@@ -4,8 +4,6 @@ import path from "path";
 
 import { DataSource } from "typeorm";
 
-const srcPath = path.resolve(__dirname, "..");
-
 export const AppDataSource = new DataSource({
   type: "postgres",
 
@@ -15,9 +13,10 @@ export const AppDataSource = new DataSource({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
 
-  entities: [srcPath + "/entities/*.{ts,js}"],
-  migrations: [srcPath + "/migrations/*.{ts,js}"],
+  entities: ["./src/entities/*.{ts,js}"],
+  migrations: ["./src/migrations/*.{ts,js}"],
 
   synchronize: false,
   logging: false,
 });
+// srcPath + "/entities/*.{ts,js}"

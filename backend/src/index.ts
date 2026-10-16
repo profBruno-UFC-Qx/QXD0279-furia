@@ -1,4 +1,4 @@
-import { AppDataSource } from "./database/data-source";
+import { AppDataSource } from "./database/data-source.ts";
 import express, { Request, Response } from "express";
 const app = express();
 const port = 3000;
