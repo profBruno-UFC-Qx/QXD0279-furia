@@ -1,9 +1,10 @@
 import { AppDataSource } from "./database/data-source.ts";
 import express, { Request, Response } from "express";
+import { authRouter } from "./auth/auth.module.ts";
 const app = express();
-const port = 3000;
 
 app.use(express.json());
+app.use(authRouter);
 
 async function initDB() {
   try {
@@ -12,19 +13,12 @@ async function initDB() {
     console.log(error);
   }
 }
-
 initDB();
 
-app.get("/", (req: Request, res: Response) => {
-  res.json({
-    connected: AppDataSource.isInitialized,
-    entities: AppDataSource.entityMetadatas.map((entity) => ({
-      name: entity.name,
-      tableName: entity.tableName,
-    })),
-  });
+app.get("/", async (req: Request, res: Response) => {
+  res.end("hello");
 });
 
-app.listen(port, () => {
-  console.log(`Servidor rodando em http://localhost:${port}`);
+app.listen(3000, () => {
+  console.log(`Servidor rodando em http://localhost:${3000}`);
 });
