@@ -1,13 +1,12 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
-
-type UserType = "student" | "teacher" | "admin";
+import { UserTypeRoles } from "../../../enums/roles.ts";
 
 @Entity()
 export abstract class User {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column({ type: "varchar", length: 50 })
+  @Column({ type: "varchar", length: 100 })
   password!: string;
 
   @Column({ type: "varchar", length: 50 })
@@ -17,5 +16,5 @@ export abstract class User {
   name!: string;
 
   @Column({ type: "enum", enum: ["student", "teacher", "admin"] })
-  role!: UserType;
+  role!: UserTypeRoles;
 }

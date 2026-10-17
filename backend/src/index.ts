@@ -20,8 +20,8 @@ app.get("/", async (req: Request, res: Response) => {
   res.end("hello");
 });
 
-app.listen(3000, () => {
-  console.log(`Servidor rodando em http://localhost:${3000}`);
+app.listen(9876, () => {
+  console.log(`Servidor rodando em http://localhost:${9876}`);
 });
 
 app.use(errorHandling);
