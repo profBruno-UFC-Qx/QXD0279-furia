@@ -3,11 +3,14 @@ import { StudentDTO } from "./dto/student/student.dto.ts";
 import { Conflict } from "../errors/errors.ts";
 import { StudentResponseDTO } from "./dto/student/studentResponse.dto.ts";
 import bcrypt from "bcrypt";
+import { createToken } from "../utils/createToken.ts";
 
 export class AuthService {
   constructor(private authRepository: AuthRepository) {}
 
-  async registerStudent(student: StudentDTO): Promise<StudentResponseDTO> {
+  async registerStudent(
+    student: StudentDTO,
+  ): Promise<{ newStudent: StudentResponseDTO; token: string }> {
     const { password, email } = student;
 
     const alreadyExists = await this.authRepository.findByEmail(email);
@@ -20,16 +23,23 @@ export class AuthService {
 
     student.password = passwordHash;
 
-    const user = await this.authRepository.create(student);
+    const createdStudent = await this.authRepository.create(student);
 
-    const userResponse: StudentResponseDTO = {
-      name: user.name,
-      email: user.email,
-      course: user.course,
-      role: user.role,
+    const newStudent: StudentResponseDTO = {
+      name: createdStudent.name,
+      email: createdStudent.email,
+      course: createdStudent.course,
+      role: createdStudent.role,
     };
 
-    return userResponse;
+    const token = createToken({
+      sub: createdStudent.id,
+    });
+
+    return {
+      newStudent,
+      token,
+    };
   }
 
   async registerTeacher() {}
