@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
-import { UserTypeRoles } from "../../../enums/roles.ts";
+import { UserEnumRoles } from "../../../enums/roles.ts";
 
 @Entity()
 export abstract class User {
@@ -16,5 +16,5 @@ export abstract class User {
   name!: string;
 
   @Column({ type: "enum", enum: ["student", "teacher", "admin"] })
-  role!: UserTypeRoles;
+  role!: UserEnumRoles;
 }

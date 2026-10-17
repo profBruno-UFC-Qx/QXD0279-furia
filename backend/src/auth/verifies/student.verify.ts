@@ -1,6 +1,6 @@
 import { RegisterStudentSchema } from "../schema/register-student.schema.ts";
 import { BadRequestError } from "../../errors/errors.ts";
-import { StudentDTO } from "../dto/student/student.dto.ts";
+import { StudentRegisterDTO } from "../dto/register.student.dto.ts";
 
 export function isStudent(body: any) {
   const isValidStudent = RegisterStudentSchema.safeParse(body);
@@ -9,5 +9,5 @@ export function isStudent(body: any) {
     throw new BadRequestError(isValidStudent.error);
   }
 
-  return body as StudentDTO;
+  return body as StudentRegisterDTO;
 }

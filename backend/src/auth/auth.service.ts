@@ -1,16 +1,17 @@
 import { AuthRepository } from "./auth.repository.ts";
-import { StudentDTO } from "./dto/student/student.dto.ts";
 import { Conflict } from "../errors/errors.ts";
-import { StudentResponseDTO } from "./dto/student/studentResponse.dto.ts";
+import { UserResponse, UserResponseMapper } from "./dto/userResponse.dto.ts";
 import bcrypt from "bcrypt";
 import { createToken } from "../utils/createToken.ts";
+import { LoginUserDTO } from "./dto/login.dto.ts";
+import { StudentRegisterDTO } from "./dto/register.student.dto.ts";
 
 export class AuthService {
   constructor(private authRepository: AuthRepository) {}
 
   async registerStudent(
-    student: StudentDTO,
-  ): Promise<{ newStudent: StudentResponseDTO; token: string }> {
+    student: StudentRegisterDTO,
+  ): Promise<{ userResponse: UserResponse; token: string }> {
     const { password, email } = student;
 
     const alreadyExists = await this.authRepository.findByEmail(email);
@@ -25,24 +26,46 @@ export class AuthService {
 
     const createdStudent = await this.authRepository.create(student);
 
-    const newStudent: StudentResponseDTO = {
-      name: createdStudent.name,
-      email: createdStudent.email,
-      course: createdStudent.course,
-      role: createdStudent.role,
-    };
+    const userResponse = UserResponseMapper(createdStudent);
 
     const token = createToken({
       sub: createdStudent.id,
+      role: createdStudent.role,
     });
 
     return {
-      newStudent,
+      userResponse,
       token,
     };
   }
 
   async registerTeacher() {}
 
-  async login() {}
+  async login(payload: LoginUserDTO) {
+    const { email, password } = payload;
+
+    const user = await this.authRepository.findByEmail(email);
+
+    if (!user) {
+      throw new Error("Invalid credentials");
+    }
+
+    const passwordValid = await bcrypt.compare(password, user.password);
+
+    if (!passwordValid) {
+      throw new Error("Invalid credentials");
+    }
+
+    const userResponse = UserResponseMapper(user);
+
+    const token = createToken({
+      sub: user.id,
+      role: user.role,
+    });
+
+    return {
+      userResponse,
+      token,
+    };
+  }
 }
