@@ -1,6 +1,7 @@
 import { AppDataSource } from "./database/data-source.ts";
 import express, { Request, Response } from "express";
 import { authRouter } from "./auth/auth.module.ts";
+import { errorHandling } from "./middlewares/error-handling.midlewares.ts";
 const app = express();
 
 app.use(express.json());
@@ -22,3 +23,5 @@ app.get("/", async (req: Request, res: Response) => {
 app.listen(3000, () => {
   console.log(`Servidor rodando em http://localhost:${3000}`);
 });
+
+app.use(errorHandling);
