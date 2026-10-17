@@ -11,19 +11,19 @@ export class AppError {
 }
 
 export class NotFoundError extends AppError {
-  constructor(message = "Resource not found") {
-    super(404, message);
+  constructor(message = "Resource not found", details?: any) {
+    super(404, message, details);
   }
 }
 
 export class BadRequestError extends AppError {
-  constructor(message = "Bad request") {
-    super(400, message);
+  constructor(message = "Bad request", details?: any) {
+    super(400, message, details);
   }
 }
 
 export class UnauthorizedError extends AppError {
-  constructor(message = "Unauthorized") {
-    super(401, message);
+  constructor(message = "Unauthorized", details?: any) {
+    super(401, message, details);
   }
 }

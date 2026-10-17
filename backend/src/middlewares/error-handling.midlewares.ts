@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { AppError } from "../errors/types.errors.ts";
+import { AppError } from "../errors/errors.ts";
 
 export const errorHandling = (
   erre: unknown,
