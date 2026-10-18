@@ -1,9 +1,11 @@
-import { UserEnumRoles } from "../../enums/roles.ts";
+import { UserTypeRoles } from "../../enums/roles.ts";
 
 export interface UserResponse {
   name: string;
-  role: UserEnumRoles;
+  role: UserTypeRoles;
 }
+
+const userRoles: UserTypeRoles[] = ["student", "teacher", "admin"];
 
 export function UserResponseMapper(obj: unknown): UserResponse {
   if (typeof obj !== "object" || obj === null) {
@@ -16,13 +18,14 @@ export function UserResponseMapper(obj: unknown): UserResponse {
 
   if (
     !("role" in obj) ||
-    !Object.values(UserEnumRoles).includes(obj.role as UserEnumRoles)
+    typeof obj.role !== "string" ||
+    !userRoles.includes(obj.role as UserTypeRoles)
   ) {
     throw new Error("Invalid user response: invalid role.");
   }
 
   return {
     name: obj.name,
-    role: obj.role as UserEnumRoles,
+    role: obj.role as UserTypeRoles,
   };
 }

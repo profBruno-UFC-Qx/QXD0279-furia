@@ -1,5 +1,5 @@
 import { AuthRepository } from "./auth.repository.ts";
-import { Conflict } from "../errors/errors.ts";
+import { Conflict, UnauthorizedError } from "../errors/errors.ts";
 import { UserResponse, UserResponseMapper } from "./dto/userResponse.dto.ts";
 import bcrypt from "bcrypt";
 import { createToken } from "../utils/createToken.ts";
@@ -47,19 +47,19 @@ export class AuthService {
     const user = await this.authRepository.findByEmail(email);
 
     if (!user) {
-      throw new Error("Invalid credentials");
+      throw new UnauthorizedError("Invalid credentials");
     }
 
     const passwordValid = await bcrypt.compare(password, user.password);
 
     if (!passwordValid) {
-      throw new Error("Invalid credentials");
+      throw new UnauthorizedError("Invalid credentials");
     }
 
     const userResponse = UserResponseMapper(user);
 
     const token = createToken({
-      sub: user.id,
+      id: user.id,
       role: user.role,
     });
 
