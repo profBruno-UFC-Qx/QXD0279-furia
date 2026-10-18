@@ -26,8 +26,8 @@ export const AuthMiddleware = (
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET) as Payload;
-    console.log(decoded)
-    req.user = { id: decoded.id, role: "student" };
+    console.log(decoded);
+    req.user = { id: decoded.user_id, role: "student" };
 
     next();
   } catch (error) {
