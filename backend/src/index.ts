@@ -1,9 +1,8 @@
-import { AppDataSource } from "./database/data-source";
+import { AppDataSource } from "./database/data-source.ts";
 import express, { Request, Response } from "express";
-const app = express();
-const port = 3000;
-
-app.use(express.json());
+import { authRouter } from "./auth/auth.module.ts";
+import { errorHandling } from "./middlewares/error-handling.midlewares.ts";
+import { AuthMiddleware } from "./middlewares/auth.middleware.ts";
 
 async function initDB() {
   try {
@@ -12,19 +11,20 @@ async function initDB() {
     console.log(error);
   }
 }
-
 initDB();
 
-app.get("/", (req: Request, res: Response) => {
-  res.json({
-    connected: AppDataSource.isInitialized,
-    entities: AppDataSource.entityMetadatas.map((entity) => ({
-      name: entity.name,
-      tableName: entity.tableName,
-    })),
-  });
+const app = express();
+
+app.use(express.json());
+app.use(authRouter);
+
+app.use(AuthMiddleware);
+app.get("/", async (req: Request, res: Response) => {
+  res.json(req.user);
 });
 
-app.listen(port, () => {
-  console.log(`Servidor rodando em http://localhost:${port}`);
+app.use(errorHandling);
+
+app.listen(9876, () => {
+  console.log(`Servidor rodando em http://localhost:${9876}`);
 });

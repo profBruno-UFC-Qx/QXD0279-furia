@@ -1,10 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { User } from "./abstracts/User.ts";
 
 @Entity()
-export class User {
-  @PrimaryGeneratedColumn()
-  id!: number;
-
+export class Student extends User {
   @Column({ type: "varchar", length: 100 })
-  name!: string;
+  course!: string;
 }
