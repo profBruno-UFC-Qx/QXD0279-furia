@@ -1,10 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
-import { UserEnumRoles } from "../../../enums/roles.ts";
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from "typeorm";
+import { Student } from "./Student.ts";
 
 @Entity()
-export abstract class User {
+export class GenericUser {
   @PrimaryGeneratedColumn()
-  id!: number;
+  user_id!: number;
 
   @Column({ type: "varchar", length: 100 })
   password!: string;
@@ -16,5 +16,8 @@ export abstract class User {
   name!: string;
 
   @Column({ type: "enum", enum: ["student", "teacher", "admin"] })
-  role!: UserEnumRoles;
+  role!: "student" | "teacher" | "admin";
+
+  @OneToOne(() => Student, (student) => student.user)
+  especific_type!: Student;
 }

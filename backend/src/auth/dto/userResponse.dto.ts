@@ -12,20 +12,26 @@ export function UserResponseMapper(obj: unknown): UserResponse {
     throw new Error("Invalid user response: expected an object.");
   }
 
-  if (!("name" in obj) || typeof obj.name !== "string") {
+  const user = "user" in obj ? obj.user : obj;
+
+  if (typeof user !== "object" || user === null) {
+    throw new Error("Invalid user response: user must be an object.");
+  }
+
+  if (!("name" in user) || typeof user.name !== "string") {
     throw new Error("Invalid user response: name must be a string.");
   }
 
   if (
-    !("role" in obj) ||
-    typeof obj.role !== "string" ||
-    !userRoles.includes(obj.role as UserTypeRoles)
+    !("role" in user) ||
+    typeof user.role !== "string" ||
+    !userRoles.includes(user.role as UserTypeRoles)
   ) {
     throw new Error("Invalid user response: invalid role.");
   }
 
   return {
-    name: obj.name,
-    role: obj.role as UserTypeRoles,
+    name: user.name,
+    role: user.role as UserTypeRoles,
   };
 }

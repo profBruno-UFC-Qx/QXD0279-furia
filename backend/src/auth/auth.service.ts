@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import { createToken } from "../utils/createToken.ts";
 import { LoginUserDTO } from "./dto/login.dto.ts";
 import { StudentRegisterDTO } from "./dto/register.student.dto.ts";
+import { use } from "marked";
 
 export class AuthService {
   constructor(private authRepository: AuthRepository) {}
@@ -24,13 +25,13 @@ export class AuthService {
 
     student.password = passwordHash;
 
-    const createdStudent = await this.authRepository.create(student);
+    const createdStudent = await this.authRepository.createStudent(student);
 
     const userResponse = UserResponseMapper(createdStudent);
 
     const token = createToken({
-      sub: createdStudent.id,
-      role: createdStudent.role,
+      user_id: createdStudent.user.user_id,
+      role: createdStudent.user.role,
     });
 
     return {
@@ -59,7 +60,7 @@ export class AuthService {
     const userResponse = UserResponseMapper(user);
 
     const token = createToken({
-      id: user.id,
+      user_id: user.user_id,
       role: user.role,
     });
 
