@@ -48,13 +48,13 @@ export class AuthService {
     const user = await this.authRepository.findByEmail(email);
 
     if (!user) {
-      throw new UnauthorizedError("Invalid credentials");
+      throw new UnauthorizedError("Credenciais invalidas");
     }
 
     const passwordValid = await bcrypt.compare(password, user.password);
 
     if (!passwordValid) {
-      throw new UnauthorizedError("Invalid credentials");
+      throw new UnauthorizedError("Credenciais invalidas");
     }
 
     const userResponse = UserResponseMapper(user);

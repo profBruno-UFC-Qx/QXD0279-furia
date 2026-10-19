@@ -10,6 +10,7 @@ export const AuthMiddleware = (
 ) => {
   const bearToken = req.headers.authorization;
 
+
   if (!bearToken) {
     throw new UnauthorizedError("Authorization header missing");
   }
