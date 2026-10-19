@@ -1,21 +1,32 @@
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
 
-import { ref, watch } from "vue";
+import { ref, watch, defineEmits } from "vue";
+import { type registerData } from "@/@types/registerData";
+
+const emit = defineEmits<{
+  submit: [registerData: registerData];
+}>();
 
 const form = ref(false);
 const isTeacher = ref(false);
-const email = ref(null);
-const password = ref(null);
-const course = ref(null);
+const email = ref("");
+const password = ref("");
+const course = ref("");
+const name = ref("");
 const loading = ref(false);
 
-function onSubmit(e: SubmitEvent) {
-  console.log(course.value);
+async function onSubmit(e: SubmitEvent) {
   e.preventDefault();
   if (!form.value) return;
-  loading.value = true;
-  setTimeout(() => (loading.value = false), 2000);
+
+  emit("submit", {
+    name: name.value,
+    email: email.value,
+    password: password.value,
+    course: course.value,
+    role: isTeacher.value ? "teacher" : "student",
+  });
 }
 
 function required(v: string) {
@@ -23,12 +34,27 @@ function required(v: string) {
 }
 
 watch(isTeacher, () => {
-  course.value = null
+  course.value = "";
 });
 </script>
 
 <template>
   <v-form @submit="onSubmit" class="form" v-model="form">
+    <label for="name" class="input">
+      Nome
+      <v-text-field
+        v-model="name"
+        :readonly="loading"
+        :rules="[required]"
+        rounded="10"
+        id="name"
+        name="name"
+        variant="outlined"
+        type="text"
+        placeholder="Pedro da silva"
+      ></v-text-field>
+    </label>
+
     <label for="email" class="input">
       Email
       <v-text-field
@@ -101,7 +127,10 @@ watch(isTeacher, () => {
     </div>
 
     <div class="infos">
-      <p>Já tem uma conta? <RouterLink :to="{ name: 'login' }">Log In</RouterLink></p>
+      <p>
+        Já tem uma conta?
+        <RouterLink :to="{ name: 'login' }">Log In</RouterLink>
+      </p>
     </div>
   </v-form>
 </template>

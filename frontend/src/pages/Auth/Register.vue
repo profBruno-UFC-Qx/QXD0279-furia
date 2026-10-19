@@ -1,7 +1,27 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { RouterView } from "vue-router";
+import { authStore } from "@/stores/StoreAuth";
 import RegisterForm from "@/components/Forms/RegisterForm.vue";
+import { ApiError } from "@/api/ApiError";
+import { useStoreNotify } from "@/stores/StoreNotify";
+import { useRouter } from "vue-router";
+import { type registerData } from "@/@types/registerData";
+
+const auth = authStore();
+const notify = useStoreNotify();
+const router = useRouter();
+
+async function register(registerData: registerData) {
+  try {
+    const user = await auth.register(registerData);
+    if (user.userResponse.role == "student") {
+      router.push({ name: "studentHome" });
+    }
+  } catch (e) {
+    const error = e as ApiError;
+    notify.notify(error.message, "error");
+  }
+}
 </script>
 
 <template>
@@ -14,7 +34,7 @@ import RegisterForm from "@/components/Forms/RegisterForm.vue";
           <p>Welcome. create a acount.</p>
         </div>
         <div class="forms-container">
-          <RegisterForm />
+          <RegisterForm @submit="register" />
         </div>
       </div>
     </div>

@@ -1,7 +1,27 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { RouterView } from "vue-router";
 import LoginForm from "@/components/Forms/LoginForm.vue";
+import { authStore } from "@/stores/StoreAuth";
+import { ApiError } from "@/api/ApiError";
+import { useRouter } from "vue-router";
+import { useStoreNotify } from "@/stores/StoreNotify";
+import { type loginData } from "@/@types/loginData";
+
+const auth = authStore();
+const notify = useStoreNotify();
+const router = useRouter();
+
+async function login(login: loginData) {
+  try {
+    const user = await auth.login(login);
+    if (user.userResponse.role == "student") {
+      router.push({ name: "studentHome" });
+    }
+  } catch (error) {
+    if (error instanceof ApiError) {
+      notify.notify(error.message, "error");
+    }
+  }
+}
 </script>
 
 <template>
@@ -14,7 +34,7 @@ import LoginForm from "@/components/Forms/LoginForm.vue";
           <p>Welcome back. Please enter your details.</p>
         </div>
         <div class="forms-container">
-          <LoginForm />
+          <LoginForm @submit="login" />
         </div>
       </div>
     </div>

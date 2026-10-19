@@ -1,11 +1,8 @@
 import { computed, ref } from "vue";
 import { defineStore } from "pinia";
 import { AuthService } from "@/api/AuthService";
-
-interface payload {
-  email: string;
-  password: string;
-}
+import { type loginData } from "@/@types/loginData";
+import { type registerData } from "@/@types/registerData";
 
 export const authStore = defineStore("auth", () => {
   const username = ref<string | null>(localStorage.getItem("username"));
@@ -14,14 +11,23 @@ export const authStore = defineStore("auth", () => {
 
   const isLoged = computed(() => Boolean(token.value));
 
-  async function login(payload: payload) {
-    const user = await AuthService(payload);
-    if (user instanceof Error) {
-      throw user;
-    }
+  async function login(payload: loginData) {
+    const user = await AuthService.login(payload);
 
-    username.value = user.username;
-    role.value = user.role;
+    username.value = user.userResponse.name;
+    role.value = user.userResponse.role;
+    token.value = user.token;
+
+    persistData();
+
+    return user;
+  }
+
+  async function register(payload: registerData) {
+    const user = await AuthService.register(payload);
+
+    username.value = user.userResponse.name;
+    role.value = user.userResponse.role;
     token.value = user.token;
 
     persistData();
@@ -43,5 +49,5 @@ export const authStore = defineStore("auth", () => {
     save("role", role.value);
   }
 
-  return { username, role, isLoged, login };
+  return { username, role, isLoged, login, register };
 });

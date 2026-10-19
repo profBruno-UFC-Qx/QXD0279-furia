@@ -1,29 +1,22 @@
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
-import { authStore } from "@/stores/StoreAuth";
-import { ref } from "vue";
-import router from "@/router";
+import { ref, defineEmits } from "vue";
+import { type loginData } from "@/@types/loginData";
+
+const emit = defineEmits<{
+  submit: [loginData: loginData];
+}>();
 
 const form = ref(false);
-const isTeacher = ref(false);
-const email = ref("");
-const password = ref("");
+const email = ref("joja3@gemail.com");
+const password = ref("12345678");
 const loading = ref(false);
-const storeAuth = authStore();
 const error = ref({ error: false, msg: "" });
-console.log("OIE");
+
 async function onSubmit() {
   if (!form.value) return;
-  try {
-    loading.value = true;
-    await storeAuth.login({ email: email.value, password: password.value });
-    router.push("/student/home");
-  } catch (Error) {
-    error.value.msg = (Error as Error).message;
-    error.value.error = true;
-  } finally {
-    loading.value = false;
-  }
+
+  emit("submit", { email: email.value, password: password.value });
 }
 function required(v: string) {
   return !!v || "Field is required";
