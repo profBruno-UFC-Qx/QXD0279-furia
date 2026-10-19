@@ -30,6 +30,6 @@ export class UnauthorizedError extends AppError {
 
 export class Conflict extends AppError {
   constructor(details?: any) {
-    super(409, "Entity already exists", details);
+    super(409, "Usuario ja cadastrado.", details);
   }
 }

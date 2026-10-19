@@ -1,14 +1,15 @@
+<script lang="ts" setup>
+import NotifyContainer from "./components/Notify/NotifyContainer.vue";
+</script>
+
 <template>
   <v-app>
     <v-main>
+      <NotifyContainer />
       <router-view />
     </v-main>
   </v-app>
 </template>
-
-<script lang="ts" setup>
-//
-</script>
 
 <style>
 .container {

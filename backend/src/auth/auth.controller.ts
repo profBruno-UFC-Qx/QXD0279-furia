@@ -9,9 +9,11 @@ export class AuthController {
   constructor(private authService: AuthService) {}
   login = async (req: Request, res: Response) => {
     const isValid = LoginUserSchema.safeParse(req.body);
+    console.log(!isValid.success);
+    console.log(isValid.data);
 
     if (!isValid.success) {
-      throw new AppError(400, "Invalid body format");
+      throw new AppError(400, "E-mail ou senha mal formatados");
     }
 
     const result = await this.authService.login(isValid.data);

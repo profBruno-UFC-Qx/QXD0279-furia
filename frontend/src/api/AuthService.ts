@@ -1,16 +1,40 @@
+import { request } from "./request";
+
+type AuthResponse = {
+  userResponse: {
+    name: string;
+    role: "student" | "teacher" | "admin";
+  };
+  token: string;
+};
+
 interface payload {
   email: string;
   password: string;
 }
 
-export const AuthService = async (payload: payload) => {
-  if (payload.email == "narcisoroberto1369@gmail.com" && payload.password == "123") {
-    return {
-      username: "narciso",
-      token: "089",
-      role: "user",
-    };
-  } else {
-    return new Error("login incorreto");
-  }
+export const AuthService = {
+  login: async (payload: payload) => {
+    const data = await request<AuthResponse>("/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    return data;
+  },
+
+  register: async (payload: payload) => {
+    const data = await request<AuthResponse>("/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    return data;
+  },
 };
