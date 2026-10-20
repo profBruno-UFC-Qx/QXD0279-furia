@@ -10,6 +10,7 @@ import { createToken } from "../utils/createToken.ts";
 import { LoginUserDTO } from "./dto/login.dto.ts";
 import { StudentRegisterDTO } from "./dto/register.student.dto.ts";
 
+
 export class AuthService {
   constructor(private authRepository: AuthRepository) {}
 
