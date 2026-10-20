@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import { authStore } from "@/stores/StoreAuth";
 import RegisterForm from "@/components/Forms/RegisterForm.vue";
 import { ApiError } from "@/api/ApiError";

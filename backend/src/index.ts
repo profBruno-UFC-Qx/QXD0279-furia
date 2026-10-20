@@ -2,7 +2,7 @@ import { AppDataSource } from "./database/data-source.ts";
 import express, { Request, Response } from "express";
 import { authRouter } from "./auth/auth.module.ts";
 import { errorHandling } from "./middlewares/error-handling.midlewares.ts";
-import { AuthMiddleware } from "./middlewares/auth.middleware.ts";
+import { AuthMiddleware } from "./auth/middlewares/auth.middleware.ts";
 import cors from "cors";
 
 async function initDB() {

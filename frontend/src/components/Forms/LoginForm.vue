@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
-import { ref, defineEmits } from "vue";
+import { ref } from "vue";
 import { type loginData } from "@/@types/loginData";
 
 const emit = defineEmits<{

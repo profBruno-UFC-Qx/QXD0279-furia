@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
 
-import { ref, watch, defineEmits } from "vue";
+import { ref, watch } from "vue";
 import { type registerData } from "@/@types/registerData";
 
 const emit = defineEmits<{
