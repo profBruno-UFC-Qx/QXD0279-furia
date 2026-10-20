@@ -5,70 +5,82 @@
  */
 
 // Composables
-import { createRouter, createWebHistory } from "vue-router";
-import DefaultLayout from "@/layout/DefaultLayout.vue";
-import AuthLayout from "@/layout/AuthLayout.vue";
-import Login from "@/pages/Auth/Login.vue";
-import Register from "@/pages/Auth/Register.vue";
-import HeroPage from "@/pages/HeroPage.vue";
-
+import { createRouter, createWebHistory } from 'vue-router'
+import AuthLayout from '@/layout/AuthLayout.vue'
+import DefaultLayout from '@/layout/DefaultLayout.vue'
+import Login from '@/pages/Auth/Login.vue'
+import Register from '@/pages/Auth/Register.vue'
+import HeroPage from '@/pages/HeroPage.vue'
+// Professor profile
+import ProfessorProfile from '@/pages/Professor/ProfessorProfile.vue'
+import StudentDocuments from '@/pages/Student/StudentDocuments.vue'
 // Student pages
-import StudentHome from "@/pages/Student/StudentHome.vue";
-import StudentDocuments from "@/pages/Student/StudentDocuments.vue";
-import StudentTeachers from "@/pages/Student/StudentTeachers.vue";
+import StudentHome from '@/pages/Student/StudentHome.vue'
+import StudentTeachers from '@/pages/Student/StudentTeachers.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: "/",
+      path: '/',
       component: DefaultLayout,
       children: [
         {
-          path: "",
+          path: '',
           component: HeroPage,
-          name: "heroPage",
+          name: 'heroPage',
         },
       ],
     },
     {
-      path: "/student",
+      path: '/student',
       component: DefaultLayout,
       children: [
         {
-          path: "home",
+          path: 'home',
           component: StudentHome,
-          name: "studentHome",
+          name: 'studentHome',
         },
         {
-          path: "documents",
+          path: 'documents',
           component: StudentDocuments,
-          name: "studentDocuments",
+          name: 'studentDocuments',
         },
         {
-          path: "teachers",
+          path: 'teachers',
           component: StudentTeachers,
-          name: "studentTeachers",
+          name: 'studentTeachers',
         },
       ],
     },
     {
-      path: "/login",
+      path: '/professor',
+      component: DefaultLayout,
+      children: [
+        {
+          path: 'profile',
+          component: ProfessorProfile,
+          name: '/professorProfile',
+        },
+      ],
+    },
+    {
+      path: '/login',
       component: AuthLayout,
       children: [
         {
-          path: "enter",
+          path: 'enter',
           component: Login,
-          name: "login",
+          name: 'login',
         },
         {
-          path: "register",
+          path: 'register',
           component: Register,
-          name: "register",
+          name: 'register',
         },
       ],
     },
   ],
-});
+})
 
-export default router;
+export default router

@@ -5,17 +5,18 @@
     <div class="footer-container">
       <div class="footer-left">
         <h2 class="brand-title">valiAe</h2>
+
         <p class="copyright-text">
           © 2026 valiAe Academic Platform. All rights reserved.
         </p>
       </div>
 
       <nav class="footer-nav">
-        <a href="#about" class="footer-link">About Us</a>
-        <a href="#terms" class="footer-link">Terms of Service</a>
-        <a href="#privacy" class="footer-link">Privacy Policy</a>
-        <a href="#support" class="footer-link">Contact Support</a>
-        <a href="#guidelines" class="footer-link">Academic Guidelines</a>
+        <a class="footer-link" href="#about">About Us</a>
+        <a class="footer-link" href="#terms">Terms of Service</a>
+        <a class="footer-link" href="#privacy">Privacy Policy</a>
+        <a class="footer-link" href="#support">Contact Support</a>
+        <a class="footer-link" href="#guidelines">Academic Guidelines</a>
       </nav>
     </div>
   </footer>

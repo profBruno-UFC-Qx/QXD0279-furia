@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { ref } from "vue";
-
-import Header from "@/components/Default/Header.vue";
-import { RouterView } from "vue-router";
-import Footer from "@/components/Default/Footer.vue";
+  import { ref } from 'vue'
+  import { RouterView } from 'vue-router'
+  import Footer from '@/components/Default/Footer.vue'
+  import Header from '@/components/Default/Header.vue'
 </script>
 
 <template>
