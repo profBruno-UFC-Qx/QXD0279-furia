@@ -6,7 +6,7 @@ import bcrypt from "bcrypt";
 export class UserService {
   constructor(private userRepository: UserRepository) {}
 
-  async registerUser(user: UserDTO) {
+  async createUser(user: UserDTO) {
     const { password, email } = user;
 
     const alreadyExists = await this.userRepository.findUserByEmail(email);

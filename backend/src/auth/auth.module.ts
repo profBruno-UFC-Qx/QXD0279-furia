@@ -4,9 +4,9 @@ import { AuthService } from "./auth.service.ts";
 import { AuthRepository } from "./auth.repository.ts";
 import { AppDataSource } from "../database/data-source.ts";
 import { studentService } from "../student/student.module.ts";
+import { userServiceInstance } from "../user/user.module.ts";
 
-const authRepository = new AuthRepository(AppDataSource);
-const authService = new AuthService(authRepository);
+const authService = new AuthService(studentService, userServiceInstance);
 const authController = new AuthController(authService);
 const authRouter = createAuthRouter(authController);
 

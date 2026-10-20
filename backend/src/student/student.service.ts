@@ -1,6 +1,6 @@
 import { UserService } from "../user/user.service.ts";
 import { StudentRepository } from "./student.repository.ts";
-import { StudentDTO } from "./dto/student.dto.ts";
+import { CreateStudentDTO } from "./dto/student.dto.ts";
 
 export class StudentService {
   constructor(
@@ -8,7 +8,7 @@ export class StudentService {
     private studentRepository: StudentRepository,
   ) {}
 
-  async registerStudent(studentData: StudentDTO) {
+  async createStudent(studentData: CreateStudentDTO) {
     const { email, password, name, role } = studentData;
 
     const simpleUser = {
@@ -18,7 +18,7 @@ export class StudentService {
       role,
     };
 
-    const user = await this.userService.registerUser(simpleUser);
+    const user = await this.userService.createUser(simpleUser);
     const student = await this.studentRepository.createStudent(
       user,
       studentData,

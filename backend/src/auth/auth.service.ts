@@ -1,55 +1,50 @@
-import { AuthRepository } from "./auth.repository.ts";
 import {
   Conflict,
   UnauthorizedError,
   NotFoundError,
 } from "../errors/errors.ts";
-import { UserResponse, UserResponseMapper } from "./dto/userResponse.dto.ts";
+import { UserResponse } from "./dto/userResponse.dto.ts";
 import bcrypt from "bcrypt";
 import { createToken } from "../utils/createToken.ts";
 import { LoginUserDTO } from "./dto/login.dto.ts";
 import { StudentRegisterDTO } from "./dto/register.student.dto.ts";
-
+import { StudentService } from "../student/student.service.ts";
+import { UserService } from "../user/user.service.ts";
 
 export class AuthService {
-  constructor(private authRepository: AuthRepository) {}
+  constructor(
+    private studentService: StudentService,
+    private userService: UserService,
+  ) {}
 
   async registerStudent(
-    student: StudentRegisterDTO,
+    studentData: StudentRegisterDTO,
   ): Promise<{ userResponse: UserResponse; token: string }> {
-    const { password, email } = student;
+    const passwordHash = await bcrypt.hash(studentData.password, 10);
 
-    const alreadyExists = await this.authRepository.findByEmail(email);
+    studentData.password = passwordHash;
 
-    if (alreadyExists) {
-      throw new Conflict("E-mail ja cadastrado");
-    }
-
-    const passwordHash = await bcrypt.hash(password, 10);
-
-    student.password = passwordHash;
-
-    const createdStudent = await this.authRepository.createStudent(student);
-
-    const userResponse = UserResponseMapper(createdStudent);
+    const student = await this.studentService.createStudent(studentData);
 
     const token = createToken({
-      user_id: createdStudent.user.user_id,
-      role: createdStudent.user.role,
+      user_id: student.user.user_id,
+      role: "student",
     });
 
     return {
-      userResponse,
+      userResponse: { name: student.user.name, role: "student" },
       token,
     };
   }
 
   async registerTeacher() {}
 
-  async login(payload: LoginUserDTO) {
+  async login(
+    payload: LoginUserDTO,
+  ): Promise<{ userResponse: UserResponse; token: string }> {
     const { email, password } = payload;
 
-    const user = await this.authRepository.findByEmail(email);
+    const user = await this.userService.findUserByEmail(email);
 
     if (!user) {
       throw new NotFoundError("Usuario nao encontrado");
@@ -61,15 +56,13 @@ export class AuthService {
       throw new UnauthorizedError("Credenciais invalidas");
     }
 
-    const userResponse = UserResponseMapper(user);
-
     const token = createToken({
       user_id: user.user_id,
       role: user.role,
     });
 
     return {
-      userResponse,
+      userResponse: { name: user.name, role: user.role },
       token,
     };
   }

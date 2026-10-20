@@ -1,6 +1,6 @@
 import { UserTypeRoles } from "../../enums/roles.ts";
 
-export interface StudentDTO {
+export interface CreateStudentDTO {
   name: string;
   email: string;
   password: string;
