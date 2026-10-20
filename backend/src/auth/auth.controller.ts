@@ -8,15 +8,16 @@ import { LoginUserSchema } from "./schema/login.schema.ts.ts";
 export class AuthController {
   constructor(private authService: AuthService) {}
   login = async (req: Request, res: Response) => {
-    const isValid = LoginUserSchema.safeParse(req.body);
-    console.log(!isValid.success);
-    console.log(isValid.data);
+    const isValidUser = LoginUserSchema.safeParse(req.body);
 
-    if (!isValid.success) {
-      throw new AppError(400, "E-mail ou senha mal formatados");
+    if (!isValidUser.success) {
+      throw new BadRequestError(
+        "E-mail ou senha mal formatados",
+        isValidUser.error,
+      );
     }
 
-    const result = await this.authService.login(isValid.data);
+    const result = await this.authService.login(isValidUser.data);
 
     return res.status(200).json(result);
   };
@@ -25,7 +26,10 @@ export class AuthController {
     const isValidUser = RegisterUserSchema.safeParse(req.body);
 
     if (!isValidUser.success) {
-      throw new BadRequestError(isValidUser.error);
+      throw new BadRequestError(
+        "Dados de cadastro mal formatados",
+        isValidUser.error,
+      );
     }
 
     if (isValidUser.data.role == "student") {
