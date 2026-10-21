@@ -11,6 +11,7 @@ import DefaultLayout from '@/layout/DefaultLayout.vue'
 import Login from '@/pages/Auth/Login.vue'
 import Register from '@/pages/Auth/Register.vue'
 import HeroPage from '@/pages/HeroPage.vue'
+import ProfessorDashboard from '@/pages/Professor/ProfessorDashboard.vue'
 // Professor profile
 import ProfessorProfile from '@/pages/Professor/ProfessorProfile.vue'
 import StudentDocuments from '@/pages/Student/StudentDocuments.vue'
@@ -27,10 +28,6 @@ const router = createRouter({
       children: [
         {
           path: '',
-          redirect: '/professor/profile',
-        },
-        {
-          path: 'hero',
           component: HeroPage,
           name: 'heroPage',
         },
@@ -64,7 +61,12 @@ const router = createRouter({
         {
           path: 'profile',
           component: ProfessorProfile,
-          name: '/professorProfile',
+          name: 'professorProfile',
+        },
+        {
+          path: 'dashboard',
+          component: ProfessorDashboard,
+          name: 'professorDashboard',
         },
       ],
     },
