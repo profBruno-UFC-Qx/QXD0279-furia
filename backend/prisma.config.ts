@@ -6,4 +6,5 @@ export default defineConfig({
   migrations: {
     path: path.join("prisma", "migrations"),
   },
+  datasource: { url: "postgres://narciso:123@localhost:5432/avaliae_db" },
 });

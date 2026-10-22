@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { UnauthorizedError } from "../../errors/errors.ts";
 import { Payload } from "../../@types/payload.type.ts";
+
 export const AuthMiddleware = (
   req: Request,
   res: Response,
@@ -25,8 +26,7 @@ export const AuthMiddleware = (
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET) as Payload;
-    console.log(decoded);
-    req.user = { id: decoded.user_id, role: "student" };
+    req.user = { id: decoded.user_id, role: decoded.role };
 
     next();
   } catch (error) {

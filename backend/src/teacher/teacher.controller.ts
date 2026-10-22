@@ -2,10 +2,7 @@ import { Request, Response } from "express";
 import z from "zod";
 import { BadRequestError } from "../errors/errors.ts";
 import { TeacherService } from "./teacher.service.ts";
-import { teacherSchema } from "./schema/teacher.schema.ts";
 import { updateTeacherSchema } from "./schema/teacherUpdate.schema.ts";
-
-
 
 export class TeacherController {
   constructor(private teacherService: TeacherService) {}
