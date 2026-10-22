@@ -3,29 +3,34 @@ import { UserService } from "../user/user.service.ts";
 import { TeacherRegisterDTO } from "../auth/dto/register.teacher.dto.ts";
 import { TeacherDTO } from "./dto/teacher.dto.ts";
 import { TeacherRepository } from "./teacher.repository.ts";
+import { DataBase } from "../database/dataBase.ts";
 
 export class TeacherService {
   constructor(
     private userService: UserService,
     private teacherRepository: TeacherRepository,
+    private database: DataBase,
   ) {}
 
   async createTeacher(teacherData: TeacherRegisterDTO) {
     const { email, password, name, role, disciplines } = teacherData;
 
-    const user = await this.userService.createUser({
-      email,
-      password,
-      name,
-      role,
-    });
+    return await this.database.$transaction(async (tx) => {
+      const user = await this.userService.createUserInTransaction(
+        {
+          email,
+          password,
+          name,
+          role,
+        },
+        tx,
+      );
 
-    return await this.teacherRepository.createTeacher(user, {
-      email,
-      password,
-      name,
-      role,
-      disciplines,
+      return await this.teacherRepository.createTeacher(
+        user,
+        { ...teacherData, disciplines },
+        tx,
+      );
     });
   }
 

@@ -7,6 +7,7 @@ const studentRepository = new StudentRepository(databaseInstance);
 const studentService = new StudentService(
   userServiceInstance,
   studentRepository,
+  databaseInstance,
 );
 
 export { studentService, studentRepository };

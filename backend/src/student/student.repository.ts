@@ -5,8 +5,10 @@ import { User } from "@prisma/client";
 export class StudentRepository {
   constructor(private database: DataBase) {}
 
-  async createStudent(user: User, studentData: CreateStudentDTO) {
-    return await this.database.student.create({
+  async createStudent(user: User, studentData: CreateStudentDTO, tx?: any) {
+    const prisma = tx ?? this.database;
+
+    return await prisma.student.create({
       data: {
         course: studentData.course,
         user: {

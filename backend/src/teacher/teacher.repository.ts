@@ -1,12 +1,14 @@
-import { PrismaClient, User } from "../generated/prisma/client.ts";
+import { User } from "../generated/prisma/client.ts";
 import { TeacherDTO } from "./dto/teacher.dto.ts";
 import { DataBase } from "../database/dataBase.ts";
 
 export class TeacherRepository {
   constructor(private database: DataBase) {}
 
-  async createTeacher(user: User, teacherData: TeacherDTO) {
-    return await this.database.teacher.create({
+  async createTeacher(user: User, teacherData: TeacherDTO, tx?: any) {
+    const prisma = tx ?? this.database;
+
+    return await prisma.teacher.create({
       data: {
         user: {
           connect: { user_id: user.user_id },

@@ -9,6 +9,7 @@ const teacherRepository = new TeacherRepository(databaseInstance);
 const teacherService = new TeacherService(
   userServiceInstance,
   teacherRepository,
+  databaseInstance,
 );
 const teacherController = new TeacherController(teacherService);
 const teacherRouter = createTeacherRouter(teacherController);
