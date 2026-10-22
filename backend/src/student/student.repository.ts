@@ -1,4 +1,4 @@
-import { DataSource, Repository } from "typeorm";
+import { DataSource, EntityManager, Repository } from "typeorm";
 import { Student } from "../database/entities/Student.ts";
 import { GenericUser } from "../database/entities/GenericUser.ts";
 import { CreateStudentDTO } from "./dto/student.dto.ts";
@@ -16,5 +16,20 @@ export class StudentRepository {
     });
 
     return await this.studentRepository.save(student);
+  }
+
+  async createStudentInTransaction(
+    manager: EntityManager,
+    user: GenericUser,
+    studentData: CreateStudentDTO,
+  ) {
+    const studentRepository = manager.getRepository(Student);
+
+    const student = studentRepository.create({
+      course: studentData.course,
+      user,
+    });
+
+    return await studentRepository.save(student);
   }
 }
