@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import { authStore } from "@/stores/StoreAuth";
 import RegisterForm from "@/components/Forms/RegisterForm.vue";
 import { ApiError } from "@/api/ApiError";
@@ -16,6 +15,9 @@ async function register(registerData: registerData) {
     const user = await auth.register(registerData);
     if (user.userResponse.role == "student") {
       router.push({ name: "studentHome" });
+    } else if (user.userResponse.role == "teacher") {
+      // JULIO, COLOCAR O NOME DA ROTA DO PROF AKI!!!
+      router.push({ name: "studentTeachers" });
     }
   } catch (e) {
     const error = e as ApiError;

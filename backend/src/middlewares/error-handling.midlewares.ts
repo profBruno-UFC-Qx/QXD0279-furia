@@ -13,6 +13,7 @@ export const errorHandling = (
       details: erre.details,
     });
   } else {
+    console.log(erre);
     return res.status(500).json("Something went wrong!!");
   }
 };

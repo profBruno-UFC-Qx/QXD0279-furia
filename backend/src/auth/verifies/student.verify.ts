@@ -6,7 +6,7 @@ export function isStudent(body: any) {
   const isValidStudent = RegisterStudentSchema.safeParse(body);
 
   if (!isValidStudent.success) {
-    throw new BadRequestError(isValidStudent.error);
+    throw new BadRequestError("Dados de cadastro mal formatados");
   }
 
   return body as StudentRegisterDTO;

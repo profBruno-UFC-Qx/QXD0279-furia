@@ -11,25 +11,31 @@ export class AppError {
 }
 
 export class NotFoundError extends AppError {
-  constructor(details?: any) {
-    super(404, "Resource not found", details);
+  constructor(
+    msg: string = "Sem autorizacao para acessar recurso",
+    details?: any,
+  ) {
+    super(404, msg, details);
   }
 }
 
 export class BadRequestError extends AppError {
-  constructor(details?: any) {
-    super(400, "Bad request", details);
+  constructor(msg: string = "Dados mal formatados", details?: any) {
+    super(400, msg, details);
   }
 }
 
 export class UnauthorizedError extends AppError {
-  constructor(details?: any) {
-    super(401, "Unauthorized", details);
+  constructor(
+    msg: string = "Sem autorizacao para acessar recurso",
+    details?: any,
+  ) {
+    super(401, msg, details);
   }
 }
 
 export class Conflict extends AppError {
-  constructor(details?: any) {
-    super(409, "Usuario ja cadastrado.", details);
+  constructor(msg: string = "Dados ja cadastrados no sistema", details?: any) {
+    super(409, msg, details);
   }
 }

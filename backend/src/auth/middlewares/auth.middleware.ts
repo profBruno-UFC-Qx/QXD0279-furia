@@ -1,15 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { UnauthorizedError, AppError } from "../errors/errors.ts";
-import { Payload } from "../@types/payload.type.ts";
-
+import { UnauthorizedError } from "../../errors/errors.ts";
+import { Payload } from "../../@types/payload.type.ts";
 export const AuthMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   const bearToken = req.headers.authorization;
-
 
   if (!bearToken) {
     throw new UnauthorizedError("Authorization header missing");

@@ -16,10 +16,9 @@ async function login(login: loginData) {
     if (user.userResponse.role == "student") {
       router.push({ name: "studentHome" });
     }
-  } catch (error) {
-    if (error instanceof ApiError) {
-      notify.notify(error.message, "error");
-    }
+  } catch (e) {
+    const error = e as ApiError;
+    notify.notify(error.message, "error");
   }
 }
 </script>
