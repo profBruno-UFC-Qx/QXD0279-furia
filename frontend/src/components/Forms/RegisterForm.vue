@@ -1,20 +1,32 @@
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
-
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { type registerData } from "@/@types/registerData";
+import { DiciplineService } from "@/api/DiciplineService";
+import { ApiError } from "@/api/ApiError";
+import { useStoreNotify } from "@/stores/StoreNotify";
 
+interface Discipline {
+  dicipline_id: number;
+  name: string;
+  course: string;
+  hours: number;
+}
+
+const notify = useStoreNotify();
 const emit = defineEmits<{
   submit: [registerData: registerData];
 }>();
 
 const form = ref(false);
-const isTeacher = ref(false);
+const isTeacher = ref(true);
 const email = ref("");
 const password = ref("");
-const course = ref("");
 const name = ref("");
 const loading = ref(false);
+const course = ref("");
+const disciplines = ref<Discipline[]>([]);
+const selectedDisciplines = ref<number[]>([]);
 
 async function onSubmit(e: SubmitEvent) {
   e.preventDefault();
@@ -24,17 +36,33 @@ async function onSubmit(e: SubmitEvent) {
     name: name.value,
     email: email.value,
     password: password.value,
-    course: course.value,
     role: isTeacher.value ? "teacher" : "student",
+    ...(isTeacher.value && {
+      disciplines: selectedDisciplines.value,
+    }),
+    ...(!isTeacher.value && {
+      course: course.value,
+    }),
   });
 }
+
+onMounted(async () => {
+  try {
+    disciplines.value = await DiciplineService.getAll();
+  } catch (e) {
+    notify.notify(
+      "Nao foi possivel obter as diciplinas, tente recarregar a pagina",
+      "error",
+    );
+  }
+});
 
 function required(v: string) {
   return !!v || "Field is required";
 }
 
 watch(isTeacher, () => {
-  course.value = "";
+  selectedDisciplines.value = [];
 });
 </script>
 
@@ -83,6 +111,21 @@ watch(isTeacher, () => {
         type="password"
         placeholder="••••••••"
       ></v-text-field>
+    </label>
+
+    <label for="course" v-if="isTeacher">
+      Diciplinas
+      <v-select
+        :rules="[required]"
+        :items="disciplines"
+        item-title="name"
+        item-value="dicipline_id"
+        variant="outlined"
+        rounded="10"
+        v-model="selectedDisciplines"
+        multiple
+        chips
+      ></v-select>
     </label>
 
     <label for="course" v-if="!isTeacher">

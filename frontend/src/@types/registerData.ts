@@ -1,7 +1,8 @@
 export interface registerData {
   name: string;
-  course: string;
+  course?: string;
   email: string;
   password: string;
   role: "student" | "teacher";
+  disciplines?: Array<number>;
 }
