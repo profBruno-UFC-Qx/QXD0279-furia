@@ -1,4 +1,3 @@
-import { AppDataSource } from "./database/data-source.ts";
 import express, { Request, Response } from "express";
 import { authRouter } from "./auth/auth.module.ts";
 import { errorHandling } from "./middlewares/error-handling.midlewares.ts";
@@ -6,15 +5,6 @@ import { AuthMiddleware } from "./auth/middlewares/auth.middleware.ts";
 import { diciplineRouter } from "./dicipline/dicipline.module.ts";
 import { teacherRouter } from "./teacher/teacher.module.ts";
 import cors from "cors";
-
-async function initDB() {
-  try {
-    await AppDataSource.initialize();
-  } catch (error) {
-    console.log(error);
-  }
-}
-initDB();
 
 const app = express();
 

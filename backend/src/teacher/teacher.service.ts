@@ -1,11 +1,8 @@
-import { Conflict, NotFoundError } from "../errors/errors.ts";
-import { GenericUser } from "../database/entities/GenericUser.ts";
+import { NotFoundError } from "../errors/errors.ts";
 import { UserService } from "../user/user.service.ts";
 import { TeacherRegisterDTO } from "../auth/dto/register.teacher.dto.ts";
 import { TeacherDTO } from "./dto/teacher.dto.ts";
 import { TeacherRepository } from "./teacher.repository.ts";
-import { AppDataSource } from "../database/data-source.ts";
-import bcrypt from "bcrypt";
 
 export class TeacherService {
   constructor(
@@ -16,37 +13,19 @@ export class TeacherService {
   async createTeacher(teacherData: TeacherRegisterDTO) {
     const { email, password, name, role, disciplines } = teacherData;
 
-    return await AppDataSource.transaction(async (manager) => {
-      const userRepository = manager.getRepository(GenericUser);
+    const user = await this.userService.createUser({
+      email,
+      password,
+      name,
+      role,
+    });
 
-      const existingUser = await userRepository.findOneBy({ email });
-      
-      if (existingUser) {
-        throw new Conflict("E-mail ja cadastrado");
-      }
-
-      const passwordHash = await bcrypt.hash(password, 10);
-
-      const user = userRepository.create({
-        email,
-        password: passwordHash,
-        name,
-        role,
-      });
-
-      const savedUser = await userRepository.save(user);
-
-      return await this.teacherRepository.createTeacherInTransaction(
-        manager,
-        savedUser,
-        {
-          email,
-          password: passwordHash,
-          name,
-          role,
-          disciplines,
-        },
-      );
+    return await this.teacherRepository.createTeacher(user, {
+      email,
+      password,
+      name,
+      role,
+      disciplines,
     });
   }
 
@@ -85,14 +64,12 @@ export class TeacherService {
       throw new NotFoundError("Usuario nao encontrado");
     }
 
-    const safeUpdatedUser: GenericUser = updatedUser;
-
     const updatedTeacher = await this.teacherRepository.findById(id);
     if (!updatedTeacher) {
       throw new NotFoundError("Professor nao encontrado");
     }
 
-    updatedTeacher.user = safeUpdatedUser;
+    updatedTeacher.user = updatedUser;
     return updatedTeacher;
   }
 

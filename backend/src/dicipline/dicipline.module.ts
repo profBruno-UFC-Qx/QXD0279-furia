@@ -2,9 +2,9 @@ import { DiciplineController } from "./dicipline.controller.ts";
 import { DiciplineRepository } from "./dicipline.repository.ts";
 import { DiciplineService } from "./dicipline.service.ts";
 import { createDiciplineRouter } from "./dicipline.router.ts";
-import { AppDataSource } from "../database/data-source.ts";
+import { databaseInstance } from "../database/dataBase.ts";
 
-const diciplineRepositoryInstance = new DiciplineRepository(AppDataSource);
+const diciplineRepositoryInstance = new DiciplineRepository(databaseInstance);
 const diciplineServiceInstance = new DiciplineService(
   diciplineRepositoryInstance,
 );

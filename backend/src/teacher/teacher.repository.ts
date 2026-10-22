@@ -1,68 +1,56 @@
-import { DataSource, EntityManager, In, Repository } from "typeorm";
-import { Teacher } from "../database/entities/Teacher.ts";
-import { GenericUser } from "../database/entities/GenericUser.ts";
+import { PrismaClient, User } from "../generated/prisma/client.ts";
 import { TeacherDTO } from "./dto/teacher.dto.ts";
-import { DiciplineRepository } from "../dicipline/dicipline.repository.ts";
-import { Discipline } from "../database/entities/Discipline.ts";
+import { DataBase } from "../database/dataBase.ts";
 
 export class TeacherRepository {
-  private teacherRepository: Repository<Teacher>;
+  constructor(private database: DataBase) {}
 
-  constructor(
-    private database: DataSource,
-    private disciplineRepository: DiciplineRepository,
-  ) {
-    this.teacherRepository = this.database.getRepository(Teacher);
-  }
-
-  // async createTeacher(user: GenericUser, teacherData: TeacherDTO) {
-  //   const disciplines = await this.disciplineRepository.findByIds(
-  //     teacherData.disciplines,
-  //   );
-
-  //   const teacher = this.teacherRepository.create({
-  //     user,
-  //     disciplines,
-  //   });
-
-  //   return await this.teacherRepository.save(teacher);
-  // }
-
-  async createTeacherInTransaction(
-    manager: EntityManager,
-    user: GenericUser,
-    teacherData: TeacherDTO,
-  ) {
-    const disciplinesRepository = manager.getRepository(Discipline);
-    const teacherRepository = manager.getRepository(Teacher);
-
-    const disciplines = await disciplinesRepository.findBy({
-      dicipline_id: In(teacherData.disciplines),
+  async createTeacher(user: User, teacherData: TeacherDTO) {
+    return await this.database.teacher.create({
+      data: {
+        user: {
+          connect: { user_id: user.user_id },
+        },
+        disciplines: {
+          connect: teacherData.disciplines.map((disciplineId) => ({
+            dicipline_id: disciplineId,
+          })),
+        },
+      },
+      include: {
+        user: true,
+        disciplines: true,
+      },
     });
-
-    const teacher = teacherRepository.create({
-      user,
-      disciplines,
-    });
-
-    return await teacherRepository.save(teacher);
   }
 
   async findAll() {
-    return await this.teacherRepository.find({
-      relations: { user: true },
+    return await this.database.teacher.findMany({
+      include: {
+        user: true,
+        disciplines: true,
+      },
     });
   }
 
   async findById(id: number) {
-    return await this.teacherRepository.findOne({
+    return await this.database.teacher.findUnique({
       where: { teacher_id: id },
-      relations: { user: true },
+      include: {
+        user: true,
+        disciplines: true,
+      },
     });
   }
 
   async deleteTeacher(id: number) {
-    const result = await this.teacherRepository.delete(id);
-    return (result.affected ?? 0) > 0;
+    try {
+      await this.database.teacher.delete({
+        where: { teacher_id: id },
+      });
+      return true;
+    } catch {
+      return false;
+    }
   }
 }
