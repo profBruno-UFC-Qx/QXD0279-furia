@@ -9,20 +9,26 @@ export class DiciplineRepository {
     this.diciplineRepository = this.database.getRepository(Discipline);
   }
 
-  async create(diciplineData: createDicipline): Promise<Discipline> {
+  async create(diciplineData: createDicipline) {
     const discipline = this.diciplineRepository.create(diciplineData);
     return this.diciplineRepository.save(discipline);
   }
 
-  async findAll(): Promise<Discipline[]> {
+  async findAll() {
     return this.diciplineRepository.find();
   }
 
-  //   async findById(id: number): Promise<Discipline | null> {
-  //     return this.diciplineRepository.findOne({
-  //       where: { dicipline_id: id },
-  //     });
-  //   }
+  async findById(id: number) {
+    return this.diciplineRepository.findOne({
+      where: { dicipline_id: id },
+    });
+  }
+
+  async findByName(name: string) {
+    return this.diciplineRepository.findOne({
+      where: { name },
+    });
+  }
 
   //   async update(
   //     id: number,

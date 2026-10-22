@@ -1,10 +1,17 @@
 import { DiciplineRepository } from "./dicipline.repository.ts";
 import { createDicipline } from "./dto/createDicipline.dto.ts";
+import { Conflict } from "../errors/errors.ts";
 
 export class DiciplineService {
   constructor(private repository: DiciplineRepository) {}
 
   async create(data: createDicipline) {
+    const dicipline = await this.repository.findByName(data.name);
+
+    if (dicipline) {
+      throw new Conflict("Diciplina ja cadastrada");
+    }
+
     return this.repository.create(data);
   }
 
