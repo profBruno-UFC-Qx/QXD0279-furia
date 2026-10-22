@@ -11,6 +11,7 @@ import DefaultLayout from '@/layout/DefaultLayout.vue'
 import Login from '@/pages/Auth/Login.vue'
 import Register from '@/pages/Auth/Register.vue'
 import HeroPage from '@/pages/HeroPage.vue'
+import NotFound from '@/pages/NotFound.vue'
 import StudentDocuments from '@/pages/Student/StudentDocuments.vue'
 // Student pages
 import StudentHome from '@/pages/Student/StudentHome.vue'
@@ -64,6 +65,17 @@ const router = createRouter({
           path: 'register',
           component: Register,
           name: 'register',
+        },
+      ],
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      component: DefaultLayout,
+      children: [
+        {
+          path: '',
+          component: NotFound,
         },
       ],
     },
