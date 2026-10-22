@@ -9,7 +9,7 @@ import cors from "cors";
 
 async function initDB() {
   try {
-    await AppDataSource.initialize();
+    await AppDataSource.$connect();
   } catch (error) {
     console.log(error);
   }

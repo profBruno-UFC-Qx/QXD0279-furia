@@ -4,12 +4,8 @@ import { TeacherController } from "./teacher.controller.ts";
 import { TeacherRepository } from "./teacher.repository.ts";
 import { createTeacherRouter } from "./teacher.router.ts";
 import { userServiceInstance } from "../user/user.module.ts";
-import { diciplineRepositoryInstance } from "../dicipline/dicipline.module.ts";
 
-const teacherRepository = new TeacherRepository(
-  AppDataSource,
-  diciplineRepositoryInstance,
-);
+const teacherRepository = new TeacherRepository(AppDataSource);
 const teacherService = new TeacherService(
   userServiceInstance,
   teacherRepository,

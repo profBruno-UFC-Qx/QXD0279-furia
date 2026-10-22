@@ -1,38 +1,37 @@
-import { DataSource, Repository } from "typeorm";
-import { Discipline } from "../database/entities/Discipline.ts";
+import { PrismaClient } from "@prisma/client";
 import { createDicipline } from "./dto/createDicipline.dto.ts";
-import { In } from "typeorm";
 
 export class DiciplineRepository {
-  diciplineRepository: Repository<Discipline>;
-
-  constructor(private database: DataSource) {
-    this.diciplineRepository = this.database.getRepository(Discipline);
-  }
+  constructor(private database: PrismaClient) {}
 
   async create(diciplineData: createDicipline) {
-    const discipline = this.diciplineRepository.create(diciplineData);
-    return this.diciplineRepository.save(discipline);
+    return this.database.discipline.create({
+      data: {
+        name: diciplineData.name,
+        course: diciplineData.course,
+        hours: diciplineData.hours,
+      },
+    });
   }
 
   async findAll() {
-    return this.diciplineRepository.find();
+    return this.database.discipline.findMany();
   }
 
   async findById(id: number) {
-    return this.diciplineRepository.findOne({
+    return this.database.discipline.findUnique({
       where: { dicipline_id: id },
     });
   }
 
   async findByIds(ids: number[]) {
-    return this.diciplineRepository.findBy({
-      dicipline_id: In(ids),
+    return this.database.discipline.findMany({
+      where: { dicipline_id: { in: ids } },
     });
   }
 
   async findByName(name: string) {
-    return this.diciplineRepository.findOne({
+    return this.database.discipline.findFirst({
       where: { name },
     });
   }
