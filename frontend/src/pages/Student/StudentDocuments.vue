@@ -1,42 +1,42 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import Header from "@/components/Header/Header.vue";
-import TableDocs from "@/components/Table/TableDocs.vue";
-import Ornament from "@/components/Ornament/Ornament.vue";
-import Filters from "@/components/Filters/Filters.vue";
-import UploadDocument from "@/components/Modais/UploadDocument.vue";
-import DocumentForm from "@/components/Forms/DocumentForm.vue";
+  import { ref } from 'vue'
+  import Filters from '@/components/Filters/Filters.vue'
+  import DocumentForm from '@/components/Forms/DocumentForm.vue'
+  import Header from '@/components/Header/Header.vue'
+  import UploadDocument from '@/components/Modais/UploadDocument.vue'
+  import Ornament from '@/components/Ornament/Ornament.vue'
+  import TableDocs from '@/components/Table/TableDocs.vue'
 
-const boats = [
-  {
-    nome: "1 Speedster",
-    disciplina: "matematica",
-    data: "03/06/2026",
-  },
-  {
-    nome: "2 Speedster",
-    disciplina: "matematica",
-    data: "03/06/2026",
-  },
-  {
-    nome: "3 Speedster",
-    disciplina: "matematica",
-    data: "03/06/2026",
-  },
-  {
-    nome: "4 Speedster",
-    disciplina: "matematica",
-    data: "03/06/2026",
-  },
-];
+  const boats = [
+    {
+      nome: '1 Speedster',
+      disciplina: 'matematica',
+      data: '03/06/2026',
+    },
+    {
+      nome: '2 Speedster',
+      disciplina: 'matematica',
+      data: '03/06/2026',
+    },
+    {
+      nome: '3 Speedster',
+      disciplina: 'matematica',
+      data: '03/06/2026',
+    },
+    {
+      nome: '4 Speedster',
+      disciplina: 'matematica',
+      data: '03/06/2026',
+    },
+  ]
 
-const modal = ref(false);
+  const modal = ref(false)
 </script>
 <template>
   <div class="content container">
     <Header
-      title="Academic Documents"
       description="Browse, filter, and download study materials from your institution."
+      title="Academic Documents"
     />
 
     <Filters
@@ -61,12 +61,13 @@ const modal = ref(false);
       </template>
     </Ornament>
   </div>
+
   <UploadDocument
-    :modelValue="modal"
-    :title="'Faça o upload de um documento'"
     v-model:modal="modal"
+    title="Faça o upload de um documento"
   >
-    <DocumentForm />
+    <!-- Passamos um evento @close para o form conseguir fechar o modal -->
+    <DocumentForm @close="modal = false" />
   </UploadDocument>
 </template>
 

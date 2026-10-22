@@ -1,18 +1,17 @@
 <script setup lang="ts">
-defineProps<{
-  modelValue: boolean;
-  title: string;
-}>();
+  defineProps<{
+    title: string
+  }>()
 
-const modal = defineModel("modal");
+  const modal = defineModel<boolean>('modal')
 
-function close() {
-  modal.value = false;
-}
+  function close () {
+    modal.value = false
+  }
 </script>
 
 <template>
-  <div v-if="modelValue" class="modal-overlay" @click.self="close">
+  <div v-if="modal" class="modal-overlay" @click.self="close">
     <div class="modal">
       <header class="modal-header">
         <h2>{{ title }}</h2>

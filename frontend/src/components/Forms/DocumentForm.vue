@@ -1,57 +1,77 @@
 <script setup lang="ts">
-import { reactive } from "vue";
+  import { reactive } from 'vue'
 
-interface UploadFormData {
-  name: string;
-  discipline: string;
-  date: string;
-  file: File | null;
-}
+  const emit = defineEmits<{
+    (e: 'close'): void
+  }>()
 
-const form = reactive<UploadFormData>({
-  name: "",
-  discipline: "",
-  date: "",
-  file: null,
-});
+  interface UploadFormData {
+    name: string
+    discipline: string
+    date: string
+    file: File | null
+  }
 
-function handleFileChange(event: Event) {}
+  const form = reactive<UploadFormData>({
+    name: '',
+    discipline: '',
+    date: '',
+    file: null,
+  })
 
-function handleSubmit() {}
+  function handleFileChange (event: Event) {
+    const target = event.target as HTMLInputElement
+    if (target.files && target.files.length > 0) {
+      form.file = target.files[0]
+    }
+  }
+
+  function handleSubmit () {
+    if (!form.file) {
+      alert('Por favor, selecione um arquivo.')
+      return
+    }
+
+    console.log('Enviando para a API:', form)
+
+    emit('close')
+  }
 </script>
 
 <template>
   <form class="upload-form" @submit.prevent="handleSubmit">
     <div class="form-group">
       <label for="name">Nome</label>
+
       <input
         id="name"
         v-model="form.name"
-        type="text"
         placeholder="Digite o nome"
         required
-      />
+        type="text"
+      >
     </div>
 
     <div class="form-group">
       <label for="discipline">Disciplina</label>
+
       <input
         id="discipline"
         v-model="form.discipline"
-        type="text"
         placeholder="Digite a disciplina"
         required
-      />
+        type="text"
+      >
     </div>
 
     <div class="form-group">
       <label for="date">Data</label>
-      <input id="date" v-model="form.date" type="date" required />
+      <input id="date" v-model="form.date" required type="date">
     </div>
 
     <div class="form-group">
       <label for="file">Arquivo</label>
-      <input id="file" type="file" required @change="handleFileChange" />
+      <input id="file" required type="file" @change="handleFileChange">
 
       <span v-if="form.file"> Arquivo selecionado: {{ form.file.name }} </span>
     </div>
