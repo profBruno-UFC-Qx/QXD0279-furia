@@ -1,8 +1,9 @@
-import { PrismaClient, User } from "@prisma/client";
+import { DataBase } from "../database/dataBase.ts";
 import { CreateStudentDTO } from "./dto/student.dto.ts";
+import { User } from "@prisma/client";
 
 export class StudentRepository {
-  constructor(private database: PrismaClient) {}
+  constructor(private database: DataBase) {}
 
   async createStudent(user: User, studentData: CreateStudentDTO) {
     return await this.database.student.create({

@@ -1,8 +1,8 @@
-import { PrismaClient } from "@prisma/client";
 import { createDicipline } from "./dto/createDicipline.dto.ts";
+import { DataBase } from "../database/dataBase.ts";
 
 export class DiciplineRepository {
-  constructor(private database: PrismaClient) {}
+  constructor(private database: DataBase) {}
 
   async create(diciplineData: createDicipline) {
     return this.database.discipline.create({

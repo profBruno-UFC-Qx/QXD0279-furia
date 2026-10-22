@@ -1,8 +1,8 @@
-import { PrismaClient } from "@prisma/client";
 import { UserDTO } from "./dto/user.dto.ts";
+import { DataBase } from "../database/dataBase.ts";
 
 export class UserRepository {
-  constructor(private database: PrismaClient) {}
+  constructor(private database: DataBase) {}
 
   async findUserByEmail(email: string) {
     return await this.database.user.findUnique({
