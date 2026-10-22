@@ -4,9 +4,13 @@ import { DiciplineService } from "./dicipline.service.ts";
 import { createDiciplineRouter } from "./dicipline.router.ts";
 import { AppDataSource } from "../database/data-source.ts";
 
-const diciplineRepository = new DiciplineRepository(AppDataSource);
-const diciplineService = new DiciplineService(diciplineRepository);
-const diciplineController = new DiciplineController(diciplineService);
-const diciplineRouter = createDiciplineRouter(diciplineController);
+const diciplineRepositoryInstance = new DiciplineRepository(AppDataSource);
+const diciplineServiceInstance = new DiciplineService(
+  diciplineRepositoryInstance,
+);
+const diciplineControllerInstance = new DiciplineController(
+  diciplineServiceInstance,
+);
+const diciplineRouter = createDiciplineRouter(diciplineControllerInstance);
 
-export { diciplineRouter };
+export { diciplineRouter, diciplineRepositoryInstance };

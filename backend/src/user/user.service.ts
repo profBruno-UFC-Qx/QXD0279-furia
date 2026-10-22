@@ -1,6 +1,6 @@
 import { UserRepository } from "./user.repository.ts";
 import { UserDTO } from "./dto/user.dto.ts";
-import { Conflict } from "../errors/errors.ts";
+import { Conflict, NotFoundError } from "../errors/errors.ts";
 import bcrypt from "bcrypt";
 
 export class UserService {
@@ -16,15 +16,52 @@ export class UserService {
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
-
     user.password = passwordHash;
 
-    const createdStudent = await this.userRepository.createUser(user);
-
-    return createdStudent;
+    return await this.userRepository.createUser(user);
   }
 
   async findUserByEmail(email: string) {
     return await this.userRepository.findUserByEmail(email);
+  }
+
+  async updateUser(userId: number, data: Partial<UserDTO>) {
+    const user = await this.userRepository.findUserById(userId);
+
+    if (!user) {
+      throw new NotFoundError("Usuario nao encontrado");
+    }
+
+    if (data.email && data.email !== user.email) {
+      const alreadyExists = await this.userRepository.findUserByEmail(
+        data.email,
+      );
+
+      if (alreadyExists && alreadyExists.user_id !== userId) {
+        throw new Conflict("E-mail ja cadastrado");
+      }
+    }
+
+    if (data.password) {
+      const passwordHash = await bcrypt.hash(data.password, 10);
+      data = { ...data, password: passwordHash };
+    }
+
+    const updatedUser = await this.userRepository.updateUser(userId, data);
+    if (!updatedUser) {
+      throw new NotFoundError("Usuario nao encontrado");
+    }
+
+    return updatedUser;
+  }
+
+  async deleteUser(userId: number) {
+    const user = await this.userRepository.findUserById(userId);
+
+    if (!user) {
+      throw new NotFoundError("Usuario nao encontrado");
+    }
+
+    return await this.userRepository.deleteUser(userId);
   }
 }

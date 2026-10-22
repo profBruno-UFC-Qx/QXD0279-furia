@@ -1,6 +1,7 @@
 import { DataSource, Repository } from "typeorm";
 import { Discipline } from "../database/entities/Discipline.ts";
 import { createDicipline } from "./dto/createDicipline.dto.ts";
+import { In } from "typeorm";
 
 export class DiciplineRepository {
   diciplineRepository: Repository<Discipline>;
@@ -21,6 +22,12 @@ export class DiciplineRepository {
   async findById(id: number) {
     return this.diciplineRepository.findOne({
       where: { dicipline_id: id },
+    });
+  }
+
+  async findByIds(ids: number[]) {
+    return this.diciplineRepository.findBy({
+      dicipline_id: In(ids),
     });
   }
 

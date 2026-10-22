@@ -4,13 +4,20 @@ import { UserDTO } from "./dto/user.dto.ts";
 
 export class UserRepository {
   userRepository: Repository<GenericUser>;
+
   constructor(private database: DataSource) {
     this.userRepository = this.database.getRepository(GenericUser);
   }
 
   async findUserByEmail(email: string) {
     return await this.userRepository.findOneBy({
-      email: email,
+      email,
+    });
+  }
+
+  async findUserById(userId: number) {
+    return await this.userRepository.findOneBy({
+      user_id: userId,
     });
   }
 
@@ -22,9 +29,16 @@ export class UserRepository {
       role: userData.role,
     });
 
-    const savedUser = await this.userRepository.save(user);
-
-    return savedUser;
+    return await this.userRepository.save(user);
   }
 
+  async updateUser(userId: number, userData: Partial<UserDTO>) {
+    await this.userRepository.update(userId, userData);
+    return await this.findUserById(userId);
+  }
+
+  async deleteUser(userId: number) {
+    const result = await this.userRepository.delete(userId);
+    return (result.affected ?? 0) > 0;
+  }
 }

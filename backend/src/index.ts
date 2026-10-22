@@ -4,6 +4,7 @@ import { authRouter } from "./auth/auth.module.ts";
 import { errorHandling } from "./middlewares/error-handling.midlewares.ts";
 import { AuthMiddleware } from "./auth/middlewares/auth.middleware.ts";
 import { diciplineRouter } from "./dicipline/dicipline.module.ts";
+import { teacherRouter } from "./teacher/teacher.module.ts";
 import cors from "cors";
 
 async function initDB() {
@@ -28,6 +29,7 @@ app.use(
 app.use(express.json());
 app.use(authRouter);
 app.use(diciplineRouter);
+app.use(teacherRouter);
 
 app.get("/", async (req: Request, res: Response) => {
   res.json(req.user);

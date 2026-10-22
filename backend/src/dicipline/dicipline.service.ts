@@ -19,15 +19,15 @@ export class DiciplineService {
     return this.repository.findAll();
   }
 
-  //   async findById(id: number) {
-  //     const discipline = await this.repository.findById(id);
+  async findById(id: number) {
+    const discipline = await this.repository.findById(id);
 
-  //     if (!discipline) {
-  //       throw new Error("Disciplina não encontrada");
-  //     }
+    if (!discipline) {
+      throw new Error("Disciplina não encontrada");
+    }
 
-  //     return discipline;
-  //   }
+    return discipline;
+  }
 
   //   async update(id: number, data: Partial<Discipline>) {
   //     const discipline = await this.repository.update(id, data);
