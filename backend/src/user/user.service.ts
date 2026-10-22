@@ -21,6 +21,21 @@ export class UserService {
     return await this.userRepository.createUser(user);
   }
 
+  async createUserInTransaction(user: UserDTO, tx?: any) {
+    const { password, email } = user;
+
+    const alreadyExists = await this.userRepository.findUserByEmail(email, tx);
+
+    if (alreadyExists) {
+      throw new Conflict("E-mail ja cadastrado");
+    }
+
+    const passwordHash = await bcrypt.hash(password, 10);
+    user.password = passwordHash;
+
+    return await this.userRepository.createUser(user, tx);
+  }
+
   async findUserByEmail(email: string) {
     return await this.userRepository.findUserByEmail(email);
   }

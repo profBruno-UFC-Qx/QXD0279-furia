@@ -5,8 +5,10 @@ import { User } from "@prisma/client";
 export class StudentRepository {
   constructor(private database: DataBase) {}
 
-  async createStudent(user: User, studentData: CreateStudentDTO) {
-    return await this.database.student.create({
+  async createStudent(user: User, studentData: CreateStudentDTO, tx?: any) {
+    const prisma = tx ?? this.database;
+
+    return await prisma.student.create({
       data: {
         course: studentData.course,
         user: {
@@ -17,5 +19,45 @@ export class StudentRepository {
         user: true,
       },
     });
+  }
+
+  async findAll() {
+    return await this.database.student.findMany({
+      include: {
+        user: true,
+      },
+    });
+  }
+
+  async findById(id: number) {
+    return await this.database.student.findUnique({
+      where: { student_id: id },
+      include: {
+        user: true,
+      },
+    });
+  }
+
+  async updateStudent(id: number, studentData: Partial<CreateStudentDTO>) {
+    return await this.database.student.update({
+      where: { student_id: id },
+      data: {
+        ...(studentData.course ? { course: studentData.course } : {}),
+      },
+      include: {
+        user: true,
+      },
+    });
+  }
+
+  async deleteStudent(id: number) {
+    try {
+      await this.database.student.delete({
+        where: { student_id: id },
+      });
+      return true;
+    } catch {
+      return false;
+    }
   }
 }

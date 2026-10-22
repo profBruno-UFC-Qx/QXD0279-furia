@@ -4,20 +4,26 @@ import { DataBase } from "../database/dataBase.ts";
 export class UserRepository {
   constructor(private database: DataBase) {}
 
-  async findUserByEmail(email: string) {
-    return await this.database.user.findUnique({
+  async findUserByEmail(email: string, tx?: any) {
+    const prisma = tx ?? this.database;
+
+    return await prisma.user.findUnique({
       where: { email },
     });
   }
 
-  async findUserById(userId: number) {
-    return await this.database.user.findUnique({
+  async findUserById(userId: number, tx?: any) {
+    const prisma = tx ?? this.database;
+
+    return await prisma.user.findUnique({
       where: { user_id: userId },
     });
   }
 
-  async createUser(userData: UserDTO) {
-    return await this.database.user.create({
+  async createUser(userData: UserDTO, tx?: any) {
+    const prisma = tx ?? this.database;
+
+    return await prisma.user.create({
       data: {
         name: userData.name,
         email: userData.email,
