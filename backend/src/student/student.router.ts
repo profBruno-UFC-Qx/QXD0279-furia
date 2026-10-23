@@ -5,7 +5,7 @@ import { AutorizationMiddleware } from "../middlewares/autorization.middleware.t
 export function createStudentRouter(studentController: StudentController) {
   const studentRouter = Router();
 
-  studentRouter.get("/student", studentController.findAll);
+  studentRouter.get("/student", studentController.findAll); // paginacao
   studentRouter.get("/student/:id", studentController.findById);
   studentRouter.put(
     "/student/:id",

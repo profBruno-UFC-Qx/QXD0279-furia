@@ -21,8 +21,10 @@ export class StudentRepository {
     });
   }
 
-  async findAll() {
+  async findAll(take: number, skip: number) {
     return await this.database.student.findMany({
+      take,
+      skip,
       include: {
         user: true,
       },
@@ -59,5 +61,9 @@ export class StudentRepository {
     } catch {
       return false;
     }
+  }
+
+  async count() {
+    return this.database.student.count();
   }
 }

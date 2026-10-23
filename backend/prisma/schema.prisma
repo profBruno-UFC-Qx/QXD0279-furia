@@ -27,33 +27,57 @@ model User {
 }
 
 model Student {
-  student_id Int    @id @default(autoincrement())
+  student_id Int    @id
   course     String @db.VarChar(100)
-  user_id    Int    @unique
 
-  user User @relation(fields: [user_id], references: [user_id])
+  user User @relation(fields: [student_id], references: [user_id])
+
+  avaliacoes Avaliacao[]
 
   @@map("student")
 }
 
 model Teacher {
-  teacher_id Int      @id @default(autoincrement())
-  user_id    Int      @unique
+  teacher_id Int      @id
   creat_at   DateTime @default(now())
 
-  user       User        @relation(fields: [user_id], references: [user_id])
+  user User @relation(fields: [teacher_id], references: [user_id])
   disciplines Discipline[] @relation("TeacherDisciplines")
 
+  avaliacoes   Avaliacao[]
   @@map("teacher")
 }
 
 model Discipline {
-  dicipline_id Int      @id @default(autoincrement())
+  discipline_id Int      @id @default(autoincrement())
   name         String   @db.VarChar(100)
   course       String   @db.VarChar(100)
   hours        Int
 
   teachers Teacher[] @relation("TeacherDisciplines")
+  avaliacoes   Avaliacao[]
 
   @@map("discipline")
+}
+
+model Avaliacao {
+  id Int      @id @default(autoincrement())
+  name         String   @db.VarChar(100)
+  course       String   @db.VarChar(100)
+  hours        Int
+  nota_geral Float
+  nota_didatica Float
+  nota_metodologia Float
+  comment String
+  creat_at   DateTime @default(now())
+
+  estudante_id        Int
+  professor_id        Int
+  disciplina_id        Int
+
+  estudante           Student @relation(fields: [estudante_id], references: [student_id])
+  professor           Teacher   @relation(fields: [professor_id], references: [teacher_id])
+  discipline           Discipline @relation(fields: [disciplina_id], references: [discipline_id])
+
+  @@map("avaliacao")
 }

@@ -14,19 +14,22 @@ export class DiciplineRepository {
     });
   }
 
-  async findAll() {
-    return this.database.discipline.findMany();
+  async findAll(take: number, skip: number) {
+    return this.database.discipline.findMany({
+      take,
+      skip,
+    });
   }
 
   async findById(id: number) {
     return this.database.discipline.findUnique({
-      where: { dicipline_id: id },
+      where: { discipline_id: id },
     });
   }
 
   async findByIds(ids: number[]) {
     return this.database.discipline.findMany({
-      where: { dicipline_id: { in: ids } },
+      where: { discipline_id: { in: ids } },
     });
   }
 
@@ -34,6 +37,10 @@ export class DiciplineRepository {
     return this.database.discipline.findFirst({
       where: { name },
     });
+  }
+
+  async count() {
+    return this.database.discipline.count();
   }
 
   //   async update(

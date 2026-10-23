@@ -20,7 +20,7 @@ const { name, grade, diciplines } = defineProps<{
       </div>
     </div>
     <div class="diciplines">
-      <p class="title">COURSES</p>
+      <p class="title">Diciplinas</p>
       <ul class="list">
         <li v-for="dicipline in diciplines">{{ dicipline }}</li>
       </ul>

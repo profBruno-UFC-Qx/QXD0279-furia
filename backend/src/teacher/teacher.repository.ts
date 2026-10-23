@@ -26,8 +26,10 @@ export class TeacherRepository {
     });
   }
 
-  async findAll() {
+  async findAll(take: number, skip: number) {
     return await this.database.teacher.findMany({
+      take,
+      skip,
       include: {
         user: true,
         disciplines: true,
@@ -54,5 +56,9 @@ export class TeacherRepository {
     } catch {
       return false;
     }
+  }
+
+  async count() {
+    return this.database.teacher.count();
   }
 }

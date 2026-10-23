@@ -27,31 +27,31 @@ export type AggregateDiscipline = {
 }
 
 export type DisciplineAvgAggregateOutputType = {
-  dicipline_id: number | null
+  discipline_id: number | null
   hours: number | null
 }
 
 export type DisciplineSumAggregateOutputType = {
-  dicipline_id: number | null
+  discipline_id: number | null
   hours: number | null
 }
 
 export type DisciplineMinAggregateOutputType = {
-  dicipline_id: number | null
+  discipline_id: number | null
   name: string | null
   course: string | null
   hours: number | null
 }
 
 export type DisciplineMaxAggregateOutputType = {
-  dicipline_id: number | null
+  discipline_id: number | null
   name: string | null
   course: string | null
   hours: number | null
 }
 
 export type DisciplineCountAggregateOutputType = {
-  dicipline_id: number
+  discipline_id: number
   name: number
   course: number
   hours: number
@@ -60,31 +60,31 @@ export type DisciplineCountAggregateOutputType = {
 
 
 export type DisciplineAvgAggregateInputType = {
-  dicipline_id?: true
+  discipline_id?: true
   hours?: true
 }
 
 export type DisciplineSumAggregateInputType = {
-  dicipline_id?: true
+  discipline_id?: true
   hours?: true
 }
 
 export type DisciplineMinAggregateInputType = {
-  dicipline_id?: true
+  discipline_id?: true
   name?: true
   course?: true
   hours?: true
 }
 
 export type DisciplineMaxAggregateInputType = {
-  dicipline_id?: true
+  discipline_id?: true
   name?: true
   course?: true
   hours?: true
 }
 
 export type DisciplineCountAggregateInputType = {
-  dicipline_id?: true
+  discipline_id?: true
   name?: true
   course?: true
   hours?: true
@@ -178,7 +178,7 @@ export type DisciplineGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 }
 
 export type DisciplineGroupByOutputType = {
-  dicipline_id: number
+  discipline_id: number
   name: string
   course: string
   hours: number
@@ -208,23 +208,25 @@ export type DisciplineWhereInput = {
   AND?: Prisma.DisciplineWhereInput | Prisma.DisciplineWhereInput[]
   OR?: Prisma.DisciplineWhereInput[]
   NOT?: Prisma.DisciplineWhereInput | Prisma.DisciplineWhereInput[]
-  dicipline_id?: Prisma.IntFilter<"Discipline"> | number
+  discipline_id?: Prisma.IntFilter<"Discipline"> | number
   name?: Prisma.StringFilter<"Discipline"> | string
   course?: Prisma.StringFilter<"Discipline"> | string
   hours?: Prisma.IntFilter<"Discipline"> | number
   teachers?: Prisma.TeacherListRelationFilter
+  avaliacoes?: Prisma.AvaliacaoListRelationFilter
 }
 
 export type DisciplineOrderByWithRelationInput = {
-  dicipline_id?: Prisma.SortOrder
+  discipline_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   course?: Prisma.SortOrder
   hours?: Prisma.SortOrder
   teachers?: Prisma.TeacherOrderByRelationAggregateInput
+  avaliacoes?: Prisma.AvaliacaoOrderByRelationAggregateInput
 }
 
 export type DisciplineWhereUniqueInput = Prisma.AtLeast<{
-  dicipline_id?: number
+  discipline_id?: number
   AND?: Prisma.DisciplineWhereInput | Prisma.DisciplineWhereInput[]
   OR?: Prisma.DisciplineWhereInput[]
   NOT?: Prisma.DisciplineWhereInput | Prisma.DisciplineWhereInput[]
@@ -232,10 +234,11 @@ export type DisciplineWhereUniqueInput = Prisma.AtLeast<{
   course?: Prisma.StringFilter<"Discipline"> | string
   hours?: Prisma.IntFilter<"Discipline"> | number
   teachers?: Prisma.TeacherListRelationFilter
-}, "dicipline_id">
+  avaliacoes?: Prisma.AvaliacaoListRelationFilter
+}, "discipline_id">
 
 export type DisciplineOrderByWithAggregationInput = {
-  dicipline_id?: Prisma.SortOrder
+  discipline_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   course?: Prisma.SortOrder
   hours?: Prisma.SortOrder
@@ -250,7 +253,7 @@ export type DisciplineScalarWhereWithAggregatesInput = {
   AND?: Prisma.DisciplineScalarWhereWithAggregatesInput | Prisma.DisciplineScalarWhereWithAggregatesInput[]
   OR?: Prisma.DisciplineScalarWhereWithAggregatesInput[]
   NOT?: Prisma.DisciplineScalarWhereWithAggregatesInput | Prisma.DisciplineScalarWhereWithAggregatesInput[]
-  dicipline_id?: Prisma.IntWithAggregatesFilter<"Discipline"> | number
+  discipline_id?: Prisma.IntWithAggregatesFilter<"Discipline"> | number
   name?: Prisma.StringWithAggregatesFilter<"Discipline"> | string
   course?: Prisma.StringWithAggregatesFilter<"Discipline"> | string
   hours?: Prisma.IntWithAggregatesFilter<"Discipline"> | number
@@ -261,14 +264,16 @@ export type DisciplineCreateInput = {
   course: string
   hours: number
   teachers?: Prisma.TeacherCreateNestedManyWithoutDisciplinesInput
+  avaliacoes?: Prisma.AvaliacaoCreateNestedManyWithoutDisciplineInput
 }
 
 export type DisciplineUncheckedCreateInput = {
-  dicipline_id?: number
+  discipline_id?: number
   name: string
   course: string
   hours: number
   teachers?: Prisma.TeacherUncheckedCreateNestedManyWithoutDisciplinesInput
+  avaliacoes?: Prisma.AvaliacaoUncheckedCreateNestedManyWithoutDisciplineInput
 }
 
 export type DisciplineUpdateInput = {
@@ -276,18 +281,20 @@ export type DisciplineUpdateInput = {
   course?: Prisma.StringFieldUpdateOperationsInput | string
   hours?: Prisma.IntFieldUpdateOperationsInput | number
   teachers?: Prisma.TeacherUpdateManyWithoutDisciplinesNestedInput
+  avaliacoes?: Prisma.AvaliacaoUpdateManyWithoutDisciplineNestedInput
 }
 
 export type DisciplineUncheckedUpdateInput = {
-  dicipline_id?: Prisma.IntFieldUpdateOperationsInput | number
+  discipline_id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   course?: Prisma.StringFieldUpdateOperationsInput | string
   hours?: Prisma.IntFieldUpdateOperationsInput | number
   teachers?: Prisma.TeacherUncheckedUpdateManyWithoutDisciplinesNestedInput
+  avaliacoes?: Prisma.AvaliacaoUncheckedUpdateManyWithoutDisciplineNestedInput
 }
 
 export type DisciplineCreateManyInput = {
-  dicipline_id?: number
+  discipline_id?: number
   name: string
   course: string
   hours: number
@@ -300,7 +307,7 @@ export type DisciplineUpdateManyMutationInput = {
 }
 
 export type DisciplineUncheckedUpdateManyInput = {
-  dicipline_id?: Prisma.IntFieldUpdateOperationsInput | number
+  discipline_id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   course?: Prisma.StringFieldUpdateOperationsInput | string
   hours?: Prisma.IntFieldUpdateOperationsInput | number
@@ -317,34 +324,39 @@ export type DisciplineOrderByRelationAggregateInput = {
 }
 
 export type DisciplineCountOrderByAggregateInput = {
-  dicipline_id?: Prisma.SortOrder
+  discipline_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   course?: Prisma.SortOrder
   hours?: Prisma.SortOrder
 }
 
 export type DisciplineAvgOrderByAggregateInput = {
-  dicipline_id?: Prisma.SortOrder
+  discipline_id?: Prisma.SortOrder
   hours?: Prisma.SortOrder
 }
 
 export type DisciplineMaxOrderByAggregateInput = {
-  dicipline_id?: Prisma.SortOrder
+  discipline_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   course?: Prisma.SortOrder
   hours?: Prisma.SortOrder
 }
 
 export type DisciplineMinOrderByAggregateInput = {
-  dicipline_id?: Prisma.SortOrder
+  discipline_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   course?: Prisma.SortOrder
   hours?: Prisma.SortOrder
 }
 
 export type DisciplineSumOrderByAggregateInput = {
-  dicipline_id?: Prisma.SortOrder
+  discipline_id?: Prisma.SortOrder
   hours?: Prisma.SortOrder
+}
+
+export type DisciplineScalarRelationFilter = {
+  is?: Prisma.DisciplineWhereInput
+  isNot?: Prisma.DisciplineWhereInput
 }
 
 export type DisciplineCreateNestedManyWithoutTeachersInput = {
@@ -385,17 +397,33 @@ export type DisciplineUncheckedUpdateManyWithoutTeachersNestedInput = {
   deleteMany?: Prisma.DisciplineScalarWhereInput | Prisma.DisciplineScalarWhereInput[]
 }
 
+export type DisciplineCreateNestedOneWithoutAvaliacoesInput = {
+  create?: Prisma.XOR<Prisma.DisciplineCreateWithoutAvaliacoesInput, Prisma.DisciplineUncheckedCreateWithoutAvaliacoesInput>
+  connectOrCreate?: Prisma.DisciplineCreateOrConnectWithoutAvaliacoesInput
+  connect?: Prisma.DisciplineWhereUniqueInput
+}
+
+export type DisciplineUpdateOneRequiredWithoutAvaliacoesNestedInput = {
+  create?: Prisma.XOR<Prisma.DisciplineCreateWithoutAvaliacoesInput, Prisma.DisciplineUncheckedCreateWithoutAvaliacoesInput>
+  connectOrCreate?: Prisma.DisciplineCreateOrConnectWithoutAvaliacoesInput
+  upsert?: Prisma.DisciplineUpsertWithoutAvaliacoesInput
+  connect?: Prisma.DisciplineWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DisciplineUpdateToOneWithWhereWithoutAvaliacoesInput, Prisma.DisciplineUpdateWithoutAvaliacoesInput>, Prisma.DisciplineUncheckedUpdateWithoutAvaliacoesInput>
+}
+
 export type DisciplineCreateWithoutTeachersInput = {
   name: string
   course: string
   hours: number
+  avaliacoes?: Prisma.AvaliacaoCreateNestedManyWithoutDisciplineInput
 }
 
 export type DisciplineUncheckedCreateWithoutTeachersInput = {
-  dicipline_id?: number
+  discipline_id?: number
   name: string
   course: string
   hours: number
+  avaliacoes?: Prisma.AvaliacaoUncheckedCreateNestedManyWithoutDisciplineInput
 }
 
 export type DisciplineCreateOrConnectWithoutTeachersInput = {
@@ -423,27 +451,75 @@ export type DisciplineScalarWhereInput = {
   AND?: Prisma.DisciplineScalarWhereInput | Prisma.DisciplineScalarWhereInput[]
   OR?: Prisma.DisciplineScalarWhereInput[]
   NOT?: Prisma.DisciplineScalarWhereInput | Prisma.DisciplineScalarWhereInput[]
-  dicipline_id?: Prisma.IntFilter<"Discipline"> | number
+  discipline_id?: Prisma.IntFilter<"Discipline"> | number
   name?: Prisma.StringFilter<"Discipline"> | string
   course?: Prisma.StringFilter<"Discipline"> | string
   hours?: Prisma.IntFilter<"Discipline"> | number
+}
+
+export type DisciplineCreateWithoutAvaliacoesInput = {
+  name: string
+  course: string
+  hours: number
+  teachers?: Prisma.TeacherCreateNestedManyWithoutDisciplinesInput
+}
+
+export type DisciplineUncheckedCreateWithoutAvaliacoesInput = {
+  discipline_id?: number
+  name: string
+  course: string
+  hours: number
+  teachers?: Prisma.TeacherUncheckedCreateNestedManyWithoutDisciplinesInput
+}
+
+export type DisciplineCreateOrConnectWithoutAvaliacoesInput = {
+  where: Prisma.DisciplineWhereUniqueInput
+  create: Prisma.XOR<Prisma.DisciplineCreateWithoutAvaliacoesInput, Prisma.DisciplineUncheckedCreateWithoutAvaliacoesInput>
+}
+
+export type DisciplineUpsertWithoutAvaliacoesInput = {
+  update: Prisma.XOR<Prisma.DisciplineUpdateWithoutAvaliacoesInput, Prisma.DisciplineUncheckedUpdateWithoutAvaliacoesInput>
+  create: Prisma.XOR<Prisma.DisciplineCreateWithoutAvaliacoesInput, Prisma.DisciplineUncheckedCreateWithoutAvaliacoesInput>
+  where?: Prisma.DisciplineWhereInput
+}
+
+export type DisciplineUpdateToOneWithWhereWithoutAvaliacoesInput = {
+  where?: Prisma.DisciplineWhereInput
+  data: Prisma.XOR<Prisma.DisciplineUpdateWithoutAvaliacoesInput, Prisma.DisciplineUncheckedUpdateWithoutAvaliacoesInput>
+}
+
+export type DisciplineUpdateWithoutAvaliacoesInput = {
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  course?: Prisma.StringFieldUpdateOperationsInput | string
+  hours?: Prisma.IntFieldUpdateOperationsInput | number
+  teachers?: Prisma.TeacherUpdateManyWithoutDisciplinesNestedInput
+}
+
+export type DisciplineUncheckedUpdateWithoutAvaliacoesInput = {
+  discipline_id?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  course?: Prisma.StringFieldUpdateOperationsInput | string
+  hours?: Prisma.IntFieldUpdateOperationsInput | number
+  teachers?: Prisma.TeacherUncheckedUpdateManyWithoutDisciplinesNestedInput
 }
 
 export type DisciplineUpdateWithoutTeachersInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   course?: Prisma.StringFieldUpdateOperationsInput | string
   hours?: Prisma.IntFieldUpdateOperationsInput | number
+  avaliacoes?: Prisma.AvaliacaoUpdateManyWithoutDisciplineNestedInput
 }
 
 export type DisciplineUncheckedUpdateWithoutTeachersInput = {
-  dicipline_id?: Prisma.IntFieldUpdateOperationsInput | number
+  discipline_id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   course?: Prisma.StringFieldUpdateOperationsInput | string
   hours?: Prisma.IntFieldUpdateOperationsInput | number
+  avaliacoes?: Prisma.AvaliacaoUncheckedUpdateManyWithoutDisciplineNestedInput
 }
 
 export type DisciplineUncheckedUpdateManyWithoutTeachersInput = {
-  dicipline_id?: Prisma.IntFieldUpdateOperationsInput | number
+  discipline_id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   course?: Prisma.StringFieldUpdateOperationsInput | string
   hours?: Prisma.IntFieldUpdateOperationsInput | number
@@ -456,10 +532,12 @@ export type DisciplineUncheckedUpdateManyWithoutTeachersInput = {
 
 export type DisciplineCountOutputType = {
   teachers: number
+  avaliacoes: number
 }
 
 export type DisciplineCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   teachers?: boolean | DisciplineCountOutputTypeCountTeachersArgs
+  avaliacoes?: boolean | DisciplineCountOutputTypeCountAvaliacoesArgs
 }
 
 /**
@@ -479,40 +557,49 @@ export type DisciplineCountOutputTypeCountTeachersArgs<ExtArgs extends runtime.T
   where?: Prisma.TeacherWhereInput
 }
 
+/**
+ * DisciplineCountOutputType without action
+ */
+export type DisciplineCountOutputTypeCountAvaliacoesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AvaliacaoWhereInput
+}
+
 
 export type DisciplineSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  dicipline_id?: boolean
+  discipline_id?: boolean
   name?: boolean
   course?: boolean
   hours?: boolean
   teachers?: boolean | Prisma.Discipline$teachersArgs<ExtArgs>
+  avaliacoes?: boolean | Prisma.Discipline$avaliacoesArgs<ExtArgs>
   _count?: boolean | Prisma.DisciplineCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["discipline"]>
 
 export type DisciplineSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  dicipline_id?: boolean
+  discipline_id?: boolean
   name?: boolean
   course?: boolean
   hours?: boolean
 }, ExtArgs["result"]["discipline"]>
 
 export type DisciplineSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  dicipline_id?: boolean
+  discipline_id?: boolean
   name?: boolean
   course?: boolean
   hours?: boolean
 }, ExtArgs["result"]["discipline"]>
 
 export type DisciplineSelectScalar = {
-  dicipline_id?: boolean
+  discipline_id?: boolean
   name?: boolean
   course?: boolean
   hours?: boolean
 }
 
-export type DisciplineOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"dicipline_id" | "name" | "course" | "hours", ExtArgs["result"]["discipline"]>
+export type DisciplineOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"discipline_id" | "name" | "course" | "hours", ExtArgs["result"]["discipline"]>
 export type DisciplineInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   teachers?: boolean | Prisma.Discipline$teachersArgs<ExtArgs>
+  avaliacoes?: boolean | Prisma.Discipline$avaliacoesArgs<ExtArgs>
   _count?: boolean | Prisma.DisciplineCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type DisciplineIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -522,9 +609,10 @@ export type $DisciplinePayload<ExtArgs extends runtime.Types.Extensions.Internal
   name: "Discipline"
   objects: {
     teachers: Prisma.$TeacherPayload<ExtArgs>[]
+    avaliacoes: Prisma.$AvaliacaoPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    dicipline_id: number
+    discipline_id: number
     name: string
     course: string
     hours: number
@@ -611,8 +699,8 @@ export interface DisciplineDelegate<ExtArgs extends runtime.Types.Extensions.Int
    * // Get first 10 Disciplines
    * const disciplines = await prisma.discipline.findMany({ take: 10 })
    * 
-   * // Only select the `dicipline_id`
-   * const disciplineWithDicipline_idOnly = await prisma.discipline.findMany({ select: { dicipline_id: true } })
+   * // Only select the `discipline_id`
+   * const disciplineWithDiscipline_idOnly = await prisma.discipline.findMany({ select: { discipline_id: true } })
    * 
    */
   findMany<T extends DisciplineFindManyArgs>(args?: Prisma.SelectSubset<T, DisciplineFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DisciplinePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -656,9 +744,9 @@ export interface DisciplineDelegate<ExtArgs extends runtime.Types.Extensions.Int
    *   ]
    * })
    * 
-   * // Create many Disciplines and only return the `dicipline_id`
-   * const disciplineWithDicipline_idOnly = await prisma.discipline.createManyAndReturn({
-   *   select: { dicipline_id: true },
+   * // Create many Disciplines and only return the `discipline_id`
+   * const disciplineWithDiscipline_idOnly = await prisma.discipline.createManyAndReturn({
+   *   select: { discipline_id: true },
    *   data: [
    *     // ... provide data here
    *   ]
@@ -747,9 +835,9 @@ export interface DisciplineDelegate<ExtArgs extends runtime.Types.Extensions.Int
    *   ]
    * })
    * 
-   * // Update zero or more Disciplines and only return the `dicipline_id`
-   * const disciplineWithDicipline_idOnly = await prisma.discipline.updateManyAndReturn({
-   *   select: { dicipline_id: true },
+   * // Update zero or more Disciplines and only return the `discipline_id`
+   * const disciplineWithDiscipline_idOnly = await prisma.discipline.updateManyAndReturn({
+   *   select: { discipline_id: true },
    *   where: {
    *     // ... provide filter here
    *   },
@@ -923,6 +1011,7 @@ readonly fields: DisciplineFieldRefs;
 export interface Prisma__DisciplineClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   teachers<T extends Prisma.Discipline$teachersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Discipline$teachersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TeacherPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  avaliacoes<T extends Prisma.Discipline$avaliacoesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Discipline$avaliacoesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AvaliacaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -952,7 +1041,7 @@ export interface Prisma__DisciplineClient<T, Null = never, ExtArgs extends runti
  * Fields of the Discipline model
  */
 export interface DisciplineFieldRefs {
-  readonly dicipline_id: Prisma.FieldRef<"Discipline", 'Int'>
+  readonly discipline_id: Prisma.FieldRef<"Discipline", 'Int'>
   readonly name: Prisma.FieldRef<"Discipline", 'String'>
   readonly course: Prisma.FieldRef<"Discipline", 'String'>
   readonly hours: Prisma.FieldRef<"Discipline", 'Int'>
@@ -1370,6 +1459,30 @@ export type Discipline$teachersArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.TeacherScalarFieldEnum | Prisma.TeacherScalarFieldEnum[]
+}
+
+/**
+ * Discipline.avaliacoes
+ */
+export type Discipline$avaliacoesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Avaliacao
+   */
+  select?: Prisma.AvaliacaoSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Avaliacao
+   */
+  omit?: Prisma.AvaliacaoOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AvaliacaoInclude<ExtArgs> | null
+  where?: Prisma.AvaliacaoWhereInput
+  orderBy?: Prisma.AvaliacaoOrderByWithRelationInput | Prisma.AvaliacaoOrderByWithRelationInput[]
+  cursor?: Prisma.AvaliacaoWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AvaliacaoScalarFieldEnum | Prisma.AvaliacaoScalarFieldEnum[]
 }
 
 /**

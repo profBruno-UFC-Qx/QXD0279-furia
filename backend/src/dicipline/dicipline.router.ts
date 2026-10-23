@@ -7,7 +7,7 @@ export function createDiciplineRouter(
 ) {
   const diciplineRouter = Router();
   diciplineRouter.post("/dicipline", diciplineController.create);
-  diciplineRouter.get("/dicipline", diciplineController.findAll);
+  diciplineRouter.get("/dicipline", diciplineController.findAll); // paginacao
 
   return diciplineRouter;
 }

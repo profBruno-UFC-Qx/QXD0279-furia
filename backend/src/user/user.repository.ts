@@ -50,4 +50,8 @@ export class UserRepository {
       return false;
     }
   }
+
+  async count() {
+    return this.database.user.count();
+  }
 }

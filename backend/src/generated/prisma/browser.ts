@@ -37,3 +37,8 @@ export type Teacher = Prisma.TeacherModel
  * 
  */
 export type Discipline = Prisma.DisciplineModel
+/**
+ * Model Avaliacao
+ * 
+ */
+export type Avaliacao = Prisma.AvaliacaoModel

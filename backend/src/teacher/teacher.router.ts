@@ -5,7 +5,7 @@ import { AutorizationMiddleware } from "../middlewares/autorization.middleware.t
 export function createTeacherRouter(teacherController: TeacherController) {
   const teacherRouter = Router();
 
-  teacherRouter.get("/teacher", teacherController.findAll);
+  teacherRouter.get("/teacher", teacherController.findAll); // paginacao
   teacherRouter.get("/teacher/:id", teacherController.findById);
   teacherRouter.put(
     "/teacher/:id",

@@ -4,6 +4,7 @@ import { TeacherRegisterDTO } from "../auth/dto/register.teacher.dto.ts";
 import { TeacherDTO } from "./dto/teacher.dto.ts";
 import { TeacherRepository } from "./teacher.repository.ts";
 import { DataBase } from "../database/dataBase.ts";
+import { pagWrapper } from "../utils/pagWrapper.ts";
 
 export class TeacherService {
   constructor(
@@ -34,8 +35,10 @@ export class TeacherService {
     });
   }
 
-  async findAll() {
-    return await this.teacherRepository.findAll();
+  async findAll(take: number, skip: number) {
+    const total = await this.teacherRepository.count();
+    const data = await this.teacherRepository.findAll(take, skip);
+    return pagWrapper(data, take, skip, total);
   }
 
   async findById(id: number) {
