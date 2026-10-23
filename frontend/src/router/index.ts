@@ -27,10 +27,6 @@ const router = createRouter({
       children: [
         {
           path: '',
-          redirect: '/professor/profile',
-        },
-        {
-          path: 'hero',
           component: HeroPage,
           name: 'heroPage',
         },
