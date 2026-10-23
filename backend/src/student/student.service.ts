@@ -3,6 +3,7 @@ import { UserService } from "../user/user.service.ts";
 import { StudentRepository } from "./student.repository.ts";
 import { CreateStudentDTO } from "./dto/student.dto.ts";
 import { DataBase } from "../database/dataBase.ts";
+import { pagWrapper } from "../utils/pagWrapper.ts";
 
 export class StudentService {
   constructor(
@@ -29,8 +30,10 @@ export class StudentService {
     });
   }
 
-  async findAll() {
-    return await this.studentRepository.findAll();
+  async findAll(take: number, skip: number) {
+    const total = await this.studentRepository.count();
+    const data = await this.studentRepository.findAll(take, skip);
+    return pagWrapper(data, take, skip, total);
   }
 
   async findById(id: number) {
@@ -75,6 +78,4 @@ export class StudentService {
     updatedStudent.user = updatedUser;
     return updatedStudent;
   }
-
-
 }

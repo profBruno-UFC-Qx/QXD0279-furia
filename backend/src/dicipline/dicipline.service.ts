@@ -1,6 +1,7 @@
 import { DiciplineRepository } from "./dicipline.repository.ts";
 import { createDicipline } from "./dto/createDicipline.dto.ts";
 import { Conflict } from "../errors/errors.ts";
+import { pagWrapper } from "../utils/pagWrapper.ts";
 
 export class DiciplineService {
   constructor(private repository: DiciplineRepository) {}
@@ -15,8 +16,11 @@ export class DiciplineService {
     return this.repository.create(data);
   }
 
-  async findAll() {
-    return this.repository.findAll();
+  async findAll(take: number, skip: number) {
+    const total = await this.repository.count();
+    const data = await this.repository.findAll(take, skip);
+    const dataPaged = pagWrapper(data, take, skip, total);
+    return dataPaged;
   }
 
   async findById(id: number) {

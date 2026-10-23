@@ -4,10 +4,15 @@ import { StudentService } from "./student.service.ts";
 import { updateStudentSchema } from "./schema/studentUpdate.schema.ts";
 
 export class StudentController {
-  constructor(private studentService: StudentService) {}
+  constructor(private service: StudentService) {}
 
-  findAll = async (_req: Request, res: Response) => {
-    const students = await this.studentService.findAll();
+  findAll = async (req: Request, res: Response) => {
+    const take = Number(req.query.limit) || 100;
+    const page = Number(req.query.page) || 1;
+
+    const skip = (page - 1) * take;
+
+    const students = await this.service.findAll(take, skip);
     return res.status(200).json(students);
   };
 
@@ -18,7 +23,7 @@ export class StudentController {
       throw new BadRequestError("ID de aluno inválido");
     }
 
-    const student = await this.studentService.findById(id);
+    const student = await this.service.findById(id);
     return res.status(200).json(student);
   };
 
@@ -38,12 +43,7 @@ export class StudentController {
       );
     }
 
-    const student = await this.studentService.updateStudent(
-      id,
-      parsedStudent.data,
-    );
+    const student = await this.service.updateStudent(id, parsedStudent.data);
     return res.status(200).json(student);
   };
-
-
 }

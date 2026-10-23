@@ -28,60 +28,50 @@ export type AggregateStudent = {
 
 export type StudentAvgAggregateOutputType = {
   student_id: number | null
-  user_id: number | null
 }
 
 export type StudentSumAggregateOutputType = {
   student_id: number | null
-  user_id: number | null
 }
 
 export type StudentMinAggregateOutputType = {
   student_id: number | null
   course: string | null
-  user_id: number | null
 }
 
 export type StudentMaxAggregateOutputType = {
   student_id: number | null
   course: string | null
-  user_id: number | null
 }
 
 export type StudentCountAggregateOutputType = {
   student_id: number
   course: number
-  user_id: number
   _all: number
 }
 
 
 export type StudentAvgAggregateInputType = {
   student_id?: true
-  user_id?: true
 }
 
 export type StudentSumAggregateInputType = {
   student_id?: true
-  user_id?: true
 }
 
 export type StudentMinAggregateInputType = {
   student_id?: true
   course?: true
-  user_id?: true
 }
 
 export type StudentMaxAggregateInputType = {
   student_id?: true
   course?: true
-  user_id?: true
 }
 
 export type StudentCountAggregateInputType = {
   student_id?: true
   course?: true
-  user_id?: true
   _all?: true
 }
 
@@ -174,7 +164,6 @@ export type StudentGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 export type StudentGroupByOutputType = {
   student_id: number
   course: string
-  user_id: number
   _count: StudentCountAggregateOutputType | null
   _avg: StudentAvgAggregateOutputType | null
   _sum: StudentSumAggregateOutputType | null
@@ -203,31 +192,30 @@ export type StudentWhereInput = {
   NOT?: Prisma.StudentWhereInput | Prisma.StudentWhereInput[]
   student_id?: Prisma.IntFilter<"Student"> | number
   course?: Prisma.StringFilter<"Student"> | string
-  user_id?: Prisma.IntFilter<"Student"> | number
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  avaliacoes?: Prisma.AvaliacaoListRelationFilter
 }
 
 export type StudentOrderByWithRelationInput = {
   student_id?: Prisma.SortOrder
   course?: Prisma.SortOrder
-  user_id?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
+  avaliacoes?: Prisma.AvaliacaoOrderByRelationAggregateInput
 }
 
 export type StudentWhereUniqueInput = Prisma.AtLeast<{
   student_id?: number
-  user_id?: number
   AND?: Prisma.StudentWhereInput | Prisma.StudentWhereInput[]
   OR?: Prisma.StudentWhereInput[]
   NOT?: Prisma.StudentWhereInput | Prisma.StudentWhereInput[]
   course?: Prisma.StringFilter<"Student"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-}, "student_id" | "user_id">
+  avaliacoes?: Prisma.AvaliacaoListRelationFilter
+}, "student_id">
 
 export type StudentOrderByWithAggregationInput = {
   student_id?: Prisma.SortOrder
   course?: Prisma.SortOrder
-  user_id?: Prisma.SortOrder
   _count?: Prisma.StudentCountOrderByAggregateInput
   _avg?: Prisma.StudentAvgOrderByAggregateInput
   _max?: Prisma.StudentMaxOrderByAggregateInput
@@ -241,35 +229,35 @@ export type StudentScalarWhereWithAggregatesInput = {
   NOT?: Prisma.StudentScalarWhereWithAggregatesInput | Prisma.StudentScalarWhereWithAggregatesInput[]
   student_id?: Prisma.IntWithAggregatesFilter<"Student"> | number
   course?: Prisma.StringWithAggregatesFilter<"Student"> | string
-  user_id?: Prisma.IntWithAggregatesFilter<"Student"> | number
 }
 
 export type StudentCreateInput = {
   course: string
   user: Prisma.UserCreateNestedOneWithoutStudentInput
+  avaliacoes?: Prisma.AvaliacaoCreateNestedManyWithoutEstudanteInput
 }
 
 export type StudentUncheckedCreateInput = {
-  student_id?: number
+  student_id: number
   course: string
-  user_id: number
+  avaliacoes?: Prisma.AvaliacaoUncheckedCreateNestedManyWithoutEstudanteInput
 }
 
 export type StudentUpdateInput = {
   course?: Prisma.StringFieldUpdateOperationsInput | string
   user?: Prisma.UserUpdateOneRequiredWithoutStudentNestedInput
+  avaliacoes?: Prisma.AvaliacaoUpdateManyWithoutEstudanteNestedInput
 }
 
 export type StudentUncheckedUpdateInput = {
   student_id?: Prisma.IntFieldUpdateOperationsInput | number
   course?: Prisma.StringFieldUpdateOperationsInput | string
-  user_id?: Prisma.IntFieldUpdateOperationsInput | number
+  avaliacoes?: Prisma.AvaliacaoUncheckedUpdateManyWithoutEstudanteNestedInput
 }
 
 export type StudentCreateManyInput = {
-  student_id?: number
+  student_id: number
   course: string
-  user_id: number
 }
 
 export type StudentUpdateManyMutationInput = {
@@ -279,7 +267,6 @@ export type StudentUpdateManyMutationInput = {
 export type StudentUncheckedUpdateManyInput = {
   student_id?: Prisma.IntFieldUpdateOperationsInput | number
   course?: Prisma.StringFieldUpdateOperationsInput | string
-  user_id?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type StudentNullableScalarRelationFilter = {
@@ -290,29 +277,29 @@ export type StudentNullableScalarRelationFilter = {
 export type StudentCountOrderByAggregateInput = {
   student_id?: Prisma.SortOrder
   course?: Prisma.SortOrder
-  user_id?: Prisma.SortOrder
 }
 
 export type StudentAvgOrderByAggregateInput = {
   student_id?: Prisma.SortOrder
-  user_id?: Prisma.SortOrder
 }
 
 export type StudentMaxOrderByAggregateInput = {
   student_id?: Prisma.SortOrder
   course?: Prisma.SortOrder
-  user_id?: Prisma.SortOrder
 }
 
 export type StudentMinOrderByAggregateInput = {
   student_id?: Prisma.SortOrder
   course?: Prisma.SortOrder
-  user_id?: Prisma.SortOrder
 }
 
 export type StudentSumOrderByAggregateInput = {
   student_id?: Prisma.SortOrder
-  user_id?: Prisma.SortOrder
+}
+
+export type StudentScalarRelationFilter = {
+  is?: Prisma.StudentWhereInput
+  isNot?: Prisma.StudentWhereInput
 }
 
 export type StudentCreateNestedOneWithoutUserInput = {
@@ -347,13 +334,28 @@ export type StudentUncheckedUpdateOneWithoutUserNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.StudentUpdateToOneWithWhereWithoutUserInput, Prisma.StudentUpdateWithoutUserInput>, Prisma.StudentUncheckedUpdateWithoutUserInput>
 }
 
+export type StudentCreateNestedOneWithoutAvaliacoesInput = {
+  create?: Prisma.XOR<Prisma.StudentCreateWithoutAvaliacoesInput, Prisma.StudentUncheckedCreateWithoutAvaliacoesInput>
+  connectOrCreate?: Prisma.StudentCreateOrConnectWithoutAvaliacoesInput
+  connect?: Prisma.StudentWhereUniqueInput
+}
+
+export type StudentUpdateOneRequiredWithoutAvaliacoesNestedInput = {
+  create?: Prisma.XOR<Prisma.StudentCreateWithoutAvaliacoesInput, Prisma.StudentUncheckedCreateWithoutAvaliacoesInput>
+  connectOrCreate?: Prisma.StudentCreateOrConnectWithoutAvaliacoesInput
+  upsert?: Prisma.StudentUpsertWithoutAvaliacoesInput
+  connect?: Prisma.StudentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StudentUpdateToOneWithWhereWithoutAvaliacoesInput, Prisma.StudentUpdateWithoutAvaliacoesInput>, Prisma.StudentUncheckedUpdateWithoutAvaliacoesInput>
+}
+
 export type StudentCreateWithoutUserInput = {
   course: string
+  avaliacoes?: Prisma.AvaliacaoCreateNestedManyWithoutEstudanteInput
 }
 
 export type StudentUncheckedCreateWithoutUserInput = {
-  student_id?: number
   course: string
+  avaliacoes?: Prisma.AvaliacaoUncheckedCreateNestedManyWithoutEstudanteInput
 }
 
 export type StudentCreateOrConnectWithoutUserInput = {
@@ -374,45 +376,111 @@ export type StudentUpdateToOneWithWhereWithoutUserInput = {
 
 export type StudentUpdateWithoutUserInput = {
   course?: Prisma.StringFieldUpdateOperationsInput | string
+  avaliacoes?: Prisma.AvaliacaoUpdateManyWithoutEstudanteNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutUserInput = {
+  course?: Prisma.StringFieldUpdateOperationsInput | string
+  avaliacoes?: Prisma.AvaliacaoUncheckedUpdateManyWithoutEstudanteNestedInput
+}
+
+export type StudentCreateWithoutAvaliacoesInput = {
+  course: string
+  user: Prisma.UserCreateNestedOneWithoutStudentInput
+}
+
+export type StudentUncheckedCreateWithoutAvaliacoesInput = {
+  student_id: number
+  course: string
+}
+
+export type StudentCreateOrConnectWithoutAvaliacoesInput = {
+  where: Prisma.StudentWhereUniqueInput
+  create: Prisma.XOR<Prisma.StudentCreateWithoutAvaliacoesInput, Prisma.StudentUncheckedCreateWithoutAvaliacoesInput>
+}
+
+export type StudentUpsertWithoutAvaliacoesInput = {
+  update: Prisma.XOR<Prisma.StudentUpdateWithoutAvaliacoesInput, Prisma.StudentUncheckedUpdateWithoutAvaliacoesInput>
+  create: Prisma.XOR<Prisma.StudentCreateWithoutAvaliacoesInput, Prisma.StudentUncheckedCreateWithoutAvaliacoesInput>
+  where?: Prisma.StudentWhereInput
+}
+
+export type StudentUpdateToOneWithWhereWithoutAvaliacoesInput = {
+  where?: Prisma.StudentWhereInput
+  data: Prisma.XOR<Prisma.StudentUpdateWithoutAvaliacoesInput, Prisma.StudentUncheckedUpdateWithoutAvaliacoesInput>
+}
+
+export type StudentUpdateWithoutAvaliacoesInput = {
+  course?: Prisma.StringFieldUpdateOperationsInput | string
+  user?: Prisma.UserUpdateOneRequiredWithoutStudentNestedInput
+}
+
+export type StudentUncheckedUpdateWithoutAvaliacoesInput = {
   student_id?: Prisma.IntFieldUpdateOperationsInput | number
   course?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
+/**
+ * Count Type StudentCountOutputType
+ */
+
+export type StudentCountOutputType = {
+  avaliacoes: number
+}
+
+export type StudentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  avaliacoes?: boolean | StudentCountOutputTypeCountAvaliacoesArgs
+}
+
+/**
+ * StudentCountOutputType without action
+ */
+export type StudentCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StudentCountOutputType
+   */
+  select?: Prisma.StudentCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * StudentCountOutputType without action
+ */
+export type StudentCountOutputTypeCountAvaliacoesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AvaliacaoWhereInput
+}
+
 
 export type StudentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   student_id?: boolean
   course?: boolean
-  user_id?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  avaliacoes?: boolean | Prisma.Student$avaliacoesArgs<ExtArgs>
+  _count?: boolean | Prisma.StudentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["student"]>
 
 export type StudentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   student_id?: boolean
   course?: boolean
-  user_id?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["student"]>
 
 export type StudentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   student_id?: boolean
   course?: boolean
-  user_id?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["student"]>
 
 export type StudentSelectScalar = {
   student_id?: boolean
   course?: boolean
-  user_id?: boolean
 }
 
-export type StudentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"student_id" | "course" | "user_id", ExtArgs["result"]["student"]>
+export type StudentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"student_id" | "course", ExtArgs["result"]["student"]>
 export type StudentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  avaliacoes?: boolean | Prisma.Student$avaliacoesArgs<ExtArgs>
+  _count?: boolean | Prisma.StudentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type StudentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -425,11 +493,11 @@ export type $StudentPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   name: "Student"
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
+    avaliacoes: Prisma.$AvaliacaoPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     student_id: number
     course: string
-    user_id: number
   }, ExtArgs["result"]["student"]>
   composites: {}
 }
@@ -825,6 +893,7 @@ readonly fields: StudentFieldRefs;
 export interface Prisma__StudentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  avaliacoes<T extends Prisma.Student$avaliacoesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Student$avaliacoesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AvaliacaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -856,7 +925,6 @@ export interface Prisma__StudentClient<T, Null = never, ExtArgs extends runtime.
 export interface StudentFieldRefs {
   readonly student_id: Prisma.FieldRef<"Student", 'Int'>
   readonly course: Prisma.FieldRef<"Student", 'String'>
-  readonly user_id: Prisma.FieldRef<"Student", 'Int'>
 }
     
 
@@ -1255,6 +1323,30 @@ export type StudentDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Limit how many Students to delete.
    */
   limit?: number
+}
+
+/**
+ * Student.avaliacoes
+ */
+export type Student$avaliacoesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Avaliacao
+   */
+  select?: Prisma.AvaliacaoSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Avaliacao
+   */
+  omit?: Prisma.AvaliacaoOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AvaliacaoInclude<ExtArgs> | null
+  where?: Prisma.AvaliacaoWhereInput
+  orderBy?: Prisma.AvaliacaoOrderByWithRelationInput | Prisma.AvaliacaoOrderByWithRelationInput[]
+  cursor?: Prisma.AvaliacaoWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AvaliacaoScalarFieldEnum | Prisma.AvaliacaoScalarFieldEnum[]
 }
 
 /**
