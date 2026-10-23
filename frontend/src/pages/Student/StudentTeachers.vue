@@ -1,19 +1,23 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import Header from "@/components/Header/Header.vue";
 import Filters from "@/components/Filters/Filters.vue";
 import TeacherCard from "@/components/Cards/TeacherCard.vue";
 import Ornament from "@/components/Ornament/Ornament.vue";
+import { TeacherService } from "@/api/TeacherService";
+import { type TeacherResponse } from "@/api/TeacherService";
 
 interface InputItem {
   type: "text" | "select";
   placeholder: string;
 }
 
-const inputs: InputItem[] = [
-  { type: "text", placeholder: "Pesquise por texto" },
-  { type: "select", placeholder: "Selecione a disciplina" },
-];
+const professores = ref<Array<TeacherResponse>>();
+
+onMounted(async () => {
+  const data = await TeacherService.getAll();
+  professores.value = data.itens;
+});
 </script>
 <template>
   <div class="content container">
@@ -43,6 +47,13 @@ and more to find the right academic fit."
 
       <div class="table">
         <TeacherCard
+          v-for="prof in professores"
+          :name="prof.user.name"
+          :grade="5"
+          :diciplines="prof.disciplines.map(diciplina => { return diciplina.name})"
+        />
+
+        <!-- <TeacherCard
           :name="'Aragão'"
           :grade="5"
           :diciplines="['Matemática', 'Física']"
@@ -66,7 +77,7 @@ and more to find the right academic fit."
           :name="'Roberto Lima'"
           :grade="4.2"
           :diciplines="['Inglês']"
-        />
+        /> -->
       </div>
     </div>
   </div>
