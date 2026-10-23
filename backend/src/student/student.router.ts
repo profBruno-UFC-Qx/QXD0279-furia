@@ -12,6 +12,11 @@ export function createStudentRouter(studentController: StudentController) {
     AutorizationMiddleware(["admin"]),
     studentController.update,
   );
+  studentRouter.delete(
+    "/student/:id",
+    AutorizationMiddleware(["admin"]),
+    studentController.delete,
+  );
 
   return studentRouter;
 }

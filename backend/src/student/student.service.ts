@@ -78,4 +78,20 @@ export class StudentService {
     updatedStudent.user = updatedUser;
     return updatedStudent;
   }
+
+  async deleteStudent(id: number) {
+    const student = await this.studentRepository.findById(id);
+
+    if (!student || !student.user) {
+      throw new NotFoundError("Aluno nao encontrado");
+    }
+
+    const deleted = await this.userService.deleteUser(student.user.user_id);
+
+    if (!deleted) {
+      throw new NotFoundError("Nao foi possivel deletar o professor");
+    }
+
+    return deleted;
+  }
 }

@@ -54,8 +54,8 @@ export class StudentRepository {
 
   async deleteStudent(id: number) {
     try {
-      await this.database.student.delete({
-        where: { student_id: id },
+      await this.database.user.delete({
+        where: { user_id: id },
       });
       return true;
     } catch {

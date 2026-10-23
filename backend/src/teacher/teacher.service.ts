@@ -82,22 +82,16 @@ export class TeacherService {
   }
 
   async deleteTeacher(id: number) {
-    const teacher = await this.userService.findById(id);
+    const teacher = await this.teacherRepository.findById(id);
 
-    if (!teacher.user) {
+    if (!teacher || !teacher.user) {
       throw new NotFoundError("Professor nao encontrado");
     }
 
-    const userDeleted = await this.userService.deleteUser(teacher.user.user_id);
-
-    if (!userDeleted) {
-      throw new NotFoundError("Usuario nao encontrado");
-    }
-
-    const deleted = await this.teacherRepository.deleteTeacher(id);
+    const deleted = await this.userService.deleteUser(teacher.user.user_id);
 
     if (!deleted) {
-      throw new NotFoundError("Professor nao encontrado");
+      throw new NotFoundError("Nao foi possivel deletar o professor");
     }
 
     return deleted;
