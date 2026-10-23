@@ -17,6 +17,7 @@ const { title, description } = defineProps(["title", "description"]);
   border-radius: 10px;
   padding: 24px;
   background-color: #f2f3ff;
+  border: 1px solid #c3c6d7;
 }
 
 .description {
