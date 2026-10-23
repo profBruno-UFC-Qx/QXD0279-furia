@@ -30,7 +30,7 @@ model Student {
   student_id Int    @id
   course     String @db.VarChar(100)
 
-  user User @relation(fields: [student_id], references: [user_id])
+  user User @relation(fields: [student_id], references: [user_id],onDelete: Cascade)
 
   avaliacoes Avaliacao[]
 
@@ -41,7 +41,7 @@ model Teacher {
   teacher_id Int      @id
   creat_at   DateTime @default(now())
 
-  user User @relation(fields: [teacher_id], references: [user_id])
+  user User @relation(fields: [teacher_id], references: [user_id],onDelete: Cascade)
   disciplines Discipline[] @relation("TeacherDisciplines")
 
   avaliacoes   Avaliacao[]

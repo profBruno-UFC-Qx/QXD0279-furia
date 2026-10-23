@@ -82,7 +82,7 @@ export class TeacherService {
   }
 
   async deleteTeacher(id: number) {
-    const teacher = await this.findById(id);
+    const teacher = await this.userService.findById(id);
 
     if (!teacher.user) {
       throw new NotFoundError("Professor nao encontrado");

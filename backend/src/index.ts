@@ -4,6 +4,7 @@ import { errorHandling } from "./middlewares/error-handling.midlewares.ts";
 import { diciplineRouter } from "./dicipline/dicipline.module.ts";
 import { teacherRouter } from "./teacher/teacher.module.ts";
 import { studentRouter } from "./student/student.module.ts";
+import { avaliacaoRouter } from "./avaliacao/avaliacao.module.ts";
 import { AutorizationMiddleware } from "./middlewares/autorization.middleware.ts";
 import cors from "cors";
 
@@ -22,6 +23,7 @@ app.use(authRouter);
 app.use(diciplineRouter);
 app.use(studentRouter);
 app.use(teacherRouter);
+app.use(avaliacaoRouter);
 
 app.get(
   "/",
