@@ -6,11 +6,13 @@
 
       <div class="actions">
         <button class="btn-filter" @click="$emit('open-filter')">
-          <i class="icon-filter">⚙️</i> Filter
+          <v-icon icon="mdi-filter-variant" size="16" />
+          Filter
         </button>
 
         <button class="btn-sort" @click="$emit('change-sort')">
-          <i class="icon-sort">⬇️</i> Sort by: Recent
+          <v-icon icon="mdi-sort" size="16" />
+          Sort by: Recent
         </button>
       </div>
     </header>
@@ -25,7 +27,8 @@
 
     <footer class="section-footer">
       <button class="btn-load-more" @click="$emit('load-more')">
-        Load More Reviews <i class="icon-arrow-down">⌄</i>
+        Load More Reviews
+        <v-icon icon="mdi-chevron-down" size="18" />
       </button>
     </footer>
 

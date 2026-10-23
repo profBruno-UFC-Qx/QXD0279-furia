@@ -5,22 +5,29 @@
 
       <div class="info">
         <h1 class="name">{{ professor.name }}</h1>
-      </div>
 
-      <div class="stats">
-        <span class="rating">
-          <i class="icon-star">⭐</i>
-          <strong>{{ professor.rating.toFixed(1) }}</strong>
+        <p class="department">
+          <v-icon icon="mdi-domain" size="18" />
+          {{ professor.department }}
+        </p>
 
-          <span class="max-rating">
-            5.0
+        <div class="stats">
+          <span class="rating">
+            <v-icon color="primary" icon="mdi-star" size="18" />
+            <strong>{{ professor.rating.toFixed(1) }}</strong>
+            <span class="max-rating">/ 5.0</span>
           </span>
-        </span>
 
-        <span class="divider">|</span>
-        <span class="review-count">Based on {{ professor.reviewCount }} student reviews</span>
+          <span class="divider">|</span>
+          <span class="review-count">Based on {{ professor.reviewCount }} student reviews</span>
+        </div>
       </div>
     </div>
+
+    <button class="btn-review" @click="handleReviewClick">
+      <v-icon icon="mdi-message-draw" size="18" />
+      Write a Review
+    </button>
   </div>
 </template>
 
@@ -41,7 +48,6 @@
 </script>
 
 <style scoped>
-/* Os estilos mantêm-se exatamente iguais aos anteriores */
 .professor-summary-card {
   display: flex;
   justify-content: space-between;
@@ -49,8 +55,9 @@
   padding: 24px;
   background-color: #ffffff;
   border: 1px solid #e5e7eb;
+  border-top: 4px solid #2563eb;
   border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .profile-section {
@@ -88,6 +95,16 @@
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+.rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background-color: #eff6ff;
+  border: 1px solid #dbeafe;
+  padding: 4px 12px;
+  border-radius: 999px;
 }
 
 .rating strong {

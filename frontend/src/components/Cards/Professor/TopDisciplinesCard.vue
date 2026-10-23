@@ -1,7 +1,7 @@
 <template>
   <div class="top-disciplines-card">
     <div class="header">
-      <i class="icon-nodes">🗂️</i>
+      <v-icon color="grey-darken-1" icon="mdi-sitemap-outline" size="18" />
       <h2 class="title">TOP DISCIPLINES</h2>
     </div>
 
@@ -18,7 +18,7 @@
 
         <span class="name">{{ discipline.name }}</span>
 
-        <i class="icon-chevron">›</i>
+        <v-icon color="grey" icon="mdi-chevron-right" size="18" />
       </li>
     </ul>
   </div>
@@ -46,9 +46,8 @@
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   padding: 24px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   width: 100%;
-  max-width: 350px;
 }
 
 .header {
@@ -108,11 +107,5 @@
   font-size: 14px;
   color: #111827;
   font-weight: 500;
-}
-
-.icon-chevron {
-  color: #9ca3af;
-  font-size: 18px;
-  font-weight: bold;
 }
 </style>
