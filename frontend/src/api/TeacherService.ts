@@ -1,6 +1,6 @@
 import { request } from "./request";
 
-import { type metaData } from "@/@types/metaData";
+import { type RequestResponse } from "@/@types/metaData";
 
 export interface TeacherResponse {
   teacher_id: number;
@@ -22,7 +22,7 @@ export interface TeacherResponse {
 
 export const TeacherService = {
   getAll: async () => {
-    const data = await request<metaData<any>>("/teacher");
+    const data = await request<RequestResponse<TeacherResponse>>("/teacher");
     return data;
   },
 };

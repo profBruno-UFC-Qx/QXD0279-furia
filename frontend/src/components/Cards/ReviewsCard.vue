@@ -4,7 +4,7 @@ defineProps<{
   dicipline: string;
   rating: number;
   comment: string;
-  date: string;
+  date: Date;
 }>();
 </script>
 
@@ -18,7 +18,7 @@ defineProps<{
     </div>
 
     <div class="extraInfo">
-      <span>{{ date }}</span>
+      <span>{{ new Date(date).toLocaleDateString("pt-BR") }}</span>
     </div>
   </v-card>
 </template>

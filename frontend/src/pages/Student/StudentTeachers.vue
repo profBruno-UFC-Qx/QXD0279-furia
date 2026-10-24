@@ -16,7 +16,6 @@ const professores = ref<Array<TeacherResponse>>();
 
 onMounted(async () => {
   const data = await TeacherService.getAll();
-  professores.value = data.itens;
 });
 </script>
 <template>
@@ -31,7 +30,7 @@ and more to find the right academic fit."
       :inputs="{
         text: true,
         dicipline: true,
-        course: true,
+        course: false,
         teacher: false,
       }"
     />
@@ -50,7 +49,11 @@ and more to find the right academic fit."
           v-for="prof in professores"
           :name="prof.user.name"
           :grade="5"
-          :diciplines="prof.disciplines.map(diciplina => { return diciplina.name})"
+          :diciplines="
+            prof.disciplines.map((diciplina) => {
+              return diciplina.name;
+            })
+          "
         />
 
         <!-- <TeacherCard

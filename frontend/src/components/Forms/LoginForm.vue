@@ -8,8 +8,8 @@ const emit = defineEmits<{
 }>();
 
 const form = ref(false);
-const email = ref("joja3@gemail.com");
-const password = ref("12345678");
+const email = ref("aluno1@avaliae.com");
+const password = ref("123456");
 const loading = ref(false);
 const error = ref({ error: false, msg: "" });
 
