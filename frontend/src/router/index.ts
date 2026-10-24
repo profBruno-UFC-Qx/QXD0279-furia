@@ -1,24 +1,6 @@
-/**
- * router/index.ts
- *
- * Manual routes for ./src/pages/*.vue
- */
-
-// Composables
 import { createRouter, createWebHistory } from 'vue-router'
 import AuthLayout from '@/layout/AuthLayout.vue'
 import DefaultLayout from '@/layout/DefaultLayout.vue'
-import Login from '@/pages/Auth/Login.vue'
-import Register from '@/pages/Auth/Register.vue'
-import HeroPage from '@/pages/HeroPage.vue'
-import NotFound from '@/pages/NotFound.vue'
-import ProfessorDashboard from '@/pages/Professor/ProfessorDashboard.vue'
-// Professor profile
-import ProfessorProfile from '@/pages/Professor/ProfessorProfile.vue'
-import StudentDocuments from '@/pages/Student/StudentDocuments.vue'
-// Student pages
-import StudentHome from '@/pages/Student/StudentHome.vue'
-import StudentTeachers from '@/pages/Student/StudentTeachers.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,7 +11,7 @@ const router = createRouter({
       children: [
         {
           path: '',
-          component: HeroPage,
+          component: () => import('@/pages/HeroPage.vue'),
           name: 'heroPage',
         },
       ],
@@ -40,17 +22,17 @@ const router = createRouter({
       children: [
         {
           path: 'home',
-          component: StudentHome,
+          component: () => import('@/pages/Student/StudentHome.vue'),
           name: 'studentHome',
         },
         {
           path: 'documents',
-          component: StudentDocuments,
+          component: () => import('@/pages/Student/StudentDocuments.vue'),
           name: 'studentDocuments',
         },
         {
           path: 'teachers',
-          component: StudentTeachers,
+          component: () => import('@/pages/Student/StudentTeachers.vue'),
           name: 'studentTeachers',
         },
       ],
@@ -61,12 +43,12 @@ const router = createRouter({
       children: [
         {
           path: 'profile',
-          component: ProfessorProfile,
+          component: () => import('@/pages/Professor/ProfessorProfile.vue'),
           name: 'professorProfile',
         },
         {
           path: 'dashboard',
-          component: ProfessorDashboard,
+          component: () => import('@/pages/Professor/ProfessorDashboard.vue'),
           name: 'professorDashboard',
         },
       ],
@@ -77,12 +59,12 @@ const router = createRouter({
       children: [
         {
           path: 'enter',
-          component: Login,
+          component: () => import('@/pages/Auth/Login.vue'),
           name: 'login',
         },
         {
           path: 'register',
-          component: Register,
+          component: () => import('@/pages/Auth/Register.vue'),
           name: 'register',
         },
       ],
@@ -94,7 +76,7 @@ const router = createRouter({
       children: [
         {
           path: '',
-          component: NotFound,
+          component: () => import('@/pages/NotFound.vue'),
         },
       ],
     },
