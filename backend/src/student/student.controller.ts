@@ -46,4 +46,15 @@ export class StudentController {
     const student = await this.service.updateStudent(id, parsedStudent.data);
     return res.status(200).json(student);
   };
+
+  delete = async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+
+    if (!Number.isInteger(id) || id <= 0) {
+      throw new BadRequestError("ID de aluno inválido");
+    }
+
+    await this.service.deleteStudent(id);
+    return res.status(204).send();
+  };
 }

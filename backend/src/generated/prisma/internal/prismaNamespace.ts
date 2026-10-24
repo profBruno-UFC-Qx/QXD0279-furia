@@ -401,7 +401,8 @@ export const ModelName = {
   Student: 'Student',
   Teacher: 'Teacher',
   Discipline: 'Discipline',
-  Avaliacao: 'Avaliacao'
+  Avaliacao: 'Avaliacao',
+  Documents: 'Documents'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -417,7 +418,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "student" | "teacher" | "discipline" | "avaliacao"
+    modelProps: "user" | "student" | "teacher" | "discipline" | "avaliacao" | "documents"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -791,6 +792,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Documents: {
+      payload: Prisma.$DocumentsPayload<ExtArgs>
+      fields: Prisma.DocumentsFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DocumentsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentsPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DocumentsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentsPayload>
+        }
+        findFirst: {
+          args: Prisma.DocumentsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentsPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DocumentsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentsPayload>
+        }
+        findMany: {
+          args: Prisma.DocumentsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentsPayload>[]
+        }
+        create: {
+          args: Prisma.DocumentsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentsPayload>
+        }
+        createMany: {
+          args: Prisma.DocumentsCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DocumentsCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentsPayload>[]
+        }
+        delete: {
+          args: Prisma.DocumentsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentsPayload>
+        }
+        update: {
+          args: Prisma.DocumentsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentsPayload>
+        }
+        deleteMany: {
+          args: Prisma.DocumentsDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DocumentsUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DocumentsUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentsPayload>[]
+        }
+        upsert: {
+          args: Prisma.DocumentsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentsPayload>
+        }
+        aggregate: {
+          args: Prisma.DocumentsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDocuments>
+        }
+        groupBy: {
+          args: Prisma.DocumentsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentsGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DocumentsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentsCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -869,20 +944,29 @@ export type DisciplineScalarFieldEnum = (typeof DisciplineScalarFieldEnum)[keyof
 
 export const AvaliacaoScalarFieldEnum = {
   id: 'id',
-  name: 'name',
-  course: 'course',
-  hours: 'hours',
   nota_geral: 'nota_geral',
   nota_didatica: 'nota_didatica',
   nota_metodologia: 'nota_metodologia',
   comment: 'comment',
   creat_at: 'creat_at',
-  estudante_id: 'estudante_id',
-  professor_id: 'professor_id',
-  disciplina_id: 'disciplina_id'
+  student_id: 'student_id',
+  teacher_id: 'teacher_id',
+  discipline_id: 'discipline_id'
 } as const
 
 export type AvaliacaoScalarFieldEnum = (typeof AvaliacaoScalarFieldEnum)[keyof typeof AvaliacaoScalarFieldEnum]
+
+
+export const DocumentsScalarFieldEnum = {
+  id: 'id',
+  titulo: 'titulo',
+  data_publicacao: 'data_publicacao',
+  student_id: 'student_id',
+  teacher_id: 'teacher_id',
+  discipline_id: 'discipline_id'
+} as const
+
+export type DocumentsScalarFieldEnum = (typeof DocumentsScalarFieldEnum)[keyof typeof DocumentsScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1132,6 +1216,7 @@ export type GlobalOmitConfig = {
   teacher?: Prisma.TeacherOmit
   discipline?: Prisma.DisciplineOmit
   avaliacao?: Prisma.AvaliacaoOmit
+  documents?: Prisma.DocumentsOmit
 }
 
 /* Types for Logging */

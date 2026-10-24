@@ -42,3 +42,8 @@ export type Discipline = Prisma.DisciplineModel
  * 
  */
 export type Avaliacao = Prisma.AvaliacaoModel
+/**
+ * Model Documents
+ * 
+ */
+export type Documents = Prisma.DocumentsModel

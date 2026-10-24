@@ -55,7 +55,8 @@ export const ModelName = {
   Student: 'Student',
   Teacher: 'Teacher',
   Discipline: 'Discipline',
-  Avaliacao: 'Avaliacao'
+  Avaliacao: 'Avaliacao',
+  Documents: 'Documents'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -113,20 +114,29 @@ export type DisciplineScalarFieldEnum = (typeof DisciplineScalarFieldEnum)[keyof
 
 export const AvaliacaoScalarFieldEnum = {
   id: 'id',
-  name: 'name',
-  course: 'course',
-  hours: 'hours',
   nota_geral: 'nota_geral',
   nota_didatica: 'nota_didatica',
   nota_metodologia: 'nota_metodologia',
   comment: 'comment',
   creat_at: 'creat_at',
-  estudante_id: 'estudante_id',
-  professor_id: 'professor_id',
-  disciplina_id: 'disciplina_id'
+  student_id: 'student_id',
+  teacher_id: 'teacher_id',
+  discipline_id: 'discipline_id'
 } as const
 
 export type AvaliacaoScalarFieldEnum = (typeof AvaliacaoScalarFieldEnum)[keyof typeof AvaliacaoScalarFieldEnum]
+
+
+export const DocumentsScalarFieldEnum = {
+  id: 'id',
+  titulo: 'titulo',
+  data_publicacao: 'data_publicacao',
+  student_id: 'student_id',
+  teacher_id: 'teacher_id',
+  discipline_id: 'discipline_id'
+} as const
+
+export type DocumentsScalarFieldEnum = (typeof DocumentsScalarFieldEnum)[keyof typeof DocumentsScalarFieldEnum]
 
 
 export const SortOrder = {

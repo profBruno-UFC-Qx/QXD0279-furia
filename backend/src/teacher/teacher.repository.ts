@@ -49,8 +49,8 @@ export class TeacherRepository {
 
   async deleteTeacher(id: number) {
     try {
-      await this.database.teacher.delete({
-        where: { teacher_id: id },
+      await this.database.user.delete({
+        where: { user_id: id },
       });
       return true;
     } catch {

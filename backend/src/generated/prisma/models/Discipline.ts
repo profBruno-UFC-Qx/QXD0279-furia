@@ -214,6 +214,7 @@ export type DisciplineWhereInput = {
   hours?: Prisma.IntFilter<"Discipline"> | number
   teachers?: Prisma.TeacherListRelationFilter
   avaliacoes?: Prisma.AvaliacaoListRelationFilter
+  documents?: Prisma.DocumentsListRelationFilter
 }
 
 export type DisciplineOrderByWithRelationInput = {
@@ -223,6 +224,7 @@ export type DisciplineOrderByWithRelationInput = {
   hours?: Prisma.SortOrder
   teachers?: Prisma.TeacherOrderByRelationAggregateInput
   avaliacoes?: Prisma.AvaliacaoOrderByRelationAggregateInput
+  documents?: Prisma.DocumentsOrderByRelationAggregateInput
 }
 
 export type DisciplineWhereUniqueInput = Prisma.AtLeast<{
@@ -235,6 +237,7 @@ export type DisciplineWhereUniqueInput = Prisma.AtLeast<{
   hours?: Prisma.IntFilter<"Discipline"> | number
   teachers?: Prisma.TeacherListRelationFilter
   avaliacoes?: Prisma.AvaliacaoListRelationFilter
+  documents?: Prisma.DocumentsListRelationFilter
 }, "discipline_id">
 
 export type DisciplineOrderByWithAggregationInput = {
@@ -265,6 +268,7 @@ export type DisciplineCreateInput = {
   hours: number
   teachers?: Prisma.TeacherCreateNestedManyWithoutDisciplinesInput
   avaliacoes?: Prisma.AvaliacaoCreateNestedManyWithoutDisciplineInput
+  documents?: Prisma.DocumentsCreateNestedManyWithoutDisciplineInput
 }
 
 export type DisciplineUncheckedCreateInput = {
@@ -274,6 +278,7 @@ export type DisciplineUncheckedCreateInput = {
   hours: number
   teachers?: Prisma.TeacherUncheckedCreateNestedManyWithoutDisciplinesInput
   avaliacoes?: Prisma.AvaliacaoUncheckedCreateNestedManyWithoutDisciplineInput
+  documents?: Prisma.DocumentsUncheckedCreateNestedManyWithoutDisciplineInput
 }
 
 export type DisciplineUpdateInput = {
@@ -282,6 +287,7 @@ export type DisciplineUpdateInput = {
   hours?: Prisma.IntFieldUpdateOperationsInput | number
   teachers?: Prisma.TeacherUpdateManyWithoutDisciplinesNestedInput
   avaliacoes?: Prisma.AvaliacaoUpdateManyWithoutDisciplineNestedInput
+  documents?: Prisma.DocumentsUpdateManyWithoutDisciplineNestedInput
 }
 
 export type DisciplineUncheckedUpdateInput = {
@@ -291,6 +297,7 @@ export type DisciplineUncheckedUpdateInput = {
   hours?: Prisma.IntFieldUpdateOperationsInput | number
   teachers?: Prisma.TeacherUncheckedUpdateManyWithoutDisciplinesNestedInput
   avaliacoes?: Prisma.AvaliacaoUncheckedUpdateManyWithoutDisciplineNestedInput
+  documents?: Prisma.DocumentsUncheckedUpdateManyWithoutDisciplineNestedInput
 }
 
 export type DisciplineCreateManyInput = {
@@ -411,11 +418,26 @@ export type DisciplineUpdateOneRequiredWithoutAvaliacoesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.DisciplineUpdateToOneWithWhereWithoutAvaliacoesInput, Prisma.DisciplineUpdateWithoutAvaliacoesInput>, Prisma.DisciplineUncheckedUpdateWithoutAvaliacoesInput>
 }
 
+export type DisciplineCreateNestedOneWithoutDocumentsInput = {
+  create?: Prisma.XOR<Prisma.DisciplineCreateWithoutDocumentsInput, Prisma.DisciplineUncheckedCreateWithoutDocumentsInput>
+  connectOrCreate?: Prisma.DisciplineCreateOrConnectWithoutDocumentsInput
+  connect?: Prisma.DisciplineWhereUniqueInput
+}
+
+export type DisciplineUpdateOneRequiredWithoutDocumentsNestedInput = {
+  create?: Prisma.XOR<Prisma.DisciplineCreateWithoutDocumentsInput, Prisma.DisciplineUncheckedCreateWithoutDocumentsInput>
+  connectOrCreate?: Prisma.DisciplineCreateOrConnectWithoutDocumentsInput
+  upsert?: Prisma.DisciplineUpsertWithoutDocumentsInput
+  connect?: Prisma.DisciplineWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DisciplineUpdateToOneWithWhereWithoutDocumentsInput, Prisma.DisciplineUpdateWithoutDocumentsInput>, Prisma.DisciplineUncheckedUpdateWithoutDocumentsInput>
+}
+
 export type DisciplineCreateWithoutTeachersInput = {
   name: string
   course: string
   hours: number
   avaliacoes?: Prisma.AvaliacaoCreateNestedManyWithoutDisciplineInput
+  documents?: Prisma.DocumentsCreateNestedManyWithoutDisciplineInput
 }
 
 export type DisciplineUncheckedCreateWithoutTeachersInput = {
@@ -424,6 +446,7 @@ export type DisciplineUncheckedCreateWithoutTeachersInput = {
   course: string
   hours: number
   avaliacoes?: Prisma.AvaliacaoUncheckedCreateNestedManyWithoutDisciplineInput
+  documents?: Prisma.DocumentsUncheckedCreateNestedManyWithoutDisciplineInput
 }
 
 export type DisciplineCreateOrConnectWithoutTeachersInput = {
@@ -462,6 +485,7 @@ export type DisciplineCreateWithoutAvaliacoesInput = {
   course: string
   hours: number
   teachers?: Prisma.TeacherCreateNestedManyWithoutDisciplinesInput
+  documents?: Prisma.DocumentsCreateNestedManyWithoutDisciplineInput
 }
 
 export type DisciplineUncheckedCreateWithoutAvaliacoesInput = {
@@ -470,6 +494,7 @@ export type DisciplineUncheckedCreateWithoutAvaliacoesInput = {
   course: string
   hours: number
   teachers?: Prisma.TeacherUncheckedCreateNestedManyWithoutDisciplinesInput
+  documents?: Prisma.DocumentsUncheckedCreateNestedManyWithoutDisciplineInput
 }
 
 export type DisciplineCreateOrConnectWithoutAvaliacoesInput = {
@@ -493,6 +518,7 @@ export type DisciplineUpdateWithoutAvaliacoesInput = {
   course?: Prisma.StringFieldUpdateOperationsInput | string
   hours?: Prisma.IntFieldUpdateOperationsInput | number
   teachers?: Prisma.TeacherUpdateManyWithoutDisciplinesNestedInput
+  documents?: Prisma.DocumentsUpdateManyWithoutDisciplineNestedInput
 }
 
 export type DisciplineUncheckedUpdateWithoutAvaliacoesInput = {
@@ -501,6 +527,57 @@ export type DisciplineUncheckedUpdateWithoutAvaliacoesInput = {
   course?: Prisma.StringFieldUpdateOperationsInput | string
   hours?: Prisma.IntFieldUpdateOperationsInput | number
   teachers?: Prisma.TeacherUncheckedUpdateManyWithoutDisciplinesNestedInput
+  documents?: Prisma.DocumentsUncheckedUpdateManyWithoutDisciplineNestedInput
+}
+
+export type DisciplineCreateWithoutDocumentsInput = {
+  name: string
+  course: string
+  hours: number
+  teachers?: Prisma.TeacherCreateNestedManyWithoutDisciplinesInput
+  avaliacoes?: Prisma.AvaliacaoCreateNestedManyWithoutDisciplineInput
+}
+
+export type DisciplineUncheckedCreateWithoutDocumentsInput = {
+  discipline_id?: number
+  name: string
+  course: string
+  hours: number
+  teachers?: Prisma.TeacherUncheckedCreateNestedManyWithoutDisciplinesInput
+  avaliacoes?: Prisma.AvaliacaoUncheckedCreateNestedManyWithoutDisciplineInput
+}
+
+export type DisciplineCreateOrConnectWithoutDocumentsInput = {
+  where: Prisma.DisciplineWhereUniqueInput
+  create: Prisma.XOR<Prisma.DisciplineCreateWithoutDocumentsInput, Prisma.DisciplineUncheckedCreateWithoutDocumentsInput>
+}
+
+export type DisciplineUpsertWithoutDocumentsInput = {
+  update: Prisma.XOR<Prisma.DisciplineUpdateWithoutDocumentsInput, Prisma.DisciplineUncheckedUpdateWithoutDocumentsInput>
+  create: Prisma.XOR<Prisma.DisciplineCreateWithoutDocumentsInput, Prisma.DisciplineUncheckedCreateWithoutDocumentsInput>
+  where?: Prisma.DisciplineWhereInput
+}
+
+export type DisciplineUpdateToOneWithWhereWithoutDocumentsInput = {
+  where?: Prisma.DisciplineWhereInput
+  data: Prisma.XOR<Prisma.DisciplineUpdateWithoutDocumentsInput, Prisma.DisciplineUncheckedUpdateWithoutDocumentsInput>
+}
+
+export type DisciplineUpdateWithoutDocumentsInput = {
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  course?: Prisma.StringFieldUpdateOperationsInput | string
+  hours?: Prisma.IntFieldUpdateOperationsInput | number
+  teachers?: Prisma.TeacherUpdateManyWithoutDisciplinesNestedInput
+  avaliacoes?: Prisma.AvaliacaoUpdateManyWithoutDisciplineNestedInput
+}
+
+export type DisciplineUncheckedUpdateWithoutDocumentsInput = {
+  discipline_id?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  course?: Prisma.StringFieldUpdateOperationsInput | string
+  hours?: Prisma.IntFieldUpdateOperationsInput | number
+  teachers?: Prisma.TeacherUncheckedUpdateManyWithoutDisciplinesNestedInput
+  avaliacoes?: Prisma.AvaliacaoUncheckedUpdateManyWithoutDisciplineNestedInput
 }
 
 export type DisciplineUpdateWithoutTeachersInput = {
@@ -508,6 +585,7 @@ export type DisciplineUpdateWithoutTeachersInput = {
   course?: Prisma.StringFieldUpdateOperationsInput | string
   hours?: Prisma.IntFieldUpdateOperationsInput | number
   avaliacoes?: Prisma.AvaliacaoUpdateManyWithoutDisciplineNestedInput
+  documents?: Prisma.DocumentsUpdateManyWithoutDisciplineNestedInput
 }
 
 export type DisciplineUncheckedUpdateWithoutTeachersInput = {
@@ -516,6 +594,7 @@ export type DisciplineUncheckedUpdateWithoutTeachersInput = {
   course?: Prisma.StringFieldUpdateOperationsInput | string
   hours?: Prisma.IntFieldUpdateOperationsInput | number
   avaliacoes?: Prisma.AvaliacaoUncheckedUpdateManyWithoutDisciplineNestedInput
+  documents?: Prisma.DocumentsUncheckedUpdateManyWithoutDisciplineNestedInput
 }
 
 export type DisciplineUncheckedUpdateManyWithoutTeachersInput = {
@@ -533,11 +612,13 @@ export type DisciplineUncheckedUpdateManyWithoutTeachersInput = {
 export type DisciplineCountOutputType = {
   teachers: number
   avaliacoes: number
+  documents: number
 }
 
 export type DisciplineCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   teachers?: boolean | DisciplineCountOutputTypeCountTeachersArgs
   avaliacoes?: boolean | DisciplineCountOutputTypeCountAvaliacoesArgs
+  documents?: boolean | DisciplineCountOutputTypeCountDocumentsArgs
 }
 
 /**
@@ -564,6 +645,13 @@ export type DisciplineCountOutputTypeCountAvaliacoesArgs<ExtArgs extends runtime
   where?: Prisma.AvaliacaoWhereInput
 }
 
+/**
+ * DisciplineCountOutputType without action
+ */
+export type DisciplineCountOutputTypeCountDocumentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DocumentsWhereInput
+}
+
 
 export type DisciplineSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   discipline_id?: boolean
@@ -572,6 +660,7 @@ export type DisciplineSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   hours?: boolean
   teachers?: boolean | Prisma.Discipline$teachersArgs<ExtArgs>
   avaliacoes?: boolean | Prisma.Discipline$avaliacoesArgs<ExtArgs>
+  documents?: boolean | Prisma.Discipline$documentsArgs<ExtArgs>
   _count?: boolean | Prisma.DisciplineCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["discipline"]>
 
@@ -600,6 +689,7 @@ export type DisciplineOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs
 export type DisciplineInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   teachers?: boolean | Prisma.Discipline$teachersArgs<ExtArgs>
   avaliacoes?: boolean | Prisma.Discipline$avaliacoesArgs<ExtArgs>
+  documents?: boolean | Prisma.Discipline$documentsArgs<ExtArgs>
   _count?: boolean | Prisma.DisciplineCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type DisciplineIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -610,6 +700,7 @@ export type $DisciplinePayload<ExtArgs extends runtime.Types.Extensions.Internal
   objects: {
     teachers: Prisma.$TeacherPayload<ExtArgs>[]
     avaliacoes: Prisma.$AvaliacaoPayload<ExtArgs>[]
+    documents: Prisma.$DocumentsPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     discipline_id: number
@@ -1012,6 +1103,7 @@ export interface Prisma__DisciplineClient<T, Null = never, ExtArgs extends runti
   readonly [Symbol.toStringTag]: "PrismaPromise"
   teachers<T extends Prisma.Discipline$teachersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Discipline$teachersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TeacherPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   avaliacoes<T extends Prisma.Discipline$avaliacoesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Discipline$avaliacoesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AvaliacaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  documents<T extends Prisma.Discipline$documentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Discipline$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1483,6 +1575,30 @@ export type Discipline$avaliacoesArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   distinct?: Prisma.AvaliacaoScalarFieldEnum | Prisma.AvaliacaoScalarFieldEnum[]
+}
+
+/**
+ * Discipline.documents
+ */
+export type Discipline$documentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Documents
+   */
+  select?: Prisma.DocumentsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Documents
+   */
+  omit?: Prisma.DocumentsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DocumentsInclude<ExtArgs> | null
+  where?: Prisma.DocumentsWhereInput
+  orderBy?: Prisma.DocumentsOrderByWithRelationInput | Prisma.DocumentsOrderByWithRelationInput[]
+  cursor?: Prisma.DocumentsWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DocumentsScalarFieldEnum | Prisma.DocumentsScalarFieldEnum[]
 }
 
 /**

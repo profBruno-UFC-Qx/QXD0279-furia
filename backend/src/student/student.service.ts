@@ -33,7 +33,7 @@ export class StudentService {
   async findAll(take: number, skip: number) {
     const total = await this.studentRepository.count();
     const data = await this.studentRepository.findAll(take, skip);
-    return pagWrapper(data, take, skip, total);
+    return { data: data, meta: pagWrapper(take, skip, total) };
   }
 
   async findById(id: number) {
@@ -77,5 +77,21 @@ export class StudentService {
 
     updatedStudent.user = updatedUser;
     return updatedStudent;
+  }
+
+  async deleteStudent(id: number) {
+    const student = await this.studentRepository.findById(id);
+
+    if (!student || !student.user) {
+      throw new NotFoundError("Aluno nao encontrado");
+    }
+
+    const deleted = await this.userService.deleteUser(student.user.user_id);
+
+    if (!deleted) {
+      throw new NotFoundError("Nao foi possivel deletar o professor");
+    }
+
+    return deleted;
   }
 }

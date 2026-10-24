@@ -1,10 +1,14 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import Header from "@/components/Header/Header.vue";
 import StatsCard from "@/components/Cards/StatsCard.vue";
 import TableDocs from "@/components/Table/TableDocs.vue";
 import ReviewsCard from "@/components/Cards/ReviewsCard.vue";
 import Ornament from "@/components/Ornament/Ornament.vue";
+import { AvaliacaoService } from "@/api/AvaliacaoService";
+import { StatisticsService } from "@/api/StatisticsService";
+import { type metaData } from "@/@types/metaData";
+import { type AvaliacaoResponse } from "@/api/AvaliacaoService";
 
 const boats = [
   {
@@ -28,18 +32,91 @@ const boats = [
     data: "03/06/2026",
   },
 ];
+
+const avaliacoes = ref<AvaliacaoResponse[]>([]);
+const currentPage = ref(1);
+const pageSize = ref(5);
+const totalPages = ref(1);
+
+const avaliacoesLoading = ref(false);
+const avaliacoesError = ref<string | null>(null);
+
+async function fetchEvaluations() {
+  avaliacoesLoading.value = true;
+  avaliacoesError.value = null;
+
+  try {
+    const response = await AvaliacaoService.getMine(
+      pageSize.value,
+      currentPage.value,
+    );
+
+    avaliacoes.value = response.data;
+    totalPages.value = response.meta.totalPages;
+    console.log(response);
+  } catch {
+    avaliacoesError.value = "Failed to load reviews.";
+  } finally {
+    avaliacoesLoading.value = false;
+  }
+}
+
+const statistics = ref<{
+  evaluations: number;
+  downloaded: number;
+  uploaded: number;
+}>({
+  evaluations: 0,
+  downloaded: 0,
+  uploaded: 0,
+});
+const statisticsLoading = ref<boolean>(false);
+const statisticsError = ref<string | null>(null);
+
+async function fetchStatistics() {
+  statisticsLoading.value = false;
+
+  try {
+    const statisticsData = await StatisticsService.getStatisticsHome();
+    statistics.value = statisticsData.data;
+  } catch (error) {
+    statisticsError.value = "Erro ao obter estatisticas.";
+  }
+}
+
+watch(currentPage, fetchEvaluations);
+
+onMounted(async () => {
+  await fetchEvaluations();
+  await fetchStatistics();
+});
 </script>
 
 <template>
   <div class="content container">
     <Header
-      title="Olá, Bruno!"
+      title="Olá, Aluno!"
       description="Here's what's happening with your academic journey today."
     />
+    <v-alert v-if="statisticsError" type="error">
+      {{ statisticsError }}
+    </v-alert>
     <div class="stats">
-      <StatsCard title="Reviews Written" value="12" icon="mdi-star" />
-      <StatsCard title="Documents Uploaded" value="8" icon="mdi-upload" />
-      <StatsCard title="Documents Downloaded" value="45" icon="mdi-upload" />
+      <StatsCard
+        title="Reviews Written"
+        :value="statistics.evaluations && 0"
+        icon="mdi-star"
+      />
+      <StatsCard
+        title="Documents Uploaded"
+        :value="statistics.uploaded && 0"
+        icon="mdi-upload"
+      />
+      <StatsCard
+        title="Documents Downloaded"
+        :value="statistics.downloaded && 0"
+        icon="mdi-upload"
+      />
     </div>
 
     <Ornament :text="'My documents'">
@@ -53,22 +130,39 @@ const boats = [
     <Ornament :text="'My reviews'">
       <template #content>
         <div class="reviews">
-          <ReviewsCard
-            teacher-name="Dr. Helena Martins"
-            dicipline="Data Structures"
-            :rating="4"
-            comment="Great methodology and very clear explanations. The practical exercises were extremely helpful for understanding complex
-algorithms."
-            date="Oct 15, 2023"
-          />
-          <ReviewsCard
-            teacher-name="Dr. Helena Martins"
-            dicipline="Data Structures"
-            :rating="4"
-            comment="Great methodology and very clear explanations. The practical exercises were extremely helpful for understanding complex
-algorithms."
-            date="Oct 15, 2023"
-          />
+          <div v-if="avaliacoesLoading" class="text-center pa-4 full-center">
+            <v-progress-circular :size="64" :width="6" indeterminate />
+          </div>
+
+          <v-alert v-else-if="avaliacoesError" type="error">
+            Nao foi possivel obter as avaliacoes
+          </v-alert>
+
+          <p v-else-if="avaliacoes.length === 0">
+            You haven't received any reviews yet.
+          </p>
+
+          <div class="list" v-else>
+            <ReviewsCard
+              v-for="(avaliacao, index) in avaliacoes"
+              :key="`${avaliacao.creat_at}-${index}`"
+              :teacher-name="avaliacao.teacher.user.name"
+              :dicipline="avaliacao.discipline.name"
+              :rating="avaliacao.nota_geral"
+              :comment="avaliacao.comment"
+              :date="avaliacao.creat_at"
+            />
+
+            <div class="d-flex justify-center mt-4">
+              <v-pagination
+                v-model="currentPage"
+                :length="totalPages"
+                :disabled="avaliacoesLoading"
+                :total-visible="5"
+                rounded="circle"
+              />
+            </div>
+          </div>
         </div>
       </template>
     </Ornament>
@@ -76,6 +170,19 @@ algorithms."
 </template>
 
 <style lang="css" scoped>
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.full-center {
+  height: 700px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .reviews {
   padding: 24px;
   display: flex;

@@ -1,7 +1,6 @@
 import { request } from "./request";
 
-import { type metaData } from "@/@types/metaData";
-
+import { type RequestResponse } from "@/@types/metaData";
 export interface DiciplineResponse {
   dicipline_id: number;
   name: string;
@@ -11,7 +10,8 @@ export interface DiciplineResponse {
 
 export const DiciplineService = {
   getAll: async () => {
-    const data = await request<metaData<DiciplineResponse>>("/dicipline");
+    const data =
+      await request<RequestResponse<DiciplineResponse>>("/dicipline");
 
     return data;
   },

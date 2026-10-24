@@ -40,6 +40,10 @@ export class UserService {
     return await this.userRepository.findUserByEmail(email);
   }
 
+  async findById(id: number) {
+    return await this.userRepository.findUserById(id);
+  }
+
   async updateUser(userId: number, data: Partial<UserDTO>) {
     const user = await this.userRepository.findUserById(userId);
 
