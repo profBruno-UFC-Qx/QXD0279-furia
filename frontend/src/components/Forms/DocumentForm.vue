@@ -1,122 +1,129 @@
 <script setup lang="ts">
-  import { reactive } from 'vue'
+  import { ref } from 'vue'
 
   const emit = defineEmits<{
     (e: 'close'): void
   }>()
 
-  interface UploadFormData {
-    name: string
-    discipline: string
-    date: string
-    file: File | null
-  }
-
-  const form = reactive<UploadFormData>({
-    name: '',
-    discipline: '',
-    date: '',
+  const isSubmitting = ref(false)
+  const formData = ref({
+    title: '',
+    discipline: null,
     file: null,
   })
 
-  function handleFileChange (event: Event) {
-    const target = event.target as HTMLInputElement
-    if (target.files && target.files.length > 0) {
-      form.file = target.files[0]
-    }
-  }
+  const disciplines = [
+    'Estrutura de Dados',
+    'Cálculo II',
+    'Algoritmos',
+  ]
 
   function handleSubmit () {
-    if (!form.file) {
-      alert('Por favor, selecione um arquivo.')
-      return
-    }
+    if (!formData.value.title || !formData.value.file) return
 
-    console.log('Enviando para a API:', form)
-
-    emit('close')
+    isSubmitting.value = true
+    setTimeout(() => {
+      isSubmitting.value = false
+      emit('close')
+    }, 1000)
   }
 </script>
 
 <template>
-  <form class="upload-form" @submit.prevent="handleSubmit">
-    <div class="form-group">
-      <label for="name">Nome</label>
+  <form class="upload-layout" @submit.prevent="handleSubmit">
 
-      <input
-        id="name"
-        v-model="form.name"
-        placeholder="Digite o nome"
+    <div class="form-section">
+      <label class="main-label">Título do material <span class="required">*</span></label>
+
+      <v-text-field
+        v-model="formData.title"
+        density="comfortable"
+        hide-details
+        placeholder="Ex: Lista de Exercícios 01 - Árvores Binárias"
         required
-        type="text"
-      >
+        variant="outlined"
+      />
     </div>
 
-    <div class="form-group">
-      <label for="discipline">Disciplina</label>
+    <div class="form-section">
+      <label class="main-label">Disciplina <span class="required">*</span></label>
 
-      <input
-        id="discipline"
-        v-model="form.discipline"
-        placeholder="Digite a disciplina"
+      <v-select
+        v-model="formData.discipline"
+        density="comfortable"
+        hide-details
+        :items="disciplines"
+        placeholder="Selecione a disciplina correspondente"
+        prepend-inner-icon="mdi-book-open-variant"
         required
-        type="text"
+        variant="outlined"
+      />
+    </div>
+
+    <div class="form-section">
+      <label class="main-label">Arquivo <span class="required">*</span></label>
+
+      <v-file-input
+        v-model="formData.file"
+        density="comfortable"
+        hide-details
+        placeholder="Selecione o arquivo (PDF, DOCX, ZIP)"
+        prepend-icon=""
+        prepend-inner-icon="mdi-paperclip"
+        required
+        show-size
+        variant="outlined"
+      />
+    </div>
+
+    <div class="footer-actions">
+      <v-btn class="px-6" color="grey-darken-1" variant="outlined" @click="$emit('close')">
+        Cancelar
+      </v-btn>
+
+      <v-btn
+        append-icon="mdi-cloud-upload"
+        class="px-6"
+        color="primary"
+        elevation="0"
+        :loading="isSubmitting"
+        type="submit"
       >
+        Fazer Upload
+      </v-btn>
     </div>
-
-    <div class="form-group">
-      <label for="date">Data</label>
-      <input id="date" v-model="form.date" required type="date">
-    </div>
-
-    <div class="form-group">
-      <label for="file">Arquivo</label>
-      <input id="file" required type="file" @change="handleFileChange">
-
-      <span v-if="form.file"> Arquivo selecionado: {{ form.file.name }} </span>
-    </div>
-
-    <button type="submit">Enviar</button>
   </form>
 </template>
 
 <style scoped>
-.upload-form {
-  max-width: 700px;
-  margin: 30px auto;
-  padding: 24px;
-  border-radius: 8px;
+.upload-layout {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 24px;
 }
 
-h2 {
-  margin: 0;
-}
-
-.form-group {
+.form-section {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
-input {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+.main-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
 }
 
-button {
-  padding: 12px;
-  border: none;
-  border-radius: 5px;
-  background: #2563eb;
-  color: white;
-  cursor: pointer;
+.required {
+  color: #2563eb;
 }
 
-button:hover {
-  background: #1d4ed8;
+.footer-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 8px;
+  padding-top: 24px;
+  border-top: 1px solid #e5e7eb;
 }
 </style>

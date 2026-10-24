@@ -47,6 +47,9 @@
       </aside>
     </section>
 
+    <BaseModal v-model:modal="isUploadModalOpen" title="Upload Material">
+      <DocumentForm @close="isUploadModalOpen = false" />
+    </BaseModal>
   </main>
 </template>
 
@@ -63,12 +66,15 @@
   import DashboardStatCard from '@/components/Cards/Professor/DashboardStatCard.vue'
   import RecentDocumentsCard from '@/components/Cards/Professor/RecentDocumentsCard.vue'
   import RecentReviewsCard from '@/components/Cards/Professor/RecentReviewsCard.vue'
+  import DocumentForm from '@/components/Forms/DocumentForm.vue'
+  import BaseModal from '@/components/Modais/BaseModal.vue'
 
   const professorName = ref('Dra. Helena')
   const statsList = ref<DashboardStat[]>([])
   const recentReviews = ref<DashboardReview[]>([])
   const activeDisciplines = ref<ActiveDiscipline[]>([])
   const recentDocuments = ref<RecentDocument[]>([])
+  const isUploadModalOpen = ref(false)
 
   onMounted(() => {
     fetchDashboardData()
@@ -133,7 +139,9 @@
     ]
   }
 
-  const handleUploadMaterial = () => alert('Abrir modal de upload de material!')
+  function handleUploadMaterial () {
+    isUploadModalOpen.value = true
+  }
   const handleExportReport = () => alert('Exportar relatório!')
   const handleViewAllReviews = () => alert('Ver todas as avaliações!')
 </script>
