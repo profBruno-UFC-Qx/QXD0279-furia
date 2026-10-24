@@ -28,138 +28,116 @@ export type AggregateAvaliacao = {
 
 export type AvaliacaoAvgAggregateOutputType = {
   id: number | null
-  hours: number | null
   nota_geral: number | null
   nota_didatica: number | null
   nota_metodologia: number | null
-  estudante_id: number | null
-  professor_id: number | null
-  disciplina_id: number | null
+  student_id: number | null
+  teacher_id: number | null
+  discipline_id: number | null
 }
 
 export type AvaliacaoSumAggregateOutputType = {
   id: number | null
-  hours: number | null
   nota_geral: number | null
   nota_didatica: number | null
   nota_metodologia: number | null
-  estudante_id: number | null
-  professor_id: number | null
-  disciplina_id: number | null
+  student_id: number | null
+  teacher_id: number | null
+  discipline_id: number | null
 }
 
 export type AvaliacaoMinAggregateOutputType = {
   id: number | null
-  name: string | null
-  course: string | null
-  hours: number | null
   nota_geral: number | null
   nota_didatica: number | null
   nota_metodologia: number | null
   comment: string | null
   creat_at: Date | null
-  estudante_id: number | null
-  professor_id: number | null
-  disciplina_id: number | null
+  student_id: number | null
+  teacher_id: number | null
+  discipline_id: number | null
 }
 
 export type AvaliacaoMaxAggregateOutputType = {
   id: number | null
-  name: string | null
-  course: string | null
-  hours: number | null
   nota_geral: number | null
   nota_didatica: number | null
   nota_metodologia: number | null
   comment: string | null
   creat_at: Date | null
-  estudante_id: number | null
-  professor_id: number | null
-  disciplina_id: number | null
+  student_id: number | null
+  teacher_id: number | null
+  discipline_id: number | null
 }
 
 export type AvaliacaoCountAggregateOutputType = {
   id: number
-  name: number
-  course: number
-  hours: number
   nota_geral: number
   nota_didatica: number
   nota_metodologia: number
   comment: number
   creat_at: number
-  estudante_id: number
-  professor_id: number
-  disciplina_id: number
+  student_id: number
+  teacher_id: number
+  discipline_id: number
   _all: number
 }
 
 
 export type AvaliacaoAvgAggregateInputType = {
   id?: true
-  hours?: true
   nota_geral?: true
   nota_didatica?: true
   nota_metodologia?: true
-  estudante_id?: true
-  professor_id?: true
-  disciplina_id?: true
+  student_id?: true
+  teacher_id?: true
+  discipline_id?: true
 }
 
 export type AvaliacaoSumAggregateInputType = {
   id?: true
-  hours?: true
   nota_geral?: true
   nota_didatica?: true
   nota_metodologia?: true
-  estudante_id?: true
-  professor_id?: true
-  disciplina_id?: true
+  student_id?: true
+  teacher_id?: true
+  discipline_id?: true
 }
 
 export type AvaliacaoMinAggregateInputType = {
   id?: true
-  name?: true
-  course?: true
-  hours?: true
   nota_geral?: true
   nota_didatica?: true
   nota_metodologia?: true
   comment?: true
   creat_at?: true
-  estudante_id?: true
-  professor_id?: true
-  disciplina_id?: true
+  student_id?: true
+  teacher_id?: true
+  discipline_id?: true
 }
 
 export type AvaliacaoMaxAggregateInputType = {
   id?: true
-  name?: true
-  course?: true
-  hours?: true
   nota_geral?: true
   nota_didatica?: true
   nota_metodologia?: true
   comment?: true
   creat_at?: true
-  estudante_id?: true
-  professor_id?: true
-  disciplina_id?: true
+  student_id?: true
+  teacher_id?: true
+  discipline_id?: true
 }
 
 export type AvaliacaoCountAggregateInputType = {
   id?: true
-  name?: true
-  course?: true
-  hours?: true
   nota_geral?: true
   nota_didatica?: true
   nota_metodologia?: true
   comment?: true
   creat_at?: true
-  estudante_id?: true
-  professor_id?: true
-  disciplina_id?: true
+  student_id?: true
+  teacher_id?: true
+  discipline_id?: true
   _all?: true
 }
 
@@ -251,17 +229,14 @@ export type AvaliacaoGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
 
 export type AvaliacaoGroupByOutputType = {
   id: number
-  name: string
-  course: string
-  hours: number
   nota_geral: number
   nota_didatica: number
   nota_metodologia: number
   comment: string
   creat_at: Date
-  estudante_id: number
-  professor_id: number
-  disciplina_id: number
+  student_id: number
+  teacher_id: number
+  discipline_id: number
   _count: AvaliacaoCountAggregateOutputType | null
   _avg: AvaliacaoAvgAggregateOutputType | null
   _sum: AvaliacaoSumAggregateOutputType | null
@@ -289,37 +264,31 @@ export type AvaliacaoWhereInput = {
   OR?: Prisma.AvaliacaoWhereInput[]
   NOT?: Prisma.AvaliacaoWhereInput | Prisma.AvaliacaoWhereInput[]
   id?: Prisma.IntFilter<"Avaliacao"> | number
-  name?: Prisma.StringFilter<"Avaliacao"> | string
-  course?: Prisma.StringFilter<"Avaliacao"> | string
-  hours?: Prisma.IntFilter<"Avaliacao"> | number
   nota_geral?: Prisma.FloatFilter<"Avaliacao"> | number
   nota_didatica?: Prisma.FloatFilter<"Avaliacao"> | number
   nota_metodologia?: Prisma.FloatFilter<"Avaliacao"> | number
   comment?: Prisma.StringFilter<"Avaliacao"> | string
   creat_at?: Prisma.DateTimeFilter<"Avaliacao"> | Date | string
-  estudante_id?: Prisma.IntFilter<"Avaliacao"> | number
-  professor_id?: Prisma.IntFilter<"Avaliacao"> | number
-  disciplina_id?: Prisma.IntFilter<"Avaliacao"> | number
-  estudante?: Prisma.XOR<Prisma.StudentScalarRelationFilter, Prisma.StudentWhereInput>
-  professor?: Prisma.XOR<Prisma.TeacherScalarRelationFilter, Prisma.TeacherWhereInput>
+  student_id?: Prisma.IntFilter<"Avaliacao"> | number
+  teacher_id?: Prisma.IntFilter<"Avaliacao"> | number
+  discipline_id?: Prisma.IntFilter<"Avaliacao"> | number
+  student?: Prisma.XOR<Prisma.StudentScalarRelationFilter, Prisma.StudentWhereInput>
+  teacher?: Prisma.XOR<Prisma.TeacherScalarRelationFilter, Prisma.TeacherWhereInput>
   discipline?: Prisma.XOR<Prisma.DisciplineScalarRelationFilter, Prisma.DisciplineWhereInput>
 }
 
 export type AvaliacaoOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
-  course?: Prisma.SortOrder
-  hours?: Prisma.SortOrder
   nota_geral?: Prisma.SortOrder
   nota_didatica?: Prisma.SortOrder
   nota_metodologia?: Prisma.SortOrder
   comment?: Prisma.SortOrder
   creat_at?: Prisma.SortOrder
-  estudante_id?: Prisma.SortOrder
-  professor_id?: Prisma.SortOrder
-  disciplina_id?: Prisma.SortOrder
-  estudante?: Prisma.StudentOrderByWithRelationInput
-  professor?: Prisma.TeacherOrderByWithRelationInput
+  student_id?: Prisma.SortOrder
+  teacher_id?: Prisma.SortOrder
+  discipline_id?: Prisma.SortOrder
+  student?: Prisma.StudentOrderByWithRelationInput
+  teacher?: Prisma.TeacherOrderByWithRelationInput
   discipline?: Prisma.DisciplineOrderByWithRelationInput
 }
 
@@ -328,35 +297,29 @@ export type AvaliacaoWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.AvaliacaoWhereInput | Prisma.AvaliacaoWhereInput[]
   OR?: Prisma.AvaliacaoWhereInput[]
   NOT?: Prisma.AvaliacaoWhereInput | Prisma.AvaliacaoWhereInput[]
-  name?: Prisma.StringFilter<"Avaliacao"> | string
-  course?: Prisma.StringFilter<"Avaliacao"> | string
-  hours?: Prisma.IntFilter<"Avaliacao"> | number
   nota_geral?: Prisma.FloatFilter<"Avaliacao"> | number
   nota_didatica?: Prisma.FloatFilter<"Avaliacao"> | number
   nota_metodologia?: Prisma.FloatFilter<"Avaliacao"> | number
   comment?: Prisma.StringFilter<"Avaliacao"> | string
   creat_at?: Prisma.DateTimeFilter<"Avaliacao"> | Date | string
-  estudante_id?: Prisma.IntFilter<"Avaliacao"> | number
-  professor_id?: Prisma.IntFilter<"Avaliacao"> | number
-  disciplina_id?: Prisma.IntFilter<"Avaliacao"> | number
-  estudante?: Prisma.XOR<Prisma.StudentScalarRelationFilter, Prisma.StudentWhereInput>
-  professor?: Prisma.XOR<Prisma.TeacherScalarRelationFilter, Prisma.TeacherWhereInput>
+  student_id?: Prisma.IntFilter<"Avaliacao"> | number
+  teacher_id?: Prisma.IntFilter<"Avaliacao"> | number
+  discipline_id?: Prisma.IntFilter<"Avaliacao"> | number
+  student?: Prisma.XOR<Prisma.StudentScalarRelationFilter, Prisma.StudentWhereInput>
+  teacher?: Prisma.XOR<Prisma.TeacherScalarRelationFilter, Prisma.TeacherWhereInput>
   discipline?: Prisma.XOR<Prisma.DisciplineScalarRelationFilter, Prisma.DisciplineWhereInput>
 }, "id">
 
 export type AvaliacaoOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
-  course?: Prisma.SortOrder
-  hours?: Prisma.SortOrder
   nota_geral?: Prisma.SortOrder
   nota_didatica?: Prisma.SortOrder
   nota_metodologia?: Prisma.SortOrder
   comment?: Prisma.SortOrder
   creat_at?: Prisma.SortOrder
-  estudante_id?: Prisma.SortOrder
-  professor_id?: Prisma.SortOrder
-  disciplina_id?: Prisma.SortOrder
+  student_id?: Prisma.SortOrder
+  teacher_id?: Prisma.SortOrder
+  discipline_id?: Prisma.SortOrder
   _count?: Prisma.AvaliacaoCountOrderByAggregateInput
   _avg?: Prisma.AvaliacaoAvgOrderByAggregateInput
   _max?: Prisma.AvaliacaoMaxOrderByAggregateInput
@@ -369,96 +332,75 @@ export type AvaliacaoScalarWhereWithAggregatesInput = {
   OR?: Prisma.AvaliacaoScalarWhereWithAggregatesInput[]
   NOT?: Prisma.AvaliacaoScalarWhereWithAggregatesInput | Prisma.AvaliacaoScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"Avaliacao"> | number
-  name?: Prisma.StringWithAggregatesFilter<"Avaliacao"> | string
-  course?: Prisma.StringWithAggregatesFilter<"Avaliacao"> | string
-  hours?: Prisma.IntWithAggregatesFilter<"Avaliacao"> | number
   nota_geral?: Prisma.FloatWithAggregatesFilter<"Avaliacao"> | number
   nota_didatica?: Prisma.FloatWithAggregatesFilter<"Avaliacao"> | number
   nota_metodologia?: Prisma.FloatWithAggregatesFilter<"Avaliacao"> | number
   comment?: Prisma.StringWithAggregatesFilter<"Avaliacao"> | string
   creat_at?: Prisma.DateTimeWithAggregatesFilter<"Avaliacao"> | Date | string
-  estudante_id?: Prisma.IntWithAggregatesFilter<"Avaliacao"> | number
-  professor_id?: Prisma.IntWithAggregatesFilter<"Avaliacao"> | number
-  disciplina_id?: Prisma.IntWithAggregatesFilter<"Avaliacao"> | number
+  student_id?: Prisma.IntWithAggregatesFilter<"Avaliacao"> | number
+  teacher_id?: Prisma.IntWithAggregatesFilter<"Avaliacao"> | number
+  discipline_id?: Prisma.IntWithAggregatesFilter<"Avaliacao"> | number
 }
 
 export type AvaliacaoCreateInput = {
-  name: string
-  course: string
-  hours: number
   nota_geral: number
   nota_didatica: number
   nota_metodologia: number
   comment: string
   creat_at?: Date | string
-  estudante: Prisma.StudentCreateNestedOneWithoutAvaliacoesInput
-  professor: Prisma.TeacherCreateNestedOneWithoutAvaliacoesInput
+  student: Prisma.StudentCreateNestedOneWithoutAvaliacoesInput
+  teacher: Prisma.TeacherCreateNestedOneWithoutAvaliacoesInput
   discipline: Prisma.DisciplineCreateNestedOneWithoutAvaliacoesInput
 }
 
 export type AvaliacaoUncheckedCreateInput = {
   id?: number
-  name: string
-  course: string
-  hours: number
   nota_geral: number
   nota_didatica: number
   nota_metodologia: number
   comment: string
   creat_at?: Date | string
-  estudante_id: number
-  professor_id: number
-  disciplina_id: number
+  student_id: number
+  teacher_id: number
+  discipline_id: number
 }
 
 export type AvaliacaoUpdateInput = {
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  course?: Prisma.StringFieldUpdateOperationsInput | string
-  hours?: Prisma.IntFieldUpdateOperationsInput | number
   nota_geral?: Prisma.FloatFieldUpdateOperationsInput | number
   nota_didatica?: Prisma.FloatFieldUpdateOperationsInput | number
   nota_metodologia?: Prisma.FloatFieldUpdateOperationsInput | number
   comment?: Prisma.StringFieldUpdateOperationsInput | string
   creat_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  estudante?: Prisma.StudentUpdateOneRequiredWithoutAvaliacoesNestedInput
-  professor?: Prisma.TeacherUpdateOneRequiredWithoutAvaliacoesNestedInput
+  student?: Prisma.StudentUpdateOneRequiredWithoutAvaliacoesNestedInput
+  teacher?: Prisma.TeacherUpdateOneRequiredWithoutAvaliacoesNestedInput
   discipline?: Prisma.DisciplineUpdateOneRequiredWithoutAvaliacoesNestedInput
 }
 
 export type AvaliacaoUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  course?: Prisma.StringFieldUpdateOperationsInput | string
-  hours?: Prisma.IntFieldUpdateOperationsInput | number
   nota_geral?: Prisma.FloatFieldUpdateOperationsInput | number
   nota_didatica?: Prisma.FloatFieldUpdateOperationsInput | number
   nota_metodologia?: Prisma.FloatFieldUpdateOperationsInput | number
   comment?: Prisma.StringFieldUpdateOperationsInput | string
   creat_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  estudante_id?: Prisma.IntFieldUpdateOperationsInput | number
-  professor_id?: Prisma.IntFieldUpdateOperationsInput | number
-  disciplina_id?: Prisma.IntFieldUpdateOperationsInput | number
+  student_id?: Prisma.IntFieldUpdateOperationsInput | number
+  teacher_id?: Prisma.IntFieldUpdateOperationsInput | number
+  discipline_id?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type AvaliacaoCreateManyInput = {
   id?: number
-  name: string
-  course: string
-  hours: number
   nota_geral: number
   nota_didatica: number
   nota_metodologia: number
   comment: string
   creat_at?: Date | string
-  estudante_id: number
-  professor_id: number
-  disciplina_id: number
+  student_id: number
+  teacher_id: number
+  discipline_id: number
 }
 
 export type AvaliacaoUpdateManyMutationInput = {
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  course?: Prisma.StringFieldUpdateOperationsInput | string
-  hours?: Prisma.IntFieldUpdateOperationsInput | number
   nota_geral?: Prisma.FloatFieldUpdateOperationsInput | number
   nota_didatica?: Prisma.FloatFieldUpdateOperationsInput | number
   nota_metodologia?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -468,17 +410,14 @@ export type AvaliacaoUpdateManyMutationInput = {
 
 export type AvaliacaoUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  course?: Prisma.StringFieldUpdateOperationsInput | string
-  hours?: Prisma.IntFieldUpdateOperationsInput | number
   nota_geral?: Prisma.FloatFieldUpdateOperationsInput | number
   nota_didatica?: Prisma.FloatFieldUpdateOperationsInput | number
   nota_metodologia?: Prisma.FloatFieldUpdateOperationsInput | number
   comment?: Prisma.StringFieldUpdateOperationsInput | string
   creat_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  estudante_id?: Prisma.IntFieldUpdateOperationsInput | number
-  professor_id?: Prisma.IntFieldUpdateOperationsInput | number
-  disciplina_id?: Prisma.IntFieldUpdateOperationsInput | number
+  student_id?: Prisma.IntFieldUpdateOperationsInput | number
+  teacher_id?: Prisma.IntFieldUpdateOperationsInput | number
+  discipline_id?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type AvaliacaoListRelationFilter = {
@@ -493,152 +432,141 @@ export type AvaliacaoOrderByRelationAggregateInput = {
 
 export type AvaliacaoCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
-  course?: Prisma.SortOrder
-  hours?: Prisma.SortOrder
   nota_geral?: Prisma.SortOrder
   nota_didatica?: Prisma.SortOrder
   nota_metodologia?: Prisma.SortOrder
   comment?: Prisma.SortOrder
   creat_at?: Prisma.SortOrder
-  estudante_id?: Prisma.SortOrder
-  professor_id?: Prisma.SortOrder
-  disciplina_id?: Prisma.SortOrder
+  student_id?: Prisma.SortOrder
+  teacher_id?: Prisma.SortOrder
+  discipline_id?: Prisma.SortOrder
 }
 
 export type AvaliacaoAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  hours?: Prisma.SortOrder
   nota_geral?: Prisma.SortOrder
   nota_didatica?: Prisma.SortOrder
   nota_metodologia?: Prisma.SortOrder
-  estudante_id?: Prisma.SortOrder
-  professor_id?: Prisma.SortOrder
-  disciplina_id?: Prisma.SortOrder
+  student_id?: Prisma.SortOrder
+  teacher_id?: Prisma.SortOrder
+  discipline_id?: Prisma.SortOrder
 }
 
 export type AvaliacaoMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
-  course?: Prisma.SortOrder
-  hours?: Prisma.SortOrder
   nota_geral?: Prisma.SortOrder
   nota_didatica?: Prisma.SortOrder
   nota_metodologia?: Prisma.SortOrder
   comment?: Prisma.SortOrder
   creat_at?: Prisma.SortOrder
-  estudante_id?: Prisma.SortOrder
-  professor_id?: Prisma.SortOrder
-  disciplina_id?: Prisma.SortOrder
+  student_id?: Prisma.SortOrder
+  teacher_id?: Prisma.SortOrder
+  discipline_id?: Prisma.SortOrder
 }
 
 export type AvaliacaoMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
-  course?: Prisma.SortOrder
-  hours?: Prisma.SortOrder
   nota_geral?: Prisma.SortOrder
   nota_didatica?: Prisma.SortOrder
   nota_metodologia?: Prisma.SortOrder
   comment?: Prisma.SortOrder
   creat_at?: Prisma.SortOrder
-  estudante_id?: Prisma.SortOrder
-  professor_id?: Prisma.SortOrder
-  disciplina_id?: Prisma.SortOrder
+  student_id?: Prisma.SortOrder
+  teacher_id?: Prisma.SortOrder
+  discipline_id?: Prisma.SortOrder
 }
 
 export type AvaliacaoSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  hours?: Prisma.SortOrder
   nota_geral?: Prisma.SortOrder
   nota_didatica?: Prisma.SortOrder
   nota_metodologia?: Prisma.SortOrder
-  estudante_id?: Prisma.SortOrder
-  professor_id?: Prisma.SortOrder
-  disciplina_id?: Prisma.SortOrder
+  student_id?: Prisma.SortOrder
+  teacher_id?: Prisma.SortOrder
+  discipline_id?: Prisma.SortOrder
 }
 
-export type AvaliacaoCreateNestedManyWithoutEstudanteInput = {
-  create?: Prisma.XOR<Prisma.AvaliacaoCreateWithoutEstudanteInput, Prisma.AvaliacaoUncheckedCreateWithoutEstudanteInput> | Prisma.AvaliacaoCreateWithoutEstudanteInput[] | Prisma.AvaliacaoUncheckedCreateWithoutEstudanteInput[]
-  connectOrCreate?: Prisma.AvaliacaoCreateOrConnectWithoutEstudanteInput | Prisma.AvaliacaoCreateOrConnectWithoutEstudanteInput[]
-  createMany?: Prisma.AvaliacaoCreateManyEstudanteInputEnvelope
+export type AvaliacaoCreateNestedManyWithoutStudentInput = {
+  create?: Prisma.XOR<Prisma.AvaliacaoCreateWithoutStudentInput, Prisma.AvaliacaoUncheckedCreateWithoutStudentInput> | Prisma.AvaliacaoCreateWithoutStudentInput[] | Prisma.AvaliacaoUncheckedCreateWithoutStudentInput[]
+  connectOrCreate?: Prisma.AvaliacaoCreateOrConnectWithoutStudentInput | Prisma.AvaliacaoCreateOrConnectWithoutStudentInput[]
+  createMany?: Prisma.AvaliacaoCreateManyStudentInputEnvelope
   connect?: Prisma.AvaliacaoWhereUniqueInput | Prisma.AvaliacaoWhereUniqueInput[]
 }
 
-export type AvaliacaoUncheckedCreateNestedManyWithoutEstudanteInput = {
-  create?: Prisma.XOR<Prisma.AvaliacaoCreateWithoutEstudanteInput, Prisma.AvaliacaoUncheckedCreateWithoutEstudanteInput> | Prisma.AvaliacaoCreateWithoutEstudanteInput[] | Prisma.AvaliacaoUncheckedCreateWithoutEstudanteInput[]
-  connectOrCreate?: Prisma.AvaliacaoCreateOrConnectWithoutEstudanteInput | Prisma.AvaliacaoCreateOrConnectWithoutEstudanteInput[]
-  createMany?: Prisma.AvaliacaoCreateManyEstudanteInputEnvelope
+export type AvaliacaoUncheckedCreateNestedManyWithoutStudentInput = {
+  create?: Prisma.XOR<Prisma.AvaliacaoCreateWithoutStudentInput, Prisma.AvaliacaoUncheckedCreateWithoutStudentInput> | Prisma.AvaliacaoCreateWithoutStudentInput[] | Prisma.AvaliacaoUncheckedCreateWithoutStudentInput[]
+  connectOrCreate?: Prisma.AvaliacaoCreateOrConnectWithoutStudentInput | Prisma.AvaliacaoCreateOrConnectWithoutStudentInput[]
+  createMany?: Prisma.AvaliacaoCreateManyStudentInputEnvelope
   connect?: Prisma.AvaliacaoWhereUniqueInput | Prisma.AvaliacaoWhereUniqueInput[]
 }
 
-export type AvaliacaoUpdateManyWithoutEstudanteNestedInput = {
-  create?: Prisma.XOR<Prisma.AvaliacaoCreateWithoutEstudanteInput, Prisma.AvaliacaoUncheckedCreateWithoutEstudanteInput> | Prisma.AvaliacaoCreateWithoutEstudanteInput[] | Prisma.AvaliacaoUncheckedCreateWithoutEstudanteInput[]
-  connectOrCreate?: Prisma.AvaliacaoCreateOrConnectWithoutEstudanteInput | Prisma.AvaliacaoCreateOrConnectWithoutEstudanteInput[]
-  upsert?: Prisma.AvaliacaoUpsertWithWhereUniqueWithoutEstudanteInput | Prisma.AvaliacaoUpsertWithWhereUniqueWithoutEstudanteInput[]
-  createMany?: Prisma.AvaliacaoCreateManyEstudanteInputEnvelope
+export type AvaliacaoUpdateManyWithoutStudentNestedInput = {
+  create?: Prisma.XOR<Prisma.AvaliacaoCreateWithoutStudentInput, Prisma.AvaliacaoUncheckedCreateWithoutStudentInput> | Prisma.AvaliacaoCreateWithoutStudentInput[] | Prisma.AvaliacaoUncheckedCreateWithoutStudentInput[]
+  connectOrCreate?: Prisma.AvaliacaoCreateOrConnectWithoutStudentInput | Prisma.AvaliacaoCreateOrConnectWithoutStudentInput[]
+  upsert?: Prisma.AvaliacaoUpsertWithWhereUniqueWithoutStudentInput | Prisma.AvaliacaoUpsertWithWhereUniqueWithoutStudentInput[]
+  createMany?: Prisma.AvaliacaoCreateManyStudentInputEnvelope
   set?: Prisma.AvaliacaoWhereUniqueInput | Prisma.AvaliacaoWhereUniqueInput[]
   disconnect?: Prisma.AvaliacaoWhereUniqueInput | Prisma.AvaliacaoWhereUniqueInput[]
   delete?: Prisma.AvaliacaoWhereUniqueInput | Prisma.AvaliacaoWhereUniqueInput[]
   connect?: Prisma.AvaliacaoWhereUniqueInput | Prisma.AvaliacaoWhereUniqueInput[]
-  update?: Prisma.AvaliacaoUpdateWithWhereUniqueWithoutEstudanteInput | Prisma.AvaliacaoUpdateWithWhereUniqueWithoutEstudanteInput[]
-  updateMany?: Prisma.AvaliacaoUpdateManyWithWhereWithoutEstudanteInput | Prisma.AvaliacaoUpdateManyWithWhereWithoutEstudanteInput[]
+  update?: Prisma.AvaliacaoUpdateWithWhereUniqueWithoutStudentInput | Prisma.AvaliacaoUpdateWithWhereUniqueWithoutStudentInput[]
+  updateMany?: Prisma.AvaliacaoUpdateManyWithWhereWithoutStudentInput | Prisma.AvaliacaoUpdateManyWithWhereWithoutStudentInput[]
   deleteMany?: Prisma.AvaliacaoScalarWhereInput | Prisma.AvaliacaoScalarWhereInput[]
 }
 
-export type AvaliacaoUncheckedUpdateManyWithoutEstudanteNestedInput = {
-  create?: Prisma.XOR<Prisma.AvaliacaoCreateWithoutEstudanteInput, Prisma.AvaliacaoUncheckedCreateWithoutEstudanteInput> | Prisma.AvaliacaoCreateWithoutEstudanteInput[] | Prisma.AvaliacaoUncheckedCreateWithoutEstudanteInput[]
-  connectOrCreate?: Prisma.AvaliacaoCreateOrConnectWithoutEstudanteInput | Prisma.AvaliacaoCreateOrConnectWithoutEstudanteInput[]
-  upsert?: Prisma.AvaliacaoUpsertWithWhereUniqueWithoutEstudanteInput | Prisma.AvaliacaoUpsertWithWhereUniqueWithoutEstudanteInput[]
-  createMany?: Prisma.AvaliacaoCreateManyEstudanteInputEnvelope
+export type AvaliacaoUncheckedUpdateManyWithoutStudentNestedInput = {
+  create?: Prisma.XOR<Prisma.AvaliacaoCreateWithoutStudentInput, Prisma.AvaliacaoUncheckedCreateWithoutStudentInput> | Prisma.AvaliacaoCreateWithoutStudentInput[] | Prisma.AvaliacaoUncheckedCreateWithoutStudentInput[]
+  connectOrCreate?: Prisma.AvaliacaoCreateOrConnectWithoutStudentInput | Prisma.AvaliacaoCreateOrConnectWithoutStudentInput[]
+  upsert?: Prisma.AvaliacaoUpsertWithWhereUniqueWithoutStudentInput | Prisma.AvaliacaoUpsertWithWhereUniqueWithoutStudentInput[]
+  createMany?: Prisma.AvaliacaoCreateManyStudentInputEnvelope
   set?: Prisma.AvaliacaoWhereUniqueInput | Prisma.AvaliacaoWhereUniqueInput[]
   disconnect?: Prisma.AvaliacaoWhereUniqueInput | Prisma.AvaliacaoWhereUniqueInput[]
   delete?: Prisma.AvaliacaoWhereUniqueInput | Prisma.AvaliacaoWhereUniqueInput[]
   connect?: Prisma.AvaliacaoWhereUniqueInput | Prisma.AvaliacaoWhereUniqueInput[]
-  update?: Prisma.AvaliacaoUpdateWithWhereUniqueWithoutEstudanteInput | Prisma.AvaliacaoUpdateWithWhereUniqueWithoutEstudanteInput[]
-  updateMany?: Prisma.AvaliacaoUpdateManyWithWhereWithoutEstudanteInput | Prisma.AvaliacaoUpdateManyWithWhereWithoutEstudanteInput[]
+  update?: Prisma.AvaliacaoUpdateWithWhereUniqueWithoutStudentInput | Prisma.AvaliacaoUpdateWithWhereUniqueWithoutStudentInput[]
+  updateMany?: Prisma.AvaliacaoUpdateManyWithWhereWithoutStudentInput | Prisma.AvaliacaoUpdateManyWithWhereWithoutStudentInput[]
   deleteMany?: Prisma.AvaliacaoScalarWhereInput | Prisma.AvaliacaoScalarWhereInput[]
 }
 
-export type AvaliacaoCreateNestedManyWithoutProfessorInput = {
-  create?: Prisma.XOR<Prisma.AvaliacaoCreateWithoutProfessorInput, Prisma.AvaliacaoUncheckedCreateWithoutProfessorInput> | Prisma.AvaliacaoCreateWithoutProfessorInput[] | Prisma.AvaliacaoUncheckedCreateWithoutProfessorInput[]
-  connectOrCreate?: Prisma.AvaliacaoCreateOrConnectWithoutProfessorInput | Prisma.AvaliacaoCreateOrConnectWithoutProfessorInput[]
-  createMany?: Prisma.AvaliacaoCreateManyProfessorInputEnvelope
+export type AvaliacaoCreateNestedManyWithoutTeacherInput = {
+  create?: Prisma.XOR<Prisma.AvaliacaoCreateWithoutTeacherInput, Prisma.AvaliacaoUncheckedCreateWithoutTeacherInput> | Prisma.AvaliacaoCreateWithoutTeacherInput[] | Prisma.AvaliacaoUncheckedCreateWithoutTeacherInput[]
+  connectOrCreate?: Prisma.AvaliacaoCreateOrConnectWithoutTeacherInput | Prisma.AvaliacaoCreateOrConnectWithoutTeacherInput[]
+  createMany?: Prisma.AvaliacaoCreateManyTeacherInputEnvelope
   connect?: Prisma.AvaliacaoWhereUniqueInput | Prisma.AvaliacaoWhereUniqueInput[]
 }
 
-export type AvaliacaoUncheckedCreateNestedManyWithoutProfessorInput = {
-  create?: Prisma.XOR<Prisma.AvaliacaoCreateWithoutProfessorInput, Prisma.AvaliacaoUncheckedCreateWithoutProfessorInput> | Prisma.AvaliacaoCreateWithoutProfessorInput[] | Prisma.AvaliacaoUncheckedCreateWithoutProfessorInput[]
-  connectOrCreate?: Prisma.AvaliacaoCreateOrConnectWithoutProfessorInput | Prisma.AvaliacaoCreateOrConnectWithoutProfessorInput[]
-  createMany?: Prisma.AvaliacaoCreateManyProfessorInputEnvelope
+export type AvaliacaoUncheckedCreateNestedManyWithoutTeacherInput = {
+  create?: Prisma.XOR<Prisma.AvaliacaoCreateWithoutTeacherInput, Prisma.AvaliacaoUncheckedCreateWithoutTeacherInput> | Prisma.AvaliacaoCreateWithoutTeacherInput[] | Prisma.AvaliacaoUncheckedCreateWithoutTeacherInput[]
+  connectOrCreate?: Prisma.AvaliacaoCreateOrConnectWithoutTeacherInput | Prisma.AvaliacaoCreateOrConnectWithoutTeacherInput[]
+  createMany?: Prisma.AvaliacaoCreateManyTeacherInputEnvelope
   connect?: Prisma.AvaliacaoWhereUniqueInput | Prisma.AvaliacaoWhereUniqueInput[]
 }
 
-export type AvaliacaoUpdateManyWithoutProfessorNestedInput = {
-  create?: Prisma.XOR<Prisma.AvaliacaoCreateWithoutProfessorInput, Prisma.AvaliacaoUncheckedCreateWithoutProfessorInput> | Prisma.AvaliacaoCreateWithoutProfessorInput[] | Prisma.AvaliacaoUncheckedCreateWithoutProfessorInput[]
-  connectOrCreate?: Prisma.AvaliacaoCreateOrConnectWithoutProfessorInput | Prisma.AvaliacaoCreateOrConnectWithoutProfessorInput[]
-  upsert?: Prisma.AvaliacaoUpsertWithWhereUniqueWithoutProfessorInput | Prisma.AvaliacaoUpsertWithWhereUniqueWithoutProfessorInput[]
-  createMany?: Prisma.AvaliacaoCreateManyProfessorInputEnvelope
+export type AvaliacaoUpdateManyWithoutTeacherNestedInput = {
+  create?: Prisma.XOR<Prisma.AvaliacaoCreateWithoutTeacherInput, Prisma.AvaliacaoUncheckedCreateWithoutTeacherInput> | Prisma.AvaliacaoCreateWithoutTeacherInput[] | Prisma.AvaliacaoUncheckedCreateWithoutTeacherInput[]
+  connectOrCreate?: Prisma.AvaliacaoCreateOrConnectWithoutTeacherInput | Prisma.AvaliacaoCreateOrConnectWithoutTeacherInput[]
+  upsert?: Prisma.AvaliacaoUpsertWithWhereUniqueWithoutTeacherInput | Prisma.AvaliacaoUpsertWithWhereUniqueWithoutTeacherInput[]
+  createMany?: Prisma.AvaliacaoCreateManyTeacherInputEnvelope
   set?: Prisma.AvaliacaoWhereUniqueInput | Prisma.AvaliacaoWhereUniqueInput[]
   disconnect?: Prisma.AvaliacaoWhereUniqueInput | Prisma.AvaliacaoWhereUniqueInput[]
   delete?: Prisma.AvaliacaoWhereUniqueInput | Prisma.AvaliacaoWhereUniqueInput[]
   connect?: Prisma.AvaliacaoWhereUniqueInput | Prisma.AvaliacaoWhereUniqueInput[]
-  update?: Prisma.AvaliacaoUpdateWithWhereUniqueWithoutProfessorInput | Prisma.AvaliacaoUpdateWithWhereUniqueWithoutProfessorInput[]
-  updateMany?: Prisma.AvaliacaoUpdateManyWithWhereWithoutProfessorInput | Prisma.AvaliacaoUpdateManyWithWhereWithoutProfessorInput[]
+  update?: Prisma.AvaliacaoUpdateWithWhereUniqueWithoutTeacherInput | Prisma.AvaliacaoUpdateWithWhereUniqueWithoutTeacherInput[]
+  updateMany?: Prisma.AvaliacaoUpdateManyWithWhereWithoutTeacherInput | Prisma.AvaliacaoUpdateManyWithWhereWithoutTeacherInput[]
   deleteMany?: Prisma.AvaliacaoScalarWhereInput | Prisma.AvaliacaoScalarWhereInput[]
 }
 
-export type AvaliacaoUncheckedUpdateManyWithoutProfessorNestedInput = {
-  create?: Prisma.XOR<Prisma.AvaliacaoCreateWithoutProfessorInput, Prisma.AvaliacaoUncheckedCreateWithoutProfessorInput> | Prisma.AvaliacaoCreateWithoutProfessorInput[] | Prisma.AvaliacaoUncheckedCreateWithoutProfessorInput[]
-  connectOrCreate?: Prisma.AvaliacaoCreateOrConnectWithoutProfessorInput | Prisma.AvaliacaoCreateOrConnectWithoutProfessorInput[]
-  upsert?: Prisma.AvaliacaoUpsertWithWhereUniqueWithoutProfessorInput | Prisma.AvaliacaoUpsertWithWhereUniqueWithoutProfessorInput[]
-  createMany?: Prisma.AvaliacaoCreateManyProfessorInputEnvelope
+export type AvaliacaoUncheckedUpdateManyWithoutTeacherNestedInput = {
+  create?: Prisma.XOR<Prisma.AvaliacaoCreateWithoutTeacherInput, Prisma.AvaliacaoUncheckedCreateWithoutTeacherInput> | Prisma.AvaliacaoCreateWithoutTeacherInput[] | Prisma.AvaliacaoUncheckedCreateWithoutTeacherInput[]
+  connectOrCreate?: Prisma.AvaliacaoCreateOrConnectWithoutTeacherInput | Prisma.AvaliacaoCreateOrConnectWithoutTeacherInput[]
+  upsert?: Prisma.AvaliacaoUpsertWithWhereUniqueWithoutTeacherInput | Prisma.AvaliacaoUpsertWithWhereUniqueWithoutTeacherInput[]
+  createMany?: Prisma.AvaliacaoCreateManyTeacherInputEnvelope
   set?: Prisma.AvaliacaoWhereUniqueInput | Prisma.AvaliacaoWhereUniqueInput[]
   disconnect?: Prisma.AvaliacaoWhereUniqueInput | Prisma.AvaliacaoWhereUniqueInput[]
   delete?: Prisma.AvaliacaoWhereUniqueInput | Prisma.AvaliacaoWhereUniqueInput[]
   connect?: Prisma.AvaliacaoWhereUniqueInput | Prisma.AvaliacaoWhereUniqueInput[]
-  update?: Prisma.AvaliacaoUpdateWithWhereUniqueWithoutProfessorInput | Prisma.AvaliacaoUpdateWithWhereUniqueWithoutProfessorInput[]
-  updateMany?: Prisma.AvaliacaoUpdateManyWithWhereWithoutProfessorInput | Prisma.AvaliacaoUpdateManyWithWhereWithoutProfessorInput[]
+  update?: Prisma.AvaliacaoUpdateWithWhereUniqueWithoutTeacherInput | Prisma.AvaliacaoUpdateWithWhereUniqueWithoutTeacherInput[]
+  updateMany?: Prisma.AvaliacaoUpdateManyWithWhereWithoutTeacherInput | Prisma.AvaliacaoUpdateManyWithWhereWithoutTeacherInput[]
   deleteMany?: Prisma.AvaliacaoScalarWhereInput | Prisma.AvaliacaoScalarWhereInput[]
 }
 
@@ -692,57 +620,51 @@ export type FloatFieldUpdateOperationsInput = {
   divide?: number
 }
 
-export type AvaliacaoCreateWithoutEstudanteInput = {
-  name: string
-  course: string
-  hours: number
+export type AvaliacaoCreateWithoutStudentInput = {
   nota_geral: number
   nota_didatica: number
   nota_metodologia: number
   comment: string
   creat_at?: Date | string
-  professor: Prisma.TeacherCreateNestedOneWithoutAvaliacoesInput
+  teacher: Prisma.TeacherCreateNestedOneWithoutAvaliacoesInput
   discipline: Prisma.DisciplineCreateNestedOneWithoutAvaliacoesInput
 }
 
-export type AvaliacaoUncheckedCreateWithoutEstudanteInput = {
+export type AvaliacaoUncheckedCreateWithoutStudentInput = {
   id?: number
-  name: string
-  course: string
-  hours: number
   nota_geral: number
   nota_didatica: number
   nota_metodologia: number
   comment: string
   creat_at?: Date | string
-  professor_id: number
-  disciplina_id: number
+  teacher_id: number
+  discipline_id: number
 }
 
-export type AvaliacaoCreateOrConnectWithoutEstudanteInput = {
+export type AvaliacaoCreateOrConnectWithoutStudentInput = {
   where: Prisma.AvaliacaoWhereUniqueInput
-  create: Prisma.XOR<Prisma.AvaliacaoCreateWithoutEstudanteInput, Prisma.AvaliacaoUncheckedCreateWithoutEstudanteInput>
+  create: Prisma.XOR<Prisma.AvaliacaoCreateWithoutStudentInput, Prisma.AvaliacaoUncheckedCreateWithoutStudentInput>
 }
 
-export type AvaliacaoCreateManyEstudanteInputEnvelope = {
-  data: Prisma.AvaliacaoCreateManyEstudanteInput | Prisma.AvaliacaoCreateManyEstudanteInput[]
+export type AvaliacaoCreateManyStudentInputEnvelope = {
+  data: Prisma.AvaliacaoCreateManyStudentInput | Prisma.AvaliacaoCreateManyStudentInput[]
   skipDuplicates?: boolean
 }
 
-export type AvaliacaoUpsertWithWhereUniqueWithoutEstudanteInput = {
+export type AvaliacaoUpsertWithWhereUniqueWithoutStudentInput = {
   where: Prisma.AvaliacaoWhereUniqueInput
-  update: Prisma.XOR<Prisma.AvaliacaoUpdateWithoutEstudanteInput, Prisma.AvaliacaoUncheckedUpdateWithoutEstudanteInput>
-  create: Prisma.XOR<Prisma.AvaliacaoCreateWithoutEstudanteInput, Prisma.AvaliacaoUncheckedCreateWithoutEstudanteInput>
+  update: Prisma.XOR<Prisma.AvaliacaoUpdateWithoutStudentInput, Prisma.AvaliacaoUncheckedUpdateWithoutStudentInput>
+  create: Prisma.XOR<Prisma.AvaliacaoCreateWithoutStudentInput, Prisma.AvaliacaoUncheckedCreateWithoutStudentInput>
 }
 
-export type AvaliacaoUpdateWithWhereUniqueWithoutEstudanteInput = {
+export type AvaliacaoUpdateWithWhereUniqueWithoutStudentInput = {
   where: Prisma.AvaliacaoWhereUniqueInput
-  data: Prisma.XOR<Prisma.AvaliacaoUpdateWithoutEstudanteInput, Prisma.AvaliacaoUncheckedUpdateWithoutEstudanteInput>
+  data: Prisma.XOR<Prisma.AvaliacaoUpdateWithoutStudentInput, Prisma.AvaliacaoUncheckedUpdateWithoutStudentInput>
 }
 
-export type AvaliacaoUpdateManyWithWhereWithoutEstudanteInput = {
+export type AvaliacaoUpdateManyWithWhereWithoutStudentInput = {
   where: Prisma.AvaliacaoScalarWhereInput
-  data: Prisma.XOR<Prisma.AvaliacaoUpdateManyMutationInput, Prisma.AvaliacaoUncheckedUpdateManyWithoutEstudanteInput>
+  data: Prisma.XOR<Prisma.AvaliacaoUpdateManyMutationInput, Prisma.AvaliacaoUncheckedUpdateManyWithoutStudentInput>
 }
 
 export type AvaliacaoScalarWhereInput = {
@@ -750,97 +672,82 @@ export type AvaliacaoScalarWhereInput = {
   OR?: Prisma.AvaliacaoScalarWhereInput[]
   NOT?: Prisma.AvaliacaoScalarWhereInput | Prisma.AvaliacaoScalarWhereInput[]
   id?: Prisma.IntFilter<"Avaliacao"> | number
-  name?: Prisma.StringFilter<"Avaliacao"> | string
-  course?: Prisma.StringFilter<"Avaliacao"> | string
-  hours?: Prisma.IntFilter<"Avaliacao"> | number
   nota_geral?: Prisma.FloatFilter<"Avaliacao"> | number
   nota_didatica?: Prisma.FloatFilter<"Avaliacao"> | number
   nota_metodologia?: Prisma.FloatFilter<"Avaliacao"> | number
   comment?: Prisma.StringFilter<"Avaliacao"> | string
   creat_at?: Prisma.DateTimeFilter<"Avaliacao"> | Date | string
-  estudante_id?: Prisma.IntFilter<"Avaliacao"> | number
-  professor_id?: Prisma.IntFilter<"Avaliacao"> | number
-  disciplina_id?: Prisma.IntFilter<"Avaliacao"> | number
+  student_id?: Prisma.IntFilter<"Avaliacao"> | number
+  teacher_id?: Prisma.IntFilter<"Avaliacao"> | number
+  discipline_id?: Prisma.IntFilter<"Avaliacao"> | number
 }
 
-export type AvaliacaoCreateWithoutProfessorInput = {
-  name: string
-  course: string
-  hours: number
+export type AvaliacaoCreateWithoutTeacherInput = {
   nota_geral: number
   nota_didatica: number
   nota_metodologia: number
   comment: string
   creat_at?: Date | string
-  estudante: Prisma.StudentCreateNestedOneWithoutAvaliacoesInput
+  student: Prisma.StudentCreateNestedOneWithoutAvaliacoesInput
   discipline: Prisma.DisciplineCreateNestedOneWithoutAvaliacoesInput
 }
 
-export type AvaliacaoUncheckedCreateWithoutProfessorInput = {
+export type AvaliacaoUncheckedCreateWithoutTeacherInput = {
   id?: number
-  name: string
-  course: string
-  hours: number
   nota_geral: number
   nota_didatica: number
   nota_metodologia: number
   comment: string
   creat_at?: Date | string
-  estudante_id: number
-  disciplina_id: number
+  student_id: number
+  discipline_id: number
 }
 
-export type AvaliacaoCreateOrConnectWithoutProfessorInput = {
+export type AvaliacaoCreateOrConnectWithoutTeacherInput = {
   where: Prisma.AvaliacaoWhereUniqueInput
-  create: Prisma.XOR<Prisma.AvaliacaoCreateWithoutProfessorInput, Prisma.AvaliacaoUncheckedCreateWithoutProfessorInput>
+  create: Prisma.XOR<Prisma.AvaliacaoCreateWithoutTeacherInput, Prisma.AvaliacaoUncheckedCreateWithoutTeacherInput>
 }
 
-export type AvaliacaoCreateManyProfessorInputEnvelope = {
-  data: Prisma.AvaliacaoCreateManyProfessorInput | Prisma.AvaliacaoCreateManyProfessorInput[]
+export type AvaliacaoCreateManyTeacherInputEnvelope = {
+  data: Prisma.AvaliacaoCreateManyTeacherInput | Prisma.AvaliacaoCreateManyTeacherInput[]
   skipDuplicates?: boolean
 }
 
-export type AvaliacaoUpsertWithWhereUniqueWithoutProfessorInput = {
+export type AvaliacaoUpsertWithWhereUniqueWithoutTeacherInput = {
   where: Prisma.AvaliacaoWhereUniqueInput
-  update: Prisma.XOR<Prisma.AvaliacaoUpdateWithoutProfessorInput, Prisma.AvaliacaoUncheckedUpdateWithoutProfessorInput>
-  create: Prisma.XOR<Prisma.AvaliacaoCreateWithoutProfessorInput, Prisma.AvaliacaoUncheckedCreateWithoutProfessorInput>
+  update: Prisma.XOR<Prisma.AvaliacaoUpdateWithoutTeacherInput, Prisma.AvaliacaoUncheckedUpdateWithoutTeacherInput>
+  create: Prisma.XOR<Prisma.AvaliacaoCreateWithoutTeacherInput, Prisma.AvaliacaoUncheckedCreateWithoutTeacherInput>
 }
 
-export type AvaliacaoUpdateWithWhereUniqueWithoutProfessorInput = {
+export type AvaliacaoUpdateWithWhereUniqueWithoutTeacherInput = {
   where: Prisma.AvaliacaoWhereUniqueInput
-  data: Prisma.XOR<Prisma.AvaliacaoUpdateWithoutProfessorInput, Prisma.AvaliacaoUncheckedUpdateWithoutProfessorInput>
+  data: Prisma.XOR<Prisma.AvaliacaoUpdateWithoutTeacherInput, Prisma.AvaliacaoUncheckedUpdateWithoutTeacherInput>
 }
 
-export type AvaliacaoUpdateManyWithWhereWithoutProfessorInput = {
+export type AvaliacaoUpdateManyWithWhereWithoutTeacherInput = {
   where: Prisma.AvaliacaoScalarWhereInput
-  data: Prisma.XOR<Prisma.AvaliacaoUpdateManyMutationInput, Prisma.AvaliacaoUncheckedUpdateManyWithoutProfessorInput>
+  data: Prisma.XOR<Prisma.AvaliacaoUpdateManyMutationInput, Prisma.AvaliacaoUncheckedUpdateManyWithoutTeacherInput>
 }
 
 export type AvaliacaoCreateWithoutDisciplineInput = {
-  name: string
-  course: string
-  hours: number
   nota_geral: number
   nota_didatica: number
   nota_metodologia: number
   comment: string
   creat_at?: Date | string
-  estudante: Prisma.StudentCreateNestedOneWithoutAvaliacoesInput
-  professor: Prisma.TeacherCreateNestedOneWithoutAvaliacoesInput
+  student: Prisma.StudentCreateNestedOneWithoutAvaliacoesInput
+  teacher: Prisma.TeacherCreateNestedOneWithoutAvaliacoesInput
 }
 
 export type AvaliacaoUncheckedCreateWithoutDisciplineInput = {
   id?: number
-  name: string
-  course: string
-  hours: number
   nota_geral: number
   nota_didatica: number
   nota_metodologia: number
   comment: string
   creat_at?: Date | string
-  estudante_id: number
-  professor_id: number
+  student_id: number
+  teacher_id: number
 }
 
 export type AvaliacaoCreateOrConnectWithoutDisciplineInput = {
@@ -869,279 +776,228 @@ export type AvaliacaoUpdateManyWithWhereWithoutDisciplineInput = {
   data: Prisma.XOR<Prisma.AvaliacaoUpdateManyMutationInput, Prisma.AvaliacaoUncheckedUpdateManyWithoutDisciplineInput>
 }
 
-export type AvaliacaoCreateManyEstudanteInput = {
+export type AvaliacaoCreateManyStudentInput = {
   id?: number
-  name: string
-  course: string
-  hours: number
   nota_geral: number
   nota_didatica: number
   nota_metodologia: number
   comment: string
   creat_at?: Date | string
-  professor_id: number
-  disciplina_id: number
+  teacher_id: number
+  discipline_id: number
 }
 
-export type AvaliacaoUpdateWithoutEstudanteInput = {
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  course?: Prisma.StringFieldUpdateOperationsInput | string
-  hours?: Prisma.IntFieldUpdateOperationsInput | number
+export type AvaliacaoUpdateWithoutStudentInput = {
   nota_geral?: Prisma.FloatFieldUpdateOperationsInput | number
   nota_didatica?: Prisma.FloatFieldUpdateOperationsInput | number
   nota_metodologia?: Prisma.FloatFieldUpdateOperationsInput | number
   comment?: Prisma.StringFieldUpdateOperationsInput | string
   creat_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  professor?: Prisma.TeacherUpdateOneRequiredWithoutAvaliacoesNestedInput
+  teacher?: Prisma.TeacherUpdateOneRequiredWithoutAvaliacoesNestedInput
   discipline?: Prisma.DisciplineUpdateOneRequiredWithoutAvaliacoesNestedInput
 }
 
-export type AvaliacaoUncheckedUpdateWithoutEstudanteInput = {
+export type AvaliacaoUncheckedUpdateWithoutStudentInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  course?: Prisma.StringFieldUpdateOperationsInput | string
-  hours?: Prisma.IntFieldUpdateOperationsInput | number
   nota_geral?: Prisma.FloatFieldUpdateOperationsInput | number
   nota_didatica?: Prisma.FloatFieldUpdateOperationsInput | number
   nota_metodologia?: Prisma.FloatFieldUpdateOperationsInput | number
   comment?: Prisma.StringFieldUpdateOperationsInput | string
   creat_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  professor_id?: Prisma.IntFieldUpdateOperationsInput | number
-  disciplina_id?: Prisma.IntFieldUpdateOperationsInput | number
+  teacher_id?: Prisma.IntFieldUpdateOperationsInput | number
+  discipline_id?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
-export type AvaliacaoUncheckedUpdateManyWithoutEstudanteInput = {
+export type AvaliacaoUncheckedUpdateManyWithoutStudentInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  course?: Prisma.StringFieldUpdateOperationsInput | string
-  hours?: Prisma.IntFieldUpdateOperationsInput | number
   nota_geral?: Prisma.FloatFieldUpdateOperationsInput | number
   nota_didatica?: Prisma.FloatFieldUpdateOperationsInput | number
   nota_metodologia?: Prisma.FloatFieldUpdateOperationsInput | number
   comment?: Prisma.StringFieldUpdateOperationsInput | string
   creat_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  professor_id?: Prisma.IntFieldUpdateOperationsInput | number
-  disciplina_id?: Prisma.IntFieldUpdateOperationsInput | number
+  teacher_id?: Prisma.IntFieldUpdateOperationsInput | number
+  discipline_id?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
-export type AvaliacaoCreateManyProfessorInput = {
+export type AvaliacaoCreateManyTeacherInput = {
   id?: number
-  name: string
-  course: string
-  hours: number
   nota_geral: number
   nota_didatica: number
   nota_metodologia: number
   comment: string
   creat_at?: Date | string
-  estudante_id: number
-  disciplina_id: number
+  student_id: number
+  discipline_id: number
 }
 
-export type AvaliacaoUpdateWithoutProfessorInput = {
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  course?: Prisma.StringFieldUpdateOperationsInput | string
-  hours?: Prisma.IntFieldUpdateOperationsInput | number
+export type AvaliacaoUpdateWithoutTeacherInput = {
   nota_geral?: Prisma.FloatFieldUpdateOperationsInput | number
   nota_didatica?: Prisma.FloatFieldUpdateOperationsInput | number
   nota_metodologia?: Prisma.FloatFieldUpdateOperationsInput | number
   comment?: Prisma.StringFieldUpdateOperationsInput | string
   creat_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  estudante?: Prisma.StudentUpdateOneRequiredWithoutAvaliacoesNestedInput
+  student?: Prisma.StudentUpdateOneRequiredWithoutAvaliacoesNestedInput
   discipline?: Prisma.DisciplineUpdateOneRequiredWithoutAvaliacoesNestedInput
 }
 
-export type AvaliacaoUncheckedUpdateWithoutProfessorInput = {
+export type AvaliacaoUncheckedUpdateWithoutTeacherInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  course?: Prisma.StringFieldUpdateOperationsInput | string
-  hours?: Prisma.IntFieldUpdateOperationsInput | number
   nota_geral?: Prisma.FloatFieldUpdateOperationsInput | number
   nota_didatica?: Prisma.FloatFieldUpdateOperationsInput | number
   nota_metodologia?: Prisma.FloatFieldUpdateOperationsInput | number
   comment?: Prisma.StringFieldUpdateOperationsInput | string
   creat_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  estudante_id?: Prisma.IntFieldUpdateOperationsInput | number
-  disciplina_id?: Prisma.IntFieldUpdateOperationsInput | number
+  student_id?: Prisma.IntFieldUpdateOperationsInput | number
+  discipline_id?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
-export type AvaliacaoUncheckedUpdateManyWithoutProfessorInput = {
+export type AvaliacaoUncheckedUpdateManyWithoutTeacherInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  course?: Prisma.StringFieldUpdateOperationsInput | string
-  hours?: Prisma.IntFieldUpdateOperationsInput | number
   nota_geral?: Prisma.FloatFieldUpdateOperationsInput | number
   nota_didatica?: Prisma.FloatFieldUpdateOperationsInput | number
   nota_metodologia?: Prisma.FloatFieldUpdateOperationsInput | number
   comment?: Prisma.StringFieldUpdateOperationsInput | string
   creat_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  estudante_id?: Prisma.IntFieldUpdateOperationsInput | number
-  disciplina_id?: Prisma.IntFieldUpdateOperationsInput | number
+  student_id?: Prisma.IntFieldUpdateOperationsInput | number
+  discipline_id?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type AvaliacaoCreateManyDisciplineInput = {
   id?: number
-  name: string
-  course: string
-  hours: number
   nota_geral: number
   nota_didatica: number
   nota_metodologia: number
   comment: string
   creat_at?: Date | string
-  estudante_id: number
-  professor_id: number
+  student_id: number
+  teacher_id: number
 }
 
 export type AvaliacaoUpdateWithoutDisciplineInput = {
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  course?: Prisma.StringFieldUpdateOperationsInput | string
-  hours?: Prisma.IntFieldUpdateOperationsInput | number
   nota_geral?: Prisma.FloatFieldUpdateOperationsInput | number
   nota_didatica?: Prisma.FloatFieldUpdateOperationsInput | number
   nota_metodologia?: Prisma.FloatFieldUpdateOperationsInput | number
   comment?: Prisma.StringFieldUpdateOperationsInput | string
   creat_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  estudante?: Prisma.StudentUpdateOneRequiredWithoutAvaliacoesNestedInput
-  professor?: Prisma.TeacherUpdateOneRequiredWithoutAvaliacoesNestedInput
+  student?: Prisma.StudentUpdateOneRequiredWithoutAvaliacoesNestedInput
+  teacher?: Prisma.TeacherUpdateOneRequiredWithoutAvaliacoesNestedInput
 }
 
 export type AvaliacaoUncheckedUpdateWithoutDisciplineInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  course?: Prisma.StringFieldUpdateOperationsInput | string
-  hours?: Prisma.IntFieldUpdateOperationsInput | number
   nota_geral?: Prisma.FloatFieldUpdateOperationsInput | number
   nota_didatica?: Prisma.FloatFieldUpdateOperationsInput | number
   nota_metodologia?: Prisma.FloatFieldUpdateOperationsInput | number
   comment?: Prisma.StringFieldUpdateOperationsInput | string
   creat_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  estudante_id?: Prisma.IntFieldUpdateOperationsInput | number
-  professor_id?: Prisma.IntFieldUpdateOperationsInput | number
+  student_id?: Prisma.IntFieldUpdateOperationsInput | number
+  teacher_id?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type AvaliacaoUncheckedUpdateManyWithoutDisciplineInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  course?: Prisma.StringFieldUpdateOperationsInput | string
-  hours?: Prisma.IntFieldUpdateOperationsInput | number
   nota_geral?: Prisma.FloatFieldUpdateOperationsInput | number
   nota_didatica?: Prisma.FloatFieldUpdateOperationsInput | number
   nota_metodologia?: Prisma.FloatFieldUpdateOperationsInput | number
   comment?: Prisma.StringFieldUpdateOperationsInput | string
   creat_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  estudante_id?: Prisma.IntFieldUpdateOperationsInput | number
-  professor_id?: Prisma.IntFieldUpdateOperationsInput | number
+  student_id?: Prisma.IntFieldUpdateOperationsInput | number
+  teacher_id?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 
 
 export type AvaliacaoSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  name?: boolean
-  course?: boolean
-  hours?: boolean
   nota_geral?: boolean
   nota_didatica?: boolean
   nota_metodologia?: boolean
   comment?: boolean
   creat_at?: boolean
-  estudante_id?: boolean
-  professor_id?: boolean
-  disciplina_id?: boolean
-  estudante?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
-  professor?: boolean | Prisma.TeacherDefaultArgs<ExtArgs>
+  student_id?: boolean
+  teacher_id?: boolean
+  discipline_id?: boolean
+  student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
+  teacher?: boolean | Prisma.TeacherDefaultArgs<ExtArgs>
   discipline?: boolean | Prisma.DisciplineDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["avaliacao"]>
 
 export type AvaliacaoSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  name?: boolean
-  course?: boolean
-  hours?: boolean
   nota_geral?: boolean
   nota_didatica?: boolean
   nota_metodologia?: boolean
   comment?: boolean
   creat_at?: boolean
-  estudante_id?: boolean
-  professor_id?: boolean
-  disciplina_id?: boolean
-  estudante?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
-  professor?: boolean | Prisma.TeacherDefaultArgs<ExtArgs>
+  student_id?: boolean
+  teacher_id?: boolean
+  discipline_id?: boolean
+  student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
+  teacher?: boolean | Prisma.TeacherDefaultArgs<ExtArgs>
   discipline?: boolean | Prisma.DisciplineDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["avaliacao"]>
 
 export type AvaliacaoSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  name?: boolean
-  course?: boolean
-  hours?: boolean
   nota_geral?: boolean
   nota_didatica?: boolean
   nota_metodologia?: boolean
   comment?: boolean
   creat_at?: boolean
-  estudante_id?: boolean
-  professor_id?: boolean
-  disciplina_id?: boolean
-  estudante?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
-  professor?: boolean | Prisma.TeacherDefaultArgs<ExtArgs>
+  student_id?: boolean
+  teacher_id?: boolean
+  discipline_id?: boolean
+  student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
+  teacher?: boolean | Prisma.TeacherDefaultArgs<ExtArgs>
   discipline?: boolean | Prisma.DisciplineDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["avaliacao"]>
 
 export type AvaliacaoSelectScalar = {
   id?: boolean
-  name?: boolean
-  course?: boolean
-  hours?: boolean
   nota_geral?: boolean
   nota_didatica?: boolean
   nota_metodologia?: boolean
   comment?: boolean
   creat_at?: boolean
-  estudante_id?: boolean
-  professor_id?: boolean
-  disciplina_id?: boolean
+  student_id?: boolean
+  teacher_id?: boolean
+  discipline_id?: boolean
 }
 
-export type AvaliacaoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "course" | "hours" | "nota_geral" | "nota_didatica" | "nota_metodologia" | "comment" | "creat_at" | "estudante_id" | "professor_id" | "disciplina_id", ExtArgs["result"]["avaliacao"]>
+export type AvaliacaoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nota_geral" | "nota_didatica" | "nota_metodologia" | "comment" | "creat_at" | "student_id" | "teacher_id" | "discipline_id", ExtArgs["result"]["avaliacao"]>
 export type AvaliacaoInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  estudante?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
-  professor?: boolean | Prisma.TeacherDefaultArgs<ExtArgs>
+  student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
+  teacher?: boolean | Prisma.TeacherDefaultArgs<ExtArgs>
   discipline?: boolean | Prisma.DisciplineDefaultArgs<ExtArgs>
 }
 export type AvaliacaoIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  estudante?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
-  professor?: boolean | Prisma.TeacherDefaultArgs<ExtArgs>
+  student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
+  teacher?: boolean | Prisma.TeacherDefaultArgs<ExtArgs>
   discipline?: boolean | Prisma.DisciplineDefaultArgs<ExtArgs>
 }
 export type AvaliacaoIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  estudante?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
-  professor?: boolean | Prisma.TeacherDefaultArgs<ExtArgs>
+  student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
+  teacher?: boolean | Prisma.TeacherDefaultArgs<ExtArgs>
   discipline?: boolean | Prisma.DisciplineDefaultArgs<ExtArgs>
 }
 
 export type $AvaliacaoPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Avaliacao"
   objects: {
-    estudante: Prisma.$StudentPayload<ExtArgs>
-    professor: Prisma.$TeacherPayload<ExtArgs>
+    student: Prisma.$StudentPayload<ExtArgs>
+    teacher: Prisma.$TeacherPayload<ExtArgs>
     discipline: Prisma.$DisciplinePayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
-    name: string
-    course: string
-    hours: number
     nota_geral: number
     nota_didatica: number
     nota_metodologia: number
     comment: string
     creat_at: Date
-    estudante_id: number
-    professor_id: number
-    disciplina_id: number
+    student_id: number
+    teacher_id: number
+    discipline_id: number
   }, ExtArgs["result"]["avaliacao"]>
   composites: {}
 }
@@ -1536,8 +1392,8 @@ readonly fields: AvaliacaoFieldRefs;
  */
 export interface Prisma__AvaliacaoClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  estudante<T extends Prisma.StudentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StudentDefaultArgs<ExtArgs>>): Prisma.Prisma__StudentClient<runtime.Types.Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  professor<T extends Prisma.TeacherDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TeacherDefaultArgs<ExtArgs>>): Prisma.Prisma__TeacherClient<runtime.Types.Result.GetResult<Prisma.$TeacherPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  student<T extends Prisma.StudentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StudentDefaultArgs<ExtArgs>>): Prisma.Prisma__StudentClient<runtime.Types.Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  teacher<T extends Prisma.TeacherDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TeacherDefaultArgs<ExtArgs>>): Prisma.Prisma__TeacherClient<runtime.Types.Result.GetResult<Prisma.$TeacherPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   discipline<T extends Prisma.DisciplineDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DisciplineDefaultArgs<ExtArgs>>): Prisma.Prisma__DisciplineClient<runtime.Types.Result.GetResult<Prisma.$DisciplinePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1569,17 +1425,14 @@ export interface Prisma__AvaliacaoClient<T, Null = never, ExtArgs extends runtim
  */
 export interface AvaliacaoFieldRefs {
   readonly id: Prisma.FieldRef<"Avaliacao", 'Int'>
-  readonly name: Prisma.FieldRef<"Avaliacao", 'String'>
-  readonly course: Prisma.FieldRef<"Avaliacao", 'String'>
-  readonly hours: Prisma.FieldRef<"Avaliacao", 'Int'>
   readonly nota_geral: Prisma.FieldRef<"Avaliacao", 'Float'>
   readonly nota_didatica: Prisma.FieldRef<"Avaliacao", 'Float'>
   readonly nota_metodologia: Prisma.FieldRef<"Avaliacao", 'Float'>
   readonly comment: Prisma.FieldRef<"Avaliacao", 'String'>
   readonly creat_at: Prisma.FieldRef<"Avaliacao", 'DateTime'>
-  readonly estudante_id: Prisma.FieldRef<"Avaliacao", 'Int'>
-  readonly professor_id: Prisma.FieldRef<"Avaliacao", 'Int'>
-  readonly disciplina_id: Prisma.FieldRef<"Avaliacao", 'Int'>
+  readonly student_id: Prisma.FieldRef<"Avaliacao", 'Int'>
+  readonly teacher_id: Prisma.FieldRef<"Avaliacao", 'Int'>
+  readonly discipline_id: Prisma.FieldRef<"Avaliacao", 'Int'>
 }
     
 

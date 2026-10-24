@@ -28,7 +28,7 @@ export const AuthMiddleware = (
     const decoded = jwt.verify(token, process.env.JWT_SECRET) as Payload;
     req.user = { id: decoded.user_id, role: decoded.role };
 
-    next();
+    return next();
   } catch (error) {
     if (error instanceof jwt.TokenExpiredError) {
       throw new UnauthorizedError("Expired token");
@@ -40,6 +40,4 @@ export const AuthMiddleware = (
 
     throw new UnauthorizedError("Something went wrong with the token");
   }
-
-  next();
 };

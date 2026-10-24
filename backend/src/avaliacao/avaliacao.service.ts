@@ -13,7 +13,19 @@ export class AvaliacaoService {
   async findAll(take: number, skip: number) {
     const total = await this.avaliacaoRepository.count();
     const data = await this.avaliacaoRepository.findAll(take, skip);
-    return pagWrapper(data, take, skip, total);
+    return { data: data, meta: pagWrapper(take, skip, total) };
+  }
+
+  async findMine(id: number, take: number, skip: number) {
+    const total = await this.avaliacaoRepository.countMine(id);
+    const data = await this.avaliacaoRepository.findMine(id, take, skip);
+
+    return { data: data, meta: pagWrapper(take, skip, total) };
+  }
+
+  async countMine(id: number) {
+    const total = await this.avaliacaoRepository.countMine(id);
+    return total;
   }
 
   async findById(id: number) {

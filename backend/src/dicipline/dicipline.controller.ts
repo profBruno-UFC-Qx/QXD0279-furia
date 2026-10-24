@@ -21,6 +21,7 @@ export class DiciplineController {
   };
 
   findAll = async (req: Request, res: Response) => {
+    console.log(req.query);
     const take = Number(req.query.limit) || 100;
     const page = Number(req.query.page) || 1;
 

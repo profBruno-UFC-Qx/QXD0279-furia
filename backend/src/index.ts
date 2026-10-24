@@ -6,6 +6,7 @@ import { teacherRouter } from "./teacher/teacher.module.ts";
 import { studentRouter } from "./student/student.module.ts";
 import { avaliacaoRouter } from "./avaliacao/avaliacao.module.ts";
 import { AutorizationMiddleware } from "./middlewares/autorization.middleware.ts";
+import { AuthMiddleware } from "./auth/middlewares/auth.middleware.ts";
 import cors from "cors";
 
 const app = express();
@@ -20,6 +21,7 @@ app.use(
 
 app.use(express.json());
 app.use(authRouter);
+app.use(AuthMiddleware);
 app.use(diciplineRouter);
 app.use(studentRouter);
 app.use(teacherRouter);

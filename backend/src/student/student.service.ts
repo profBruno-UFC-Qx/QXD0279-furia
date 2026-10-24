@@ -33,7 +33,7 @@ export class StudentService {
   async findAll(take: number, skip: number) {
     const total = await this.studentRepository.count();
     const data = await this.studentRepository.findAll(take, skip);
-    return pagWrapper(data, take, skip, total);
+    return { data: data, meta: pagWrapper(take, skip, total) };
   }
 
   async findById(id: number) {

@@ -194,6 +194,7 @@ export type StudentWhereInput = {
   course?: Prisma.StringFilter<"Student"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   avaliacoes?: Prisma.AvaliacaoListRelationFilter
+  documents?: Prisma.DocumentsListRelationFilter
 }
 
 export type StudentOrderByWithRelationInput = {
@@ -201,6 +202,7 @@ export type StudentOrderByWithRelationInput = {
   course?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   avaliacoes?: Prisma.AvaliacaoOrderByRelationAggregateInput
+  documents?: Prisma.DocumentsOrderByRelationAggregateInput
 }
 
 export type StudentWhereUniqueInput = Prisma.AtLeast<{
@@ -211,6 +213,7 @@ export type StudentWhereUniqueInput = Prisma.AtLeast<{
   course?: Prisma.StringFilter<"Student"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   avaliacoes?: Prisma.AvaliacaoListRelationFilter
+  documents?: Prisma.DocumentsListRelationFilter
 }, "student_id">
 
 export type StudentOrderByWithAggregationInput = {
@@ -234,25 +237,29 @@ export type StudentScalarWhereWithAggregatesInput = {
 export type StudentCreateInput = {
   course: string
   user: Prisma.UserCreateNestedOneWithoutStudentInput
-  avaliacoes?: Prisma.AvaliacaoCreateNestedManyWithoutEstudanteInput
+  avaliacoes?: Prisma.AvaliacaoCreateNestedManyWithoutStudentInput
+  documents?: Prisma.DocumentsCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateInput = {
   student_id: number
   course: string
-  avaliacoes?: Prisma.AvaliacaoUncheckedCreateNestedManyWithoutEstudanteInput
+  avaliacoes?: Prisma.AvaliacaoUncheckedCreateNestedManyWithoutStudentInput
+  documents?: Prisma.DocumentsUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUpdateInput = {
   course?: Prisma.StringFieldUpdateOperationsInput | string
   user?: Prisma.UserUpdateOneRequiredWithoutStudentNestedInput
-  avaliacoes?: Prisma.AvaliacaoUpdateManyWithoutEstudanteNestedInput
+  avaliacoes?: Prisma.AvaliacaoUpdateManyWithoutStudentNestedInput
+  documents?: Prisma.DocumentsUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateInput = {
   student_id?: Prisma.IntFieldUpdateOperationsInput | number
   course?: Prisma.StringFieldUpdateOperationsInput | string
-  avaliacoes?: Prisma.AvaliacaoUncheckedUpdateManyWithoutEstudanteNestedInput
+  avaliacoes?: Prisma.AvaliacaoUncheckedUpdateManyWithoutStudentNestedInput
+  documents?: Prisma.DocumentsUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateManyInput = {
@@ -348,14 +355,30 @@ export type StudentUpdateOneRequiredWithoutAvaliacoesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.StudentUpdateToOneWithWhereWithoutAvaliacoesInput, Prisma.StudentUpdateWithoutAvaliacoesInput>, Prisma.StudentUncheckedUpdateWithoutAvaliacoesInput>
 }
 
+export type StudentCreateNestedOneWithoutDocumentsInput = {
+  create?: Prisma.XOR<Prisma.StudentCreateWithoutDocumentsInput, Prisma.StudentUncheckedCreateWithoutDocumentsInput>
+  connectOrCreate?: Prisma.StudentCreateOrConnectWithoutDocumentsInput
+  connect?: Prisma.StudentWhereUniqueInput
+}
+
+export type StudentUpdateOneRequiredWithoutDocumentsNestedInput = {
+  create?: Prisma.XOR<Prisma.StudentCreateWithoutDocumentsInput, Prisma.StudentUncheckedCreateWithoutDocumentsInput>
+  connectOrCreate?: Prisma.StudentCreateOrConnectWithoutDocumentsInput
+  upsert?: Prisma.StudentUpsertWithoutDocumentsInput
+  connect?: Prisma.StudentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StudentUpdateToOneWithWhereWithoutDocumentsInput, Prisma.StudentUpdateWithoutDocumentsInput>, Prisma.StudentUncheckedUpdateWithoutDocumentsInput>
+}
+
 export type StudentCreateWithoutUserInput = {
   course: string
-  avaliacoes?: Prisma.AvaliacaoCreateNestedManyWithoutEstudanteInput
+  avaliacoes?: Prisma.AvaliacaoCreateNestedManyWithoutStudentInput
+  documents?: Prisma.DocumentsCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutUserInput = {
   course: string
-  avaliacoes?: Prisma.AvaliacaoUncheckedCreateNestedManyWithoutEstudanteInput
+  avaliacoes?: Prisma.AvaliacaoUncheckedCreateNestedManyWithoutStudentInput
+  documents?: Prisma.DocumentsUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutUserInput = {
@@ -376,22 +399,26 @@ export type StudentUpdateToOneWithWhereWithoutUserInput = {
 
 export type StudentUpdateWithoutUserInput = {
   course?: Prisma.StringFieldUpdateOperationsInput | string
-  avaliacoes?: Prisma.AvaliacaoUpdateManyWithoutEstudanteNestedInput
+  avaliacoes?: Prisma.AvaliacaoUpdateManyWithoutStudentNestedInput
+  documents?: Prisma.DocumentsUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutUserInput = {
   course?: Prisma.StringFieldUpdateOperationsInput | string
-  avaliacoes?: Prisma.AvaliacaoUncheckedUpdateManyWithoutEstudanteNestedInput
+  avaliacoes?: Prisma.AvaliacaoUncheckedUpdateManyWithoutStudentNestedInput
+  documents?: Prisma.DocumentsUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateWithoutAvaliacoesInput = {
   course: string
   user: Prisma.UserCreateNestedOneWithoutStudentInput
+  documents?: Prisma.DocumentsCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutAvaliacoesInput = {
   student_id: number
   course: string
+  documents?: Prisma.DocumentsUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutAvaliacoesInput = {
@@ -413,11 +440,53 @@ export type StudentUpdateToOneWithWhereWithoutAvaliacoesInput = {
 export type StudentUpdateWithoutAvaliacoesInput = {
   course?: Prisma.StringFieldUpdateOperationsInput | string
   user?: Prisma.UserUpdateOneRequiredWithoutStudentNestedInput
+  documents?: Prisma.DocumentsUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutAvaliacoesInput = {
   student_id?: Prisma.IntFieldUpdateOperationsInput | number
   course?: Prisma.StringFieldUpdateOperationsInput | string
+  documents?: Prisma.DocumentsUncheckedUpdateManyWithoutStudentNestedInput
+}
+
+export type StudentCreateWithoutDocumentsInput = {
+  course: string
+  user: Prisma.UserCreateNestedOneWithoutStudentInput
+  avaliacoes?: Prisma.AvaliacaoCreateNestedManyWithoutStudentInput
+}
+
+export type StudentUncheckedCreateWithoutDocumentsInput = {
+  student_id: number
+  course: string
+  avaliacoes?: Prisma.AvaliacaoUncheckedCreateNestedManyWithoutStudentInput
+}
+
+export type StudentCreateOrConnectWithoutDocumentsInput = {
+  where: Prisma.StudentWhereUniqueInput
+  create: Prisma.XOR<Prisma.StudentCreateWithoutDocumentsInput, Prisma.StudentUncheckedCreateWithoutDocumentsInput>
+}
+
+export type StudentUpsertWithoutDocumentsInput = {
+  update: Prisma.XOR<Prisma.StudentUpdateWithoutDocumentsInput, Prisma.StudentUncheckedUpdateWithoutDocumentsInput>
+  create: Prisma.XOR<Prisma.StudentCreateWithoutDocumentsInput, Prisma.StudentUncheckedCreateWithoutDocumentsInput>
+  where?: Prisma.StudentWhereInput
+}
+
+export type StudentUpdateToOneWithWhereWithoutDocumentsInput = {
+  where?: Prisma.StudentWhereInput
+  data: Prisma.XOR<Prisma.StudentUpdateWithoutDocumentsInput, Prisma.StudentUncheckedUpdateWithoutDocumentsInput>
+}
+
+export type StudentUpdateWithoutDocumentsInput = {
+  course?: Prisma.StringFieldUpdateOperationsInput | string
+  user?: Prisma.UserUpdateOneRequiredWithoutStudentNestedInput
+  avaliacoes?: Prisma.AvaliacaoUpdateManyWithoutStudentNestedInput
+}
+
+export type StudentUncheckedUpdateWithoutDocumentsInput = {
+  student_id?: Prisma.IntFieldUpdateOperationsInput | number
+  course?: Prisma.StringFieldUpdateOperationsInput | string
+  avaliacoes?: Prisma.AvaliacaoUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 
@@ -427,10 +496,12 @@ export type StudentUncheckedUpdateWithoutAvaliacoesInput = {
 
 export type StudentCountOutputType = {
   avaliacoes: number
+  documents: number
 }
 
 export type StudentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   avaliacoes?: boolean | StudentCountOutputTypeCountAvaliacoesArgs
+  documents?: boolean | StudentCountOutputTypeCountDocumentsArgs
 }
 
 /**
@@ -450,12 +521,20 @@ export type StudentCountOutputTypeCountAvaliacoesArgs<ExtArgs extends runtime.Ty
   where?: Prisma.AvaliacaoWhereInput
 }
 
+/**
+ * StudentCountOutputType without action
+ */
+export type StudentCountOutputTypeCountDocumentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DocumentsWhereInput
+}
+
 
 export type StudentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   student_id?: boolean
   course?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   avaliacoes?: boolean | Prisma.Student$avaliacoesArgs<ExtArgs>
+  documents?: boolean | Prisma.Student$documentsArgs<ExtArgs>
   _count?: boolean | Prisma.StudentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["student"]>
 
@@ -480,6 +559,7 @@ export type StudentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
 export type StudentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   avaliacoes?: boolean | Prisma.Student$avaliacoesArgs<ExtArgs>
+  documents?: boolean | Prisma.Student$documentsArgs<ExtArgs>
   _count?: boolean | Prisma.StudentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type StudentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -494,6 +574,7 @@ export type $StudentPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
     avaliacoes: Prisma.$AvaliacaoPayload<ExtArgs>[]
+    documents: Prisma.$DocumentsPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     student_id: number
@@ -894,6 +975,7 @@ export interface Prisma__StudentClient<T, Null = never, ExtArgs extends runtime.
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   avaliacoes<T extends Prisma.Student$avaliacoesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Student$avaliacoesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AvaliacaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  documents<T extends Prisma.Student$documentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Student$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1347,6 +1429,30 @@ export type Student$avaliacoesArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.AvaliacaoScalarFieldEnum | Prisma.AvaliacaoScalarFieldEnum[]
+}
+
+/**
+ * Student.documents
+ */
+export type Student$documentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Documents
+   */
+  select?: Prisma.DocumentsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Documents
+   */
+  omit?: Prisma.DocumentsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DocumentsInclude<ExtArgs> | null
+  where?: Prisma.DocumentsWhereInput
+  orderBy?: Prisma.DocumentsOrderByWithRelationInput | Prisma.DocumentsOrderByWithRelationInput[]
+  cursor?: Prisma.DocumentsWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DocumentsScalarFieldEnum | Prisma.DocumentsScalarFieldEnum[]
 }
 
 /**

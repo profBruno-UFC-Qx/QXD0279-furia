@@ -13,6 +13,8 @@ export function createAvaliacaoRouter(
     avaliacaoController.create,
   );
   avaliacaoRouter.get("/avaliacao", avaliacaoController.findAll);
+  avaliacaoRouter.get("/avaliacao/me", avaliacaoController.findMine);
+  avaliacaoRouter.get("/avaliacao/me/count", avaliacaoController.countMine);
   avaliacaoRouter.get("/avaliacao/:id", avaliacaoController.findById);
   avaliacaoRouter.put(
     "/avaliacao/:id",

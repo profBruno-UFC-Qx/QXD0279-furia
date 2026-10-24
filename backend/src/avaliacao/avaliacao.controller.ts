@@ -33,6 +33,32 @@ export class AvaliacaoController {
     return res.status(200).json(avaliacoes);
   };
 
+  findMine = async (req: Request, res: Response) => {
+    const take = Number(req.query.limit) || 100;
+    const page = Number(req.query.page) || 1;
+    const userID = req.user?.id;
+
+    if (!Number.isInteger(userID) || Number(userID) <= 0 || !userID) {
+      throw new BadRequestError("ID de usuaro inválido");
+    }
+
+    const skip = (page - 1) * take;
+
+    const avaliacoes = await this.service.findMine(userID, take, skip);
+    return res.status(200).json(avaliacoes);
+  };
+
+  countMine = async (req: Request, res: Response) => {
+    const userID = req.user?.id;
+
+    if (!Number.isInteger(userID) || Number(userID) <= 0 || !userID) {
+      throw new BadRequestError("ID de usuaro inválido");
+    }
+
+    const avaliacoes = await this.service.countMine(userID);
+    return res.status(200).json(avaliacoes);
+  };
+
   findById = async (req: Request, res: Response) => {
     const id = Number(req.params.id);
 

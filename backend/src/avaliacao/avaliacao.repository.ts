@@ -8,12 +8,16 @@ export class AvaliacaoRepository {
     return await this.database.avaliacao.create({
       data: avaliacaoData,
       include: {
-        estudante: {
+        student: {
           include: {
-            user: true,
+            user: {
+              select: {
+                name: true,
+              },
+            },
           },
         },
-        professor: {
+        teacher: {
           include: {
             user: true,
           },
@@ -23,17 +27,62 @@ export class AvaliacaoRepository {
     });
   }
 
+  async findMine(id: number, take: number, skip: number) {
+    return await this.database.avaliacao.findMany({
+      take,
+      skip,
+      where: {
+        student_id: id,
+      },
+      omit: {
+        id: true,
+        nota_didatica: true,
+        nota_metodologia: true,
+        student_id: false,
+        teacher_id: true,
+        discipline_id: true,
+      },
+      include: {
+        teacher: {
+          omit: {
+            teacher_id: true,
+          },
+          include: {
+            user: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+        discipline: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+  }
+
+  async countMine(id: number) {
+    return await this.database.avaliacao.count({
+      where: {
+        student_id: id,
+      },
+    });
+  }
+
   async findAll(take: number, skip: number) {
     return await this.database.avaliacao.findMany({
       take,
       skip,
       include: {
-        estudante: {
+        student: {
           include: {
             user: true,
           },
         },
-        professor: {
+        teacher: {
           include: {
             user: true,
           },
@@ -47,12 +96,12 @@ export class AvaliacaoRepository {
     return await this.database.avaliacao.findUnique({
       where: { id },
       include: {
-        estudante: {
+        student: {
           include: {
             user: true,
           },
         },
-        professor: {
+        teacher: {
           include: {
             user: true,
           },

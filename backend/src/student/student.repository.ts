@@ -66,4 +66,8 @@ export class StudentRepository {
   async count() {
     return this.database.student.count();
   }
+
+  async getStatistics() {
+    // FAZER AKI JULIO
+  }
 }
