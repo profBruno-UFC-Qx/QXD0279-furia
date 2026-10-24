@@ -1,13 +1,14 @@
 <script setup lang="ts">
-const { text } = defineProps({
-  text: String,
-});
+  const { text } = defineProps({
+    text: String,
+  })
 </script>
 <template>
   <div :class="{ separe: text ? true : false, ornament: true }">
     <div class="title">
       <h1>{{ text }}</h1>
     </div>
+
     <slot name="content" />
   </div>
 </template>

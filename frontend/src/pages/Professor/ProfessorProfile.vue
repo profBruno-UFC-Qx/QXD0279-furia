@@ -1,4 +1,5 @@
 <template>
+
   <main class="profile-page">
 
     <section class="top-section">
@@ -35,6 +36,10 @@
       </aside>
 
     </section>
+
+    <BaseModal v-model:modal="isReviewModalOpen" title="Write a Review">
+      <ReviewForm @close="isReviewModalOpen = false" />
+    </BaseModal>
   </main>
 </template>
 
@@ -46,7 +51,10 @@
   import RatingBreakdownCard from '@/components/Cards/Professor/RatingBreakdownCard.vue'
   import ReviewSection from '@/components/Cards/Professor/ReviewSection.vue'
   import TopDisciplinesCard from '@/components/Cards/Professor/TopDisciplinesCard.vue'
+  import ReviewForm from '@/components/Forms/ReviewForm.vue'
+  import BaseModal from '@/components/Modais/BaseModal.vue'
 
+  const isReviewModalOpen = ref(false)
   const professorInfo = ref<ProfessorData | null>(null)
   const ratingMetrics = ref<RatingMetric[]>([])
   const topDisciplines = ref<Discipline[]>([])
@@ -116,7 +124,10 @@
     }, 500)
   }
 
-  const handleOpenReviewModal = () => alert('Abrir modal para escrever review!')
+  function handleOpenReviewModal () {
+    isReviewModalOpen.value = true
+  }
+
   const handleDisciplineSelect = (discipline: Discipline) => alert(`Filtrar por: ${discipline.name}`)
   const fetchMoreReviews = () => alert('Fazer fetch à API (página 2)...')
   const handleFilter = () => alert('Abrir menu de filtros!')

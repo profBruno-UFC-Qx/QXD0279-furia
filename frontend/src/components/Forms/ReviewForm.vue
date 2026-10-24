@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ref } from 'vue'
+  import { computed, ref } from 'vue'
 
   const emit = defineEmits<{
     (e: 'close'): void
@@ -16,22 +16,27 @@
   })
 
   const disciplines = [
-    'Data Structures',
-    'Adv. Algorithms',
-    'Machine Learning',
+    'Cálculo Diferencial e Integral I',
+    'Estrutura de Dados',
+    'Algoritmos Avançados',
   ]
 
+  function getRatingText (rating: number) {
+    if (rating === 5) return 'Excelente'
+    if (rating === 4) return 'Muito bom'
+    if (rating === 3) return 'Regular'
+    if (rating === 2) return 'Ruim'
+    if (rating === 1) return 'Precisa melhorar'
+    return ''
+  }
+
+  const commentLength = computed(() => formData.value.comment.length)
+
   function handleSubmit () {
-    if (!formData.value.overallRating) {
-      alert('Por favor, dê uma nota geral.')
-      return
-    }
+    if (!formData.value.overallRating) return
 
     isSubmitting.value = true
-
-    // Simula o envio para a API
     setTimeout(() => {
-      console.log('Avaliação enviada!', formData.value)
       isSubmitting.value = false
       emit('close')
     }, 1000)
@@ -39,135 +44,342 @@
 </script>
 
 <template>
-  <form class="review-form" @submit.prevent="handleSubmit">
+  <form class="review-layout" @submit.prevent="handleSubmit">
 
-    <v-select
-      v-model="formData.discipline"
-      density="comfortable"
-      :items="disciplines"
-      label="Disciplina cursada"
-      required
-      variant="outlined"
-    />
+    <div class="form-section">
+      <div class="section-header">
+        <label class="main-label">Disciplina cursada <span class="required">*</span></label>
+        <span class="optional-text">* Campos obrigatórios</span>
+      </div>
 
-    <div class="rating-group">
-      <label>Nota Geral</label>
-
-      <v-rating
-        v-model="formData.overallRating"
-        active-color="amber-darken-2"
-        color="amber-darken-2"
-        half-increments
-        hover
-        size="large"
+      <v-select
+        v-model="formData.discipline"
+        class="custom-select"
+        density="comfortable"
+        hide-details
+        :items="disciplines"
+        placeholder="Selecione a disciplina"
+        prepend-inner-icon="mdi-book-open-variant"
+        variant="outlined"
       />
+
+      <span class="hint-text">Avalie uma disciplina que você cursou com este professor.</span>
     </div>
 
-    <div class="sub-ratings-grid">
-      <div class="rating-item">
-        <label>Teaching Clarity</label>
+    <div class="overall-rating-box">
+      <div class="overall-content">
+        <span class="box-title">Qual é a sua nota geral? <span class="required">*</span></span>
+        <span class="box-subtitle">Considere sua experiência como um todo.</span>
 
-        <v-rating
-          v-model="formData.teachingClarity"
-          color="primary"
-          density="compact"
-          hover
-          size="small"
-        />
-      </div>
+        <div class="rating-display">
+          <v-rating
+            v-model="formData.overallRating"
+            active-color="amber-darken-2"
+            color="amber-darken-2"
+            hover
+            size="x-large"
+          />
 
-      <div class="rating-item">
-        <label>Methodology</label>
-
-        <v-rating
-          v-model="formData.methodology"
-          color="primary"
-          density="compact"
-          hover
-          size="small"
-        />
-      </div>
-
-      <div class="rating-item">
-        <label>Availability</label>
-
-        <v-rating
-          v-model="formData.availability"
-          color="primary"
-          density="compact"
-          hover
-          size="small"
-        />
+          <div v-if="formData.overallRating > 0" class="rating-text-value">
+            <span class="number">{{ formData.overallRating }}</span> <span class="max">/ 5</span>
+            <span class="word">{{ getRatingText(formData.overallRating) }}</span>
+          </div>
+        </div>
       </div>
     </div>
 
-    <v-textarea
-      v-model="formData.comment"
-      auto-grow
-      label="Deixe o seu comentário (Opcional)"
-      placeholder="Como foi a sua experiência com este professor?"
-      rows="3"
-      variant="outlined"
-    />
+    <div class="criteria-section">
+      <div class="criteria-header">
+        <span class="main-label">Um olhar sobre cada critério <span class="required">*</span></span>
+        <span class="hint-text">De 1 (precisa melhorar) a 5 (excelente).</span>
+      </div>
 
-    <div class="form-actions">
-      <v-btn color="grey-darken-1" variant="text" @click="$emit('close')">
-        Cancelar
-      </v-btn>
+      <div class="criterion-row">
+        <div class="criterion-info">
+          <span class="criterion-name">Clareza didática</span>
+          <span class="criterion-desc">Explica o conteúdo de forma clara e compreensível.</span>
+        </div>
 
-      <v-btn color="primary" elevation="0" :loading="isSubmitting" type="submit">
-        Publicar Avaliação
-      </v-btn>
+        <div class="criterion-action">
+          <v-rating v-model="formData.teachingClarity" color="primary" hover size="large" />
+          <span v-if="formData.teachingClarity" class="criterion-score">{{ formData.teachingClarity }}/5 - {{ getRatingText(formData.teachingClarity) }}</span>
+        </div>
+      </div>
+
+      <div class="criterion-row">
+        <div class="criterion-info">
+          <span class="criterion-name">Metodologia</span>
+          <span class="criterion-desc">Usa estratégias e atividades que ajudam a aprender.</span>
+        </div>
+
+        <div class="criterion-action">
+          <v-rating v-model="formData.methodology" color="primary" hover size="large" />
+          <span v-if="formData.methodology" class="criterion-score">{{ formData.methodology }}/5 - {{ getRatingText(formData.methodology) }}</span>
+        </div>
+      </div>
+
+      <div class="criterion-row">
+        <div class="criterion-info">
+          <span class="criterion-name">Disponibilidade</span>
+          <span class="criterion-desc">Tem abertura para tirar dúvidas e orientar a turma.</span>
+        </div>
+
+        <div class="criterion-action">
+          <v-rating v-model="formData.availability" color="primary" hover size="large" />
+          <span v-if="formData.availability" class="criterion-score">{{ formData.availability }}/5 - {{ getRatingText(formData.availability) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-header">
+        <label class="main-label">Conte um pouco mais <span class="optional-badge">(opcional)</span></label>
+      </div>
+
+      <v-textarea
+        v-model="formData.comment"
+        class="custom-textarea"
+        hide-details
+        placeholder="As explicações são claras e os exemplos ajudam bastante..."
+        rows="4"
+        variant="outlined"
+      />
+
+      <div class="textarea-footer">
+        <span class="hint-text">Fale sobre as aulas, as atividades e o que ajudou você a aprender.</span>
+        <span class="char-count">{{ commentLength }} / 1.000</span>
+      </div>
+    </div>
+
+    <div class="footer-actions">
+      <div class="terms-text">
+        Ao publicar, você concorda com as <a href="#">Diretrizes da comunidade</a> e confirma que esta avaliação reflete sua experiência.
+      </div>
+
+      <div class="action-buttons">
+        <div class="privacy-note">
+          <v-icon class="mr-1" icon="mdi-shield-check-outline" size="small" />
+          Seu nome não será exibido
+        </div>
+
+        <v-btn class="px-6" color="grey-darken-1" variant="outlined" @click="$emit('close')">
+          Cancelar
+        </v-btn>
+
+        <v-btn
+          append-icon="mdi-arrow-right"
+          class="px-6"
+          color="primary"
+          elevation="0"
+          :loading="isSubmitting"
+          type="submit"
+        >
+          Publicar avaliação
+        </v-btn>
+      </div>
     </div>
   </form>
 </template>
 
 <style scoped>
-.review-form {
+.review-layout {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding-top: 8px;
+  gap: 32px;
 }
 
-.rating-group {
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.main-label {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.required {
+  color: #2563eb;
+}
+
+.optional-text {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.optional-badge {
+  font-size: 13px;
+  font-weight: 400;
+  color: #6b7280;
+}
+
+.hint-text {
+  font-size: 13px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+.overall-rating-box {
+  background-color: #fffbeb;
+  border-radius: 12px;
+  padding: 32px 24px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.overall-content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 8px;
+  gap: 8px;
 }
 
-.rating-group label {
-  font-size: 14px;
+.box-title {
+  font-size: 18px;
   font-weight: 700;
-  color: #374151;
+  color: #111827;
 }
 
-.sub-ratings-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  background: #f9fafb;
-  padding: 16px;
-  border-radius: 8px;
-  margin-bottom: 12px;
+.box-subtitle {
+  font-size: 14px;
+  color: #4b5563;
 }
 
-.rating-item {
+.rating-display {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.rating-text-value {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.2;
+}
+
+.rating-text-value .number {
+  font-size: 20px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.rating-text-value .max {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.rating-text-value .word {
+  font-size: 13px;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.criteria-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.criteria-header {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.criterion-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.criterion-row:last-child {
+  border-bottom: none;
+}
+
+.criterion-info {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.rating-item label {
-  font-size: 12px;
+.criterion-name {
   font-weight: 600;
-  color: #4b5563;
+  color: #111827;
 }
 
-.form-actions {
+.criterion-desc {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.criterion-action {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  min-width: 150px;
+}
+
+.criterion-score {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+.textarea-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.char-count {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.footer-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 16px;
+  padding-top: 24px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.terms-text {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.terms-text a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.action-buttons {
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
+  align-items: center;
+  gap: 16px;
+}
+
+.privacy-note {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  color: #6b7280;
+  margin-right: auto;
 }
 </style>

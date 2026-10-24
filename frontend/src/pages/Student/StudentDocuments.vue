@@ -3,7 +3,7 @@
   import Filters from '@/components/Filters/Filters.vue'
   import DocumentForm from '@/components/Forms/DocumentForm.vue'
   import Header from '@/components/Header/Header.vue'
-  import UploadDocument from '@/components/Modais/UploadDocument.vue'
+  import BaseModal from '@/components/Modais/BaseModal.vue'
   import Ornament from '@/components/Ornament/Ornament.vue'
   import TableDocs from '@/components/Table/TableDocs.vue'
 
@@ -62,13 +62,13 @@
     </Ornament>
   </div>
 
-  <UploadDocument
+  <BaseModal
     v-model:modal="modal"
     title="Faça o upload de um documento"
   >
     <!-- Passamos um evento @close para o form conseguir fechar o modal -->
     <DocumentForm @close="modal = false" />
-  </UploadDocument>
+  </BaseModal>
 </template>
 
 <style lang="css" scoped>
