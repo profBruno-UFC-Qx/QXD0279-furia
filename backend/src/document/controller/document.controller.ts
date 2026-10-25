@@ -1,11 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import { DocumentService } from "../service/document.service.ts";
 import { createDocumentSchema } from "../schema/document.schema.ts";
-import { uploadFileToStorage } from "../../utils/storage.ts";
-import { AppError } from "../../errors/errors.ts";
+import { AppError, BadRequestError } from "../../errors/errors.ts";
 
 export class DocumentController {
-    private service = new DocumentService();
+    constructor(private service: DocumentService) { }
 
     create = async (req: Request, res: Response, next: NextFunction) => {
         try {
@@ -13,17 +12,19 @@ export class DocumentController {
                 throw new AppError(400, "Arquivo obrigatório");
             }
 
-            const validatedData = createDocumentSchema.parse(req.body);
-            const file_url = await uploadFileToStorage(req.file);
+            const validatedData = createDocumentSchema.safeParse(req.body);
+            if (!validatedData.success) {
+                throw new BadRequestError(
+                    "Dados do documento inválidos",
+                    validatedData.error.issues.map((issue) => issue.message),
+                );
+            }
 
-            const document = await this.service.createDocument({
-                ...validatedData,
-                file_url
-            });
+            const document = await this.service.createDocument(validatedData.data, req.file);
 
-            res.status(201).json(document);
+            return res.status(201).json(document);
         } catch (error) {
-            next(error);
+            return next(error);
         }
     };
 
@@ -32,9 +33,9 @@ export class DocumentController {
             const page = parseInt(req.query.page as string) || 1;
             const limit = parseInt(req.query.limit as string) || 10;
             const documents = await this.service.listDocuments(page, limit);
-            res.status(200).json(documents);
+            return res.status(200).json(documents);
         } catch (error) {
-            next(error);
+            return next(error);
         }
     };
 
@@ -42,9 +43,9 @@ export class DocumentController {
         try {
             const id = parseInt(req.params.id as string);
             const document = await this.service.getDocumentById(id);
-            res.status(200).json(document);
+            return res.status(200).json(document);
         } catch (error) {
-            next(error);
+            return next(error);
         }
     };
 
@@ -52,9 +53,9 @@ export class DocumentController {
         try {
             const id = parseInt(req.params.id as string);
             await this.service.deleteDocument(id);
-            res.status(204).send();
+            return res.status(204).send();
         } catch (error) {
-            next(error);
+            return next(error);
         }
     };
 }

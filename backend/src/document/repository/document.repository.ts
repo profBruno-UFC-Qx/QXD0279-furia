@@ -1,20 +1,34 @@
-import { databaseInstance } from "../../database/dataBase.ts";
-import { CreateDocumentDto } from "../dto/document.dto.ts";
+import { DataBase } from "../../database/dataBase.ts";
+import type { CreateDocumentDto } from "../dto/document.dto.ts";
 
 export class DocumentRepository {
+    constructor(private database: DataBase) { }
+
     async create(data: CreateDocumentDto) {
-        return databaseInstance.documents.create({ data });
+        return this.database.documents.create({ data });
     }
 
     async findAll(skip: number, take: number) {
-        return databaseInstance.documents.findMany({ skip, take });
+        return this.database.documents.findMany({ skip, take });
     }
 
     async findById(id: number) {
-        return databaseInstance.documents.findUnique({ where: { id } });
+        return this.database.documents.findUnique({ where: { id } });
     }
 
     async delete(id: number) {
-        return databaseInstance.documents.delete({ where: { id } });
+        return this.database.documents.delete({ where: { id } });
+    }
+
+    async findTeacherById(id: number) {
+        return this.database.teacher.findUnique({ where: { teacher_id: id } });
+    }
+
+    async findDisciplineById(id: number) {
+        return this.database.discipline.findUnique({ where: { discipline_id: id } });
+    }
+
+    async findStudentById(id: number) {
+        return this.database.student.findUnique({ where: { student_id: id } });
     }
 }

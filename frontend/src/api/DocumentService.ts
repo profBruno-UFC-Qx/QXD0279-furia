@@ -1,6 +1,6 @@
 import { request } from './request'
 
-export interface DocumentPayload {
+export interface CreateDocumentPayload {
     titulo: string
     teacher_id: number
     discipline_id: number
@@ -8,7 +8,7 @@ export interface DocumentPayload {
     file: File
 }
 
-type DocumentResponse = {
+export interface DocumentResponse {
     id: number
     titulo: string
     file_url: string
@@ -19,25 +19,24 @@ type DocumentResponse = {
 }
 
 export const DocumentService = {
-    upload: async (payload: DocumentPayload) => {
+    upload: async (payload: CreateDocumentPayload): Promise<DocumentResponse> => {
         const formData = new FormData()
 
         formData.append('titulo', payload.titulo)
         formData.append('teacher_id', payload.teacher_id.toString())
         formData.append('discipline_id', payload.discipline_id.toString())
 
-        if (payload.student_id) {
+        if (payload.student_id !== undefined) {
             formData.append('student_id', payload.student_id.toString())
         }
 
         formData.append('file', payload.file)
 
-        const data = await request<DocumentResponse>('/document', {
+        return request<DocumentResponse>('/document', {
             method: 'POST',
             auth: true,
             body: formData,
         })
 
-        return data
     },
 }

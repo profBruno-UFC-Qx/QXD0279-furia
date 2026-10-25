@@ -11,7 +11,7 @@ export class TeacherService {
     private userService: UserService,
     private teacherRepository: TeacherRepository,
     private database: DataBase,
-  ) {}
+  ) { }
 
   async createTeacher(teacherData: TeacherRegisterDTO) {
     const { email, password, name, role, disciplines } = teacherData;
@@ -38,7 +38,7 @@ export class TeacherService {
   async findAll(take: number, skip: number) {
     const total = await this.teacherRepository.count();
     const data = await this.teacherRepository.findAll(take, skip);
-    return pagWrapper(data, take, skip, total);
+    return { data, meta: pagWrapper(take, skip, total) };
   }
 
   async findById(id: number) {

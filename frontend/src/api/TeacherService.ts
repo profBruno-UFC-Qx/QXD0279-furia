@@ -5,15 +5,14 @@ import { type RequestResponse } from "@/@types/metaData";
 export interface TeacherResponse {
   teacher_id: number;
   user_id: number;
-  creat_at: Date;
+  creat_at: string;
   user: {
     user_id: number;
     name: string;
     email: string;
-    password: string;
   };
   disciplines: {
-    dicipline_id: number;
+    discipline_id: number;
     name: string;
     course: string;
     hours: number;
@@ -21,8 +20,7 @@ export interface TeacherResponse {
 }
 
 export const TeacherService = {
-  getAll: async () => {
-    const data = await request<RequestResponse<TeacherResponse>>("/teacher");
-    return data;
+  getAll: async (): Promise<RequestResponse<TeacherResponse[]>> => {
+    return request<RequestResponse<TeacherResponse[]>>("/teacher", { auth: true });
   },
 };

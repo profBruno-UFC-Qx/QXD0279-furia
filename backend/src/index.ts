@@ -11,6 +11,10 @@ import cors from "cors";
 
 import { DocumentController } from "./document/controller/document.controller.ts";
 import { createDocumentRouter } from "./document/router/document.router.ts";
+import { DocumentService } from "./document/service/document.service.ts";
+import { DocumentRepository } from "./document/repository/document.repository.ts";
+import { databaseInstance } from "./database/dataBase.ts";
+import { uploadFileToStorage } from "./utils/storage.ts";
 
 const app = express();
 
@@ -24,7 +28,9 @@ app.use(
 
 app.use(express.json());
 
-const documentController = new DocumentController();
+const documentRepository = new DocumentRepository(databaseInstance);
+const documentService = new DocumentService(documentRepository, uploadFileToStorage);
+const documentController = new DocumentController(documentService);
 const documentRouter = createDocumentRouter(documentController);
 
 app.use(authRouter);

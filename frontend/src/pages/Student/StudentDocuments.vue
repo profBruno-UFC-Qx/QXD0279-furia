@@ -33,42 +33,44 @@
   const modal = ref(false)
 </script>
 <template>
-  <div class="content container">
-    <Header
-      description="Browse, filter, and download study materials from your institution."
-      title="Academic Documents"
-    />
+  <div>
+    <div class="content container">
+      <Header
+        description="Browse, filter, and download study materials from your institution."
+        title="Academic Documents"
+      />
 
-    <Filters
-      :inputs="{
-        text: true,
-        dicipline: true,
-        course: false,
-        teacher: true,
-      }"
-    />
+      <Filters
+        :inputs="{
+          text: true,
+          dicipline: true,
+          course: false,
+          teacher: true,
+        }"
+      />
 
-    <button class="addDocument" @click="modal = true">
-      <v-icon icon="mdi-upload" />
-      Upload a new Document
-    </button>
+      <button class="addDocument" @click="modal = true">
+        <v-icon icon="mdi-upload" />
+        Upload a new Document
+      </button>
 
-    <Ornament :text="'Documents'">
-      <template #content>
-        <div>
-          <TableDocs :documents="boats" />
-        </div>
-      </template>
-    </Ornament>
+      <Ornament :text="'Documents'">
+        <template #content>
+          <div>
+            <TableDocs :documents="boats" />
+          </div>
+        </template>
+      </Ornament>
+    </div>
+
+    <BaseModal
+      v-model:modal="modal"
+      title="Faça o upload de um documento"
+    >
+      <DocumentForm @close="modal = false" />
+    </BaseModal>
   </div>
 
-  <BaseModal
-    v-model:modal="modal"
-    title="Faça o upload de um documento"
-  >
-    <!-- Passamos um evento @close para o form conseguir fechar o modal -->
-    <DocumentForm @close="modal = false" />
-  </BaseModal>
 </template>
 
 <style lang="css" scoped>
