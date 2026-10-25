@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { ref } from 'vue'
+  import { DocumentService } from '@/api/DocumentService'
 
   const emit = defineEmits<{
     (e: 'close'): void
@@ -8,24 +9,41 @@
   const isSubmitting = ref(false)
   const formData = ref({
     title: '',
-    discipline: null,
-    file: null,
+    discipline: null as number | null,
+    file: null as File | File[] | null,
   })
 
   const disciplines = [
-    'Estrutura de Dados',
-    'Cálculo II',
-    'Algoritmos',
+    { id: 1, name: 'Estrutura de Dados' },
+    { id: 2, name: 'Cálculo II' },
+    { id: 3, name: 'Algoritmos' },
   ]
 
-  function handleSubmit () {
-    if (!formData.value.title || !formData.value.file) return
+  async function handleSubmit () {
+    if (!formData.value.title || !formData.value.discipline || !formData.value.file) return
+
+    const fileToUpload = Array.isArray(formData.value.file)
+      ? formData.value.file[0]
+      : formData.value.file
+
+    if (!fileToUpload) return
 
     isSubmitting.value = true
-    setTimeout(() => {
-      isSubmitting.value = false
+
+    try {
+      await DocumentService.upload({
+        titulo: formData.value.title,
+        discipline_id: formData.value.discipline,
+        teacher_id: 3,
+        file: fileToUpload,
+      })
+
       emit('close')
-    }, 1000)
+    } catch (error) {
+      console.error('Erro ao enviar documento:', error)
+    } finally {
+      isSubmitting.value = false
+    }
   }
 </script>
 
@@ -52,13 +70,14 @@
         v-model="formData.discipline"
         density="comfortable"
         hide-details
+        item-title="name"
+        item-value="id"
         :items="disciplines"
         placeholder="Selecione a disciplina correspondente"
         prepend-inner-icon="mdi-book-open-variant"
         required
         variant="outlined"
-      />
-    </div>
+      />    </div>
 
     <div class="form-section">
       <label class="main-label">Arquivo <span class="required">*</span></label>

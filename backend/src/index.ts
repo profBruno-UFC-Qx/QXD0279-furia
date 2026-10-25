@@ -9,6 +9,9 @@ import { AutorizationMiddleware } from "./middlewares/autorization.middleware.ts
 import { AuthMiddleware } from "./auth/middlewares/auth.middleware.ts";
 import cors from "cors";
 
+import { DocumentController } from "./document/controller/document.controller.ts";
+import { createDocumentRouter } from "./document/router/document.router.ts";
+
 const app = express();
 
 app.use(
@@ -20,12 +23,17 @@ app.use(
 );
 
 app.use(express.json());
+
+const documentController = new DocumentController();
+const documentRouter = createDocumentRouter(documentController);
+
 app.use(authRouter);
 app.use(AuthMiddleware);
 app.use(diciplineRouter);
 app.use(studentRouter);
 app.use(teacherRouter);
 app.use(avaliacaoRouter);
+app.use(documentRouter);
 
 app.get(
   "/",
