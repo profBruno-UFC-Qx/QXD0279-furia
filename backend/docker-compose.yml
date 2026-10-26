@@ -30,8 +30,12 @@ services:
     depends_on:
       - minio
     entrypoint: >
-      /bin/sh -c " sleep 5; mc alias set localminio http://minio:9000 admin admin123; mc mb localminio/avaliae-docs --ignore-existing; mc policy set download localminio/avaliae-docs; "
-
+      /bin/sh -c "
+      sleep 10;
+      mc alias set localminio http://minio:9000 admin admin123;
+      mc mb localminio/avaliae-docs --ignore-existing;
+      mc anonymous set download localminio/avaliae-docs;
+      "
 volumes:
   avaliae:
   minio_data:

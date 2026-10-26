@@ -9,7 +9,18 @@ export class DocumentRepository {
     }
 
     async findAll(skip: number, take: number) {
-        return this.database.documents.findMany({ skip, take });
+        return this.database.documents.findMany({
+            skip, 
+            take,
+            include: {
+                discipline: true,
+                teacher: {
+                    include: {
+                        user: true
+                    }
+                }
+            }
+        });
     }
 
     async findById(id: number) {

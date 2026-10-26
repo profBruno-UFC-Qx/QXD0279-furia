@@ -1,5 +1,6 @@
 <script setup lang="ts">
-  import { ref } from 'vue'
+  import { onMounted, ref } from 'vue'
+  import { type DocumentResponse, DocumentService } from '@/api/DocumentService'
   import Filters from '@/components/Filters/Filters.vue'
   import DocumentForm from '@/components/Forms/DocumentForm.vue'
   import Header from '@/components/Header/Header.vue'
@@ -7,31 +8,32 @@
   import Ornament from '@/components/Ornament/Ornament.vue'
   import TableDocs from '@/components/Table/TableDocs.vue'
 
-  const boats = [
-    {
-      nome: '1 Speedster',
-      disciplina: 'matematica',
-      data: '03/06/2026',
-    },
-    {
-      nome: '2 Speedster',
-      disciplina: 'matematica',
-      data: '03/06/2026',
-    },
-    {
-      nome: '3 Speedster',
-      disciplina: 'matematica',
-      data: '03/06/2026',
-    },
-    {
-      nome: '4 Speedster',
-      disciplina: 'matematica',
-      data: '03/06/2026',
-    },
-  ]
-
+  const documents = ref<DocumentResponse[]>([])
+  const isLoading = ref(true)
   const modal = ref(false)
+
+  async function loadDocuments () {
+    isLoading.value = true
+    try {
+      const response = await DocumentService.getAll()
+      documents.value = response || []
+    } catch (error) {
+      console.error(error)
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  function handleModalClose () {
+    modal.value = false
+    loadDocuments()
+  }
+
+  onMounted(() => {
+    loadDocuments()
+  })
 </script>
+
 <template>
   <div>
     <div class="content container">
@@ -56,8 +58,12 @@
 
       <Ornament :text="'Documents'">
         <template #content>
-          <div>
-            <TableDocs :documents="boats" />
+          <div v-if="isLoading" class="d-flex justify-center pa-4">
+            <v-progress-circular color="primary" indeterminate />
+          </div>
+
+          <div v-else>
+            <TableDocs :documents="documents" />
           </div>
         </template>
       </Ornament>
@@ -67,10 +73,9 @@
       v-model:modal="modal"
       title="Faça o upload de um documento"
     >
-      <DocumentForm @close="modal = false" />
+      <DocumentForm @close="handleModalClose" />
     </BaseModal>
   </div>
-
 </template>
 
 <style lang="css" scoped>
