@@ -35,7 +35,7 @@ const boats = [
 
 const avaliacoes = ref<AvaliacaoResponse[]>([]);
 const currentPage = ref(1);
-const pageSize = ref(5);
+const pageSize = ref(1);
 const totalPages = ref(1);
 
 const avaliacoesLoading = ref(false);
@@ -53,9 +53,9 @@ async function fetchEvaluations() {
 
     avaliacoes.value = response.data;
     totalPages.value = response.meta.totalPages;
-    console.log(response);
+    avaliacoesError.value = null;
   } catch {
-    avaliacoesError.value = "Failed to load reviews.";
+    avaliacoesError.value = "Nao foi possivel obter as avaliacoes.";
   } finally {
     avaliacoesLoading.value = false;
   }
@@ -135,11 +135,11 @@ onMounted(async () => {
           </div>
 
           <v-alert v-else-if="avaliacoesError" type="error">
-            Nao foi possivel obter as avaliacoes
+            {{ avaliacoesError }}
           </v-alert>
 
           <p v-else-if="avaliacoes.length === 0">
-            You haven't received any reviews yet.
+            Voce ainda nao fez nenhuma avaliacao.
           </p>
 
           <div class="list" v-else>

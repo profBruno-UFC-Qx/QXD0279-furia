@@ -8,10 +8,26 @@ export interface DiciplineResponse {
   hours: number;
 }
 
+export interface DisciplineName {
+  name: string;
+}
+
 export const DiciplineService = {
   getAll: async () => {
-    const data =
-      await request<RequestResponse<DiciplineResponse>>("/dicipline");
+    const data = await request<RequestResponse<DiciplineResponse[]>>(
+      "/dicipline",
+      {
+        auth: true,
+      },
+    );
+
+    return data;
+  },
+
+  getAllNames: async () => {
+    const data = await request<DisciplineName[]>("/discipline/name", {
+      auth: true,
+    });
 
     return data;
   },
