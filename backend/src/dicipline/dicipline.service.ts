@@ -19,8 +19,7 @@ export class DiciplineService {
   async findAll(take: number, skip: number) {
     const total = await this.repository.count();
     const data = await this.repository.findAll(take, skip);
-    const dataPaged = pagWrapper(data, take, skip, total);
-    return dataPaged;
+    return { data, meta: pagWrapper(take, skip, total) };
   }
 
   async findById(id: number) {
@@ -31,6 +30,10 @@ export class DiciplineService {
     }
 
     return discipline;
+  }
+
+  async findAllNames() {
+    return this.repository.findAllNames();
   }
 
   //   async update(id: number, data: Partial<Discipline>) {
