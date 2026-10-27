@@ -1,36 +1,36 @@
 <script setup lang="ts">
-  import { ref } from 'vue'
-  import Filters from '@/components/Filters/Filters.vue'
-  import DocumentForm from '@/components/Forms/DocumentForm.vue'
-  import Header from '@/components/Header/Header.vue'
-  import BaseModal from '@/components/Modais/BaseModal.vue'
-  import Ornament from '@/components/Ornament/Ornament.vue'
-  import TableDocs from '@/components/Table/TableDocs.vue'
+import { ref } from "vue";
+import Filters from "@/components/Filters/Filters.vue";
+import DocumentForm from "@/components/Forms/DocumentForm.vue";
+import Header from "@/components/Header/Header.vue";
+import BaseModal from "@/components/Modais/BaseModal.vue";
+import Ornament from "@/components/Ornament/Ornament.vue";
+import TableDocs from "@/components/Table/TableDocs.vue";
 
-  const boats = [
-    {
-      nome: '1 Speedster',
-      disciplina: 'matematica',
-      data: '03/06/2026',
-    },
-    {
-      nome: '2 Speedster',
-      disciplina: 'matematica',
-      data: '03/06/2026',
-    },
-    {
-      nome: '3 Speedster',
-      disciplina: 'matematica',
-      data: '03/06/2026',
-    },
-    {
-      nome: '4 Speedster',
-      disciplina: 'matematica',
-      data: '03/06/2026',
-    },
-  ]
+const boats = [
+  {
+    nome: "1 Speedster",
+    disciplina: "matematica",
+    data: "03/06/2026",
+  },
+  {
+    nome: "2 Speedster",
+    disciplina: "matematica",
+    data: "03/06/2026",
+  },
+  {
+    nome: "3 Speedster",
+    disciplina: "matematica",
+    data: "03/06/2026",
+  },
+  {
+    nome: "4 Speedster",
+    disciplina: "matematica",
+    data: "03/06/2026",
+  },
+];
 
-  const modal = ref(false)
+const modal = ref(false);
 </script>
 <template>
   <div class="content container">
@@ -62,10 +62,7 @@
     </Ornament>
   </div>
 
-  <BaseModal
-    v-model:modal="modal"
-    title="Faça o upload de um documento"
-  >
+  <BaseModal v-model:modal="modal" title="Faça o upload de um documento">
     <!-- Passamos um evento @close para o form conseguir fechar o modal -->
     <DocumentForm @close="modal = false" />
   </BaseModal>
