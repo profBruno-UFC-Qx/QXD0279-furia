@@ -15,10 +15,18 @@ async function login(login: loginData) {
     const user = await auth.login(login);
     if (user.userResponse.role == "student") {
       router.push({ name: "studentHome" });
+    } else if (user.userResponse.role == "admin") {
+      router.push({ name: "adminDashboard" });
+    } else if (user.userResponse.role == "teacher") {
+      router.push({ name: "professorDashboard" });
     }
   } catch (e) {
     const error = e as ApiError;
-    notify.notify(error.message, "error");
+    if (e instanceof ApiError) {
+      notify.notify(error.message, "error");
+    } else {
+      notify.notify("Erro ao conectar com servidor", "error");
+    }
   }
 }
 </script>
@@ -26,7 +34,7 @@ async function login(login: loginData) {
 <template>
   <div class="login-bg">
     <div class="login">
-      <h1 class="title">valiAe</h1>
+      <h1 class="title">AvaliAe</h1>
       <div class="card">
         <div class="text">
           <h1>Login</h1>
