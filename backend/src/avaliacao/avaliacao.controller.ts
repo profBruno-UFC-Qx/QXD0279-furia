@@ -38,6 +38,7 @@ export class AvaliacaoController {
     const page = Number(req.query.page) || 1;
     const userID = req.user?.id;
 
+    console.log(userID);
     if (!Number.isInteger(userID) || Number(userID) <= 0 || !userID) {
       throw new BadRequestError("ID de usuaro inválido");
     }
