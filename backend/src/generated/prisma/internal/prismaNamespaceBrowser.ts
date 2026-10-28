@@ -130,6 +130,7 @@ export type AvaliacaoScalarFieldEnum = (typeof AvaliacaoScalarFieldEnum)[keyof t
 export const DocumentsScalarFieldEnum = {
   id: 'id',
   titulo: 'titulo',
+  file_url: 'file_url',
   data_publicacao: 'data_publicacao',
   student_id: 'student_id',
   teacher_id: 'teacher_id',
@@ -153,4 +154,12 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 

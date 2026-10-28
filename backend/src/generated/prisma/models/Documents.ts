@@ -43,6 +43,7 @@ export type DocumentsSumAggregateOutputType = {
 export type DocumentsMinAggregateOutputType = {
   id: number | null
   titulo: string | null
+  file_url: string | null
   data_publicacao: Date | null
   student_id: number | null
   teacher_id: number | null
@@ -52,6 +53,7 @@ export type DocumentsMinAggregateOutputType = {
 export type DocumentsMaxAggregateOutputType = {
   id: number | null
   titulo: string | null
+  file_url: string | null
   data_publicacao: Date | null
   student_id: number | null
   teacher_id: number | null
@@ -61,6 +63,7 @@ export type DocumentsMaxAggregateOutputType = {
 export type DocumentsCountAggregateOutputType = {
   id: number
   titulo: number
+  file_url: number
   data_publicacao: number
   student_id: number
   teacher_id: number
@@ -86,6 +89,7 @@ export type DocumentsSumAggregateInputType = {
 export type DocumentsMinAggregateInputType = {
   id?: true
   titulo?: true
+  file_url?: true
   data_publicacao?: true
   student_id?: true
   teacher_id?: true
@@ -95,6 +99,7 @@ export type DocumentsMinAggregateInputType = {
 export type DocumentsMaxAggregateInputType = {
   id?: true
   titulo?: true
+  file_url?: true
   data_publicacao?: true
   student_id?: true
   teacher_id?: true
@@ -104,6 +109,7 @@ export type DocumentsMaxAggregateInputType = {
 export type DocumentsCountAggregateInputType = {
   id?: true
   titulo?: true
+  file_url?: true
   data_publicacao?: true
   student_id?: true
   teacher_id?: true
@@ -200,8 +206,9 @@ export type DocumentsGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
 export type DocumentsGroupByOutputType = {
   id: number
   titulo: string
+  file_url: string
   data_publicacao: Date
-  student_id: number
+  student_id: number | null
   teacher_id: number
   discipline_id: number
   _count: DocumentsCountAggregateOutputType | null
@@ -232,11 +239,12 @@ export type DocumentsWhereInput = {
   NOT?: Prisma.DocumentsWhereInput | Prisma.DocumentsWhereInput[]
   id?: Prisma.IntFilter<"Documents"> | number
   titulo?: Prisma.StringFilter<"Documents"> | string
+  file_url?: Prisma.StringFilter<"Documents"> | string
   data_publicacao?: Prisma.DateTimeFilter<"Documents"> | Date | string
-  student_id?: Prisma.IntFilter<"Documents"> | number
+  student_id?: Prisma.IntNullableFilter<"Documents"> | number | null
   teacher_id?: Prisma.IntFilter<"Documents"> | number
   discipline_id?: Prisma.IntFilter<"Documents"> | number
-  student?: Prisma.XOR<Prisma.StudentScalarRelationFilter, Prisma.StudentWhereInput>
+  student?: Prisma.XOR<Prisma.StudentNullableScalarRelationFilter, Prisma.StudentWhereInput> | null
   teacher?: Prisma.XOR<Prisma.TeacherScalarRelationFilter, Prisma.TeacherWhereInput>
   discipline?: Prisma.XOR<Prisma.DisciplineScalarRelationFilter, Prisma.DisciplineWhereInput>
 }
@@ -244,8 +252,9 @@ export type DocumentsWhereInput = {
 export type DocumentsOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   titulo?: Prisma.SortOrder
+  file_url?: Prisma.SortOrder
   data_publicacao?: Prisma.SortOrder
-  student_id?: Prisma.SortOrder
+  student_id?: Prisma.SortOrderInput | Prisma.SortOrder
   teacher_id?: Prisma.SortOrder
   discipline_id?: Prisma.SortOrder
   student?: Prisma.StudentOrderByWithRelationInput
@@ -259,11 +268,12 @@ export type DocumentsWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.DocumentsWhereInput[]
   NOT?: Prisma.DocumentsWhereInput | Prisma.DocumentsWhereInput[]
   titulo?: Prisma.StringFilter<"Documents"> | string
+  file_url?: Prisma.StringFilter<"Documents"> | string
   data_publicacao?: Prisma.DateTimeFilter<"Documents"> | Date | string
-  student_id?: Prisma.IntFilter<"Documents"> | number
+  student_id?: Prisma.IntNullableFilter<"Documents"> | number | null
   teacher_id?: Prisma.IntFilter<"Documents"> | number
   discipline_id?: Prisma.IntFilter<"Documents"> | number
-  student?: Prisma.XOR<Prisma.StudentScalarRelationFilter, Prisma.StudentWhereInput>
+  student?: Prisma.XOR<Prisma.StudentNullableScalarRelationFilter, Prisma.StudentWhereInput> | null
   teacher?: Prisma.XOR<Prisma.TeacherScalarRelationFilter, Prisma.TeacherWhereInput>
   discipline?: Prisma.XOR<Prisma.DisciplineScalarRelationFilter, Prisma.DisciplineWhereInput>
 }, "id">
@@ -271,8 +281,9 @@ export type DocumentsWhereUniqueInput = Prisma.AtLeast<{
 export type DocumentsOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   titulo?: Prisma.SortOrder
+  file_url?: Prisma.SortOrder
   data_publicacao?: Prisma.SortOrder
-  student_id?: Prisma.SortOrder
+  student_id?: Prisma.SortOrderInput | Prisma.SortOrder
   teacher_id?: Prisma.SortOrder
   discipline_id?: Prisma.SortOrder
   _count?: Prisma.DocumentsCountOrderByAggregateInput
@@ -288,16 +299,18 @@ export type DocumentsScalarWhereWithAggregatesInput = {
   NOT?: Prisma.DocumentsScalarWhereWithAggregatesInput | Prisma.DocumentsScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"Documents"> | number
   titulo?: Prisma.StringWithAggregatesFilter<"Documents"> | string
+  file_url?: Prisma.StringWithAggregatesFilter<"Documents"> | string
   data_publicacao?: Prisma.DateTimeWithAggregatesFilter<"Documents"> | Date | string
-  student_id?: Prisma.IntWithAggregatesFilter<"Documents"> | number
+  student_id?: Prisma.IntNullableWithAggregatesFilter<"Documents"> | number | null
   teacher_id?: Prisma.IntWithAggregatesFilter<"Documents"> | number
   discipline_id?: Prisma.IntWithAggregatesFilter<"Documents"> | number
 }
 
 export type DocumentsCreateInput = {
   titulo: string
+  file_url: string
   data_publicacao?: Date | string
-  student: Prisma.StudentCreateNestedOneWithoutDocumentsInput
+  student?: Prisma.StudentCreateNestedOneWithoutDocumentsInput
   teacher: Prisma.TeacherCreateNestedOneWithoutDocumentsInput
   discipline: Prisma.DisciplineCreateNestedOneWithoutDocumentsInput
 }
@@ -305,16 +318,18 @@ export type DocumentsCreateInput = {
 export type DocumentsUncheckedCreateInput = {
   id?: number
   titulo: string
+  file_url: string
   data_publicacao?: Date | string
-  student_id: number
+  student_id?: number | null
   teacher_id: number
   discipline_id: number
 }
 
 export type DocumentsUpdateInput = {
   titulo?: Prisma.StringFieldUpdateOperationsInput | string
+  file_url?: Prisma.StringFieldUpdateOperationsInput | string
   data_publicacao?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  student?: Prisma.StudentUpdateOneRequiredWithoutDocumentsNestedInput
+  student?: Prisma.StudentUpdateOneWithoutDocumentsNestedInput
   teacher?: Prisma.TeacherUpdateOneRequiredWithoutDocumentsNestedInput
   discipline?: Prisma.DisciplineUpdateOneRequiredWithoutDocumentsNestedInput
 }
@@ -322,8 +337,9 @@ export type DocumentsUpdateInput = {
 export type DocumentsUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   titulo?: Prisma.StringFieldUpdateOperationsInput | string
+  file_url?: Prisma.StringFieldUpdateOperationsInput | string
   data_publicacao?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  student_id?: Prisma.IntFieldUpdateOperationsInput | number
+  student_id?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   teacher_id?: Prisma.IntFieldUpdateOperationsInput | number
   discipline_id?: Prisma.IntFieldUpdateOperationsInput | number
 }
@@ -331,22 +347,25 @@ export type DocumentsUncheckedUpdateInput = {
 export type DocumentsCreateManyInput = {
   id?: number
   titulo: string
+  file_url: string
   data_publicacao?: Date | string
-  student_id: number
+  student_id?: number | null
   teacher_id: number
   discipline_id: number
 }
 
 export type DocumentsUpdateManyMutationInput = {
   titulo?: Prisma.StringFieldUpdateOperationsInput | string
+  file_url?: Prisma.StringFieldUpdateOperationsInput | string
   data_publicacao?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type DocumentsUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   titulo?: Prisma.StringFieldUpdateOperationsInput | string
+  file_url?: Prisma.StringFieldUpdateOperationsInput | string
   data_publicacao?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  student_id?: Prisma.IntFieldUpdateOperationsInput | number
+  student_id?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   teacher_id?: Prisma.IntFieldUpdateOperationsInput | number
   discipline_id?: Prisma.IntFieldUpdateOperationsInput | number
 }
@@ -364,6 +383,7 @@ export type DocumentsOrderByRelationAggregateInput = {
 export type DocumentsCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   titulo?: Prisma.SortOrder
+  file_url?: Prisma.SortOrder
   data_publicacao?: Prisma.SortOrder
   student_id?: Prisma.SortOrder
   teacher_id?: Prisma.SortOrder
@@ -380,6 +400,7 @@ export type DocumentsAvgOrderByAggregateInput = {
 export type DocumentsMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   titulo?: Prisma.SortOrder
+  file_url?: Prisma.SortOrder
   data_publicacao?: Prisma.SortOrder
   student_id?: Prisma.SortOrder
   teacher_id?: Prisma.SortOrder
@@ -389,6 +410,7 @@ export type DocumentsMaxOrderByAggregateInput = {
 export type DocumentsMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   titulo?: Prisma.SortOrder
+  file_url?: Prisma.SortOrder
   data_publicacao?: Prisma.SortOrder
   student_id?: Prisma.SortOrder
   teacher_id?: Prisma.SortOrder
@@ -528,8 +550,17 @@ export type DocumentsUncheckedUpdateManyWithoutDisciplineNestedInput = {
   deleteMany?: Prisma.DocumentsScalarWhereInput | Prisma.DocumentsScalarWhereInput[]
 }
 
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type DocumentsCreateWithoutStudentInput = {
   titulo: string
+  file_url: string
   data_publicacao?: Date | string
   teacher: Prisma.TeacherCreateNestedOneWithoutDocumentsInput
   discipline: Prisma.DisciplineCreateNestedOneWithoutDocumentsInput
@@ -538,6 +569,7 @@ export type DocumentsCreateWithoutStudentInput = {
 export type DocumentsUncheckedCreateWithoutStudentInput = {
   id?: number
   titulo: string
+  file_url: string
   data_publicacao?: Date | string
   teacher_id: number
   discipline_id: number
@@ -575,24 +607,27 @@ export type DocumentsScalarWhereInput = {
   NOT?: Prisma.DocumentsScalarWhereInput | Prisma.DocumentsScalarWhereInput[]
   id?: Prisma.IntFilter<"Documents"> | number
   titulo?: Prisma.StringFilter<"Documents"> | string
+  file_url?: Prisma.StringFilter<"Documents"> | string
   data_publicacao?: Prisma.DateTimeFilter<"Documents"> | Date | string
-  student_id?: Prisma.IntFilter<"Documents"> | number
+  student_id?: Prisma.IntNullableFilter<"Documents"> | number | null
   teacher_id?: Prisma.IntFilter<"Documents"> | number
   discipline_id?: Prisma.IntFilter<"Documents"> | number
 }
 
 export type DocumentsCreateWithoutTeacherInput = {
   titulo: string
+  file_url: string
   data_publicacao?: Date | string
-  student: Prisma.StudentCreateNestedOneWithoutDocumentsInput
+  student?: Prisma.StudentCreateNestedOneWithoutDocumentsInput
   discipline: Prisma.DisciplineCreateNestedOneWithoutDocumentsInput
 }
 
 export type DocumentsUncheckedCreateWithoutTeacherInput = {
   id?: number
   titulo: string
+  file_url: string
   data_publicacao?: Date | string
-  student_id: number
+  student_id?: number | null
   discipline_id: number
 }
 
@@ -624,16 +659,18 @@ export type DocumentsUpdateManyWithWhereWithoutTeacherInput = {
 
 export type DocumentsCreateWithoutDisciplineInput = {
   titulo: string
+  file_url: string
   data_publicacao?: Date | string
-  student: Prisma.StudentCreateNestedOneWithoutDocumentsInput
+  student?: Prisma.StudentCreateNestedOneWithoutDocumentsInput
   teacher: Prisma.TeacherCreateNestedOneWithoutDocumentsInput
 }
 
 export type DocumentsUncheckedCreateWithoutDisciplineInput = {
   id?: number
   titulo: string
+  file_url: string
   data_publicacao?: Date | string
-  student_id: number
+  student_id?: number | null
   teacher_id: number
 }
 
@@ -666,6 +703,7 @@ export type DocumentsUpdateManyWithWhereWithoutDisciplineInput = {
 export type DocumentsCreateManyStudentInput = {
   id?: number
   titulo: string
+  file_url: string
   data_publicacao?: Date | string
   teacher_id: number
   discipline_id: number
@@ -673,6 +711,7 @@ export type DocumentsCreateManyStudentInput = {
 
 export type DocumentsUpdateWithoutStudentInput = {
   titulo?: Prisma.StringFieldUpdateOperationsInput | string
+  file_url?: Prisma.StringFieldUpdateOperationsInput | string
   data_publicacao?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   teacher?: Prisma.TeacherUpdateOneRequiredWithoutDocumentsNestedInput
   discipline?: Prisma.DisciplineUpdateOneRequiredWithoutDocumentsNestedInput
@@ -681,6 +720,7 @@ export type DocumentsUpdateWithoutStudentInput = {
 export type DocumentsUncheckedUpdateWithoutStudentInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   titulo?: Prisma.StringFieldUpdateOperationsInput | string
+  file_url?: Prisma.StringFieldUpdateOperationsInput | string
   data_publicacao?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   teacher_id?: Prisma.IntFieldUpdateOperationsInput | number
   discipline_id?: Prisma.IntFieldUpdateOperationsInput | number
@@ -689,6 +729,7 @@ export type DocumentsUncheckedUpdateWithoutStudentInput = {
 export type DocumentsUncheckedUpdateManyWithoutStudentInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   titulo?: Prisma.StringFieldUpdateOperationsInput | string
+  file_url?: Prisma.StringFieldUpdateOperationsInput | string
   data_publicacao?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   teacher_id?: Prisma.IntFieldUpdateOperationsInput | number
   discipline_id?: Prisma.IntFieldUpdateOperationsInput | number
@@ -697,62 +738,70 @@ export type DocumentsUncheckedUpdateManyWithoutStudentInput = {
 export type DocumentsCreateManyTeacherInput = {
   id?: number
   titulo: string
+  file_url: string
   data_publicacao?: Date | string
-  student_id: number
+  student_id?: number | null
   discipline_id: number
 }
 
 export type DocumentsUpdateWithoutTeacherInput = {
   titulo?: Prisma.StringFieldUpdateOperationsInput | string
+  file_url?: Prisma.StringFieldUpdateOperationsInput | string
   data_publicacao?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  student?: Prisma.StudentUpdateOneRequiredWithoutDocumentsNestedInput
+  student?: Prisma.StudentUpdateOneWithoutDocumentsNestedInput
   discipline?: Prisma.DisciplineUpdateOneRequiredWithoutDocumentsNestedInput
 }
 
 export type DocumentsUncheckedUpdateWithoutTeacherInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   titulo?: Prisma.StringFieldUpdateOperationsInput | string
+  file_url?: Prisma.StringFieldUpdateOperationsInput | string
   data_publicacao?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  student_id?: Prisma.IntFieldUpdateOperationsInput | number
+  student_id?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discipline_id?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type DocumentsUncheckedUpdateManyWithoutTeacherInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   titulo?: Prisma.StringFieldUpdateOperationsInput | string
+  file_url?: Prisma.StringFieldUpdateOperationsInput | string
   data_publicacao?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  student_id?: Prisma.IntFieldUpdateOperationsInput | number
+  student_id?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discipline_id?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type DocumentsCreateManyDisciplineInput = {
   id?: number
   titulo: string
+  file_url: string
   data_publicacao?: Date | string
-  student_id: number
+  student_id?: number | null
   teacher_id: number
 }
 
 export type DocumentsUpdateWithoutDisciplineInput = {
   titulo?: Prisma.StringFieldUpdateOperationsInput | string
+  file_url?: Prisma.StringFieldUpdateOperationsInput | string
   data_publicacao?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  student?: Prisma.StudentUpdateOneRequiredWithoutDocumentsNestedInput
+  student?: Prisma.StudentUpdateOneWithoutDocumentsNestedInput
   teacher?: Prisma.TeacherUpdateOneRequiredWithoutDocumentsNestedInput
 }
 
 export type DocumentsUncheckedUpdateWithoutDisciplineInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   titulo?: Prisma.StringFieldUpdateOperationsInput | string
+  file_url?: Prisma.StringFieldUpdateOperationsInput | string
   data_publicacao?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  student_id?: Prisma.IntFieldUpdateOperationsInput | number
+  student_id?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   teacher_id?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type DocumentsUncheckedUpdateManyWithoutDisciplineInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   titulo?: Prisma.StringFieldUpdateOperationsInput | string
+  file_url?: Prisma.StringFieldUpdateOperationsInput | string
   data_publicacao?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  student_id?: Prisma.IntFieldUpdateOperationsInput | number
+  student_id?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   teacher_id?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -761,11 +810,12 @@ export type DocumentsUncheckedUpdateManyWithoutDisciplineInput = {
 export type DocumentsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   titulo?: boolean
+  file_url?: boolean
   data_publicacao?: boolean
   student_id?: boolean
   teacher_id?: boolean
   discipline_id?: boolean
-  student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
+  student?: boolean | Prisma.Documents$studentArgs<ExtArgs>
   teacher?: boolean | Prisma.TeacherDefaultArgs<ExtArgs>
   discipline?: boolean | Prisma.DisciplineDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["documents"]>
@@ -773,11 +823,12 @@ export type DocumentsSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
 export type DocumentsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   titulo?: boolean
+  file_url?: boolean
   data_publicacao?: boolean
   student_id?: boolean
   teacher_id?: boolean
   discipline_id?: boolean
-  student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
+  student?: boolean | Prisma.Documents$studentArgs<ExtArgs>
   teacher?: boolean | Prisma.TeacherDefaultArgs<ExtArgs>
   discipline?: boolean | Prisma.DisciplineDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["documents"]>
@@ -785,11 +836,12 @@ export type DocumentsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
 export type DocumentsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   titulo?: boolean
+  file_url?: boolean
   data_publicacao?: boolean
   student_id?: boolean
   teacher_id?: boolean
   discipline_id?: boolean
-  student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
+  student?: boolean | Prisma.Documents$studentArgs<ExtArgs>
   teacher?: boolean | Prisma.TeacherDefaultArgs<ExtArgs>
   discipline?: boolean | Prisma.DisciplineDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["documents"]>
@@ -797,25 +849,26 @@ export type DocumentsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
 export type DocumentsSelectScalar = {
   id?: boolean
   titulo?: boolean
+  file_url?: boolean
   data_publicacao?: boolean
   student_id?: boolean
   teacher_id?: boolean
   discipline_id?: boolean
 }
 
-export type DocumentsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "titulo" | "data_publicacao" | "student_id" | "teacher_id" | "discipline_id", ExtArgs["result"]["documents"]>
+export type DocumentsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "titulo" | "file_url" | "data_publicacao" | "student_id" | "teacher_id" | "discipline_id", ExtArgs["result"]["documents"]>
 export type DocumentsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
+  student?: boolean | Prisma.Documents$studentArgs<ExtArgs>
   teacher?: boolean | Prisma.TeacherDefaultArgs<ExtArgs>
   discipline?: boolean | Prisma.DisciplineDefaultArgs<ExtArgs>
 }
 export type DocumentsIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
+  student?: boolean | Prisma.Documents$studentArgs<ExtArgs>
   teacher?: boolean | Prisma.TeacherDefaultArgs<ExtArgs>
   discipline?: boolean | Prisma.DisciplineDefaultArgs<ExtArgs>
 }
 export type DocumentsIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
+  student?: boolean | Prisma.Documents$studentArgs<ExtArgs>
   teacher?: boolean | Prisma.TeacherDefaultArgs<ExtArgs>
   discipline?: boolean | Prisma.DisciplineDefaultArgs<ExtArgs>
 }
@@ -823,15 +876,16 @@ export type DocumentsIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
 export type $DocumentsPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Documents"
   objects: {
-    student: Prisma.$StudentPayload<ExtArgs>
+    student: Prisma.$StudentPayload<ExtArgs> | null
     teacher: Prisma.$TeacherPayload<ExtArgs>
     discipline: Prisma.$DisciplinePayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     titulo: string
+    file_url: string
     data_publicacao: Date
-    student_id: number
+    student_id: number | null
     teacher_id: number
     discipline_id: number
   }, ExtArgs["result"]["documents"]>
@@ -1228,7 +1282,7 @@ readonly fields: DocumentsFieldRefs;
  */
 export interface Prisma__DocumentsClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  student<T extends Prisma.StudentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StudentDefaultArgs<ExtArgs>>): Prisma.Prisma__StudentClient<runtime.Types.Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  student<T extends Prisma.Documents$studentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Documents$studentArgs<ExtArgs>>): Prisma.Prisma__StudentClient<runtime.Types.Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   teacher<T extends Prisma.TeacherDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TeacherDefaultArgs<ExtArgs>>): Prisma.Prisma__TeacherClient<runtime.Types.Result.GetResult<Prisma.$TeacherPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   discipline<T extends Prisma.DisciplineDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DisciplineDefaultArgs<ExtArgs>>): Prisma.Prisma__DisciplineClient<runtime.Types.Result.GetResult<Prisma.$DisciplinePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
@@ -1262,6 +1316,7 @@ export interface Prisma__DocumentsClient<T, Null = never, ExtArgs extends runtim
 export interface DocumentsFieldRefs {
   readonly id: Prisma.FieldRef<"Documents", 'Int'>
   readonly titulo: Prisma.FieldRef<"Documents", 'String'>
+  readonly file_url: Prisma.FieldRef<"Documents", 'String'>
   readonly data_publicacao: Prisma.FieldRef<"Documents", 'DateTime'>
   readonly student_id: Prisma.FieldRef<"Documents", 'Int'>
   readonly teacher_id: Prisma.FieldRef<"Documents", 'Int'>
@@ -1664,6 +1719,25 @@ export type DocumentsDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Limit how many Documents to delete.
    */
   limit?: number
+}
+
+/**
+ * Documents.student
+ */
+export type Documents$studentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Student
+   */
+  select?: Prisma.StudentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Student
+   */
+  omit?: Prisma.StudentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StudentInclude<ExtArgs> | null
+  where?: Prisma.StudentWhereInput
 }
 
 /**
