@@ -52,6 +52,10 @@ export class UserService {
     return await this.userRepository.findUserById(id);
   }
 
+  async getStats() {
+    return await this.userRepository.getStats();
+  }
+
   async updateUser(userId: number, data: Partial<UserDTO>) {
     const user = await this.userRepository.findUserById(userId);
 
@@ -98,7 +102,7 @@ export class UserService {
     if (!user) {
       throw new NotFoundError("Usuario nao encontrado");
     }
-    
+
     return await this.userRepository.deleteUserByEmail(email);
   }
 }

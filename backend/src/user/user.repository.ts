@@ -85,4 +85,27 @@ export class UserRepository {
   async count() {
     return this.database.user.count();
   }
+
+  async getStats() {
+    const [qtd_users, qtd_students, qtd_teachers, qtd_admins] =
+      await Promise.all([
+        this.database.user.count(),
+        this.database.user.count({
+          where: { role: "student" },
+        }),
+        this.database.user.count({
+          where: { role: "teacher" },
+        }),
+        this.database.user.count({
+          where: { role: "admin" },
+        }),
+      ]);
+
+    return {
+      qtd_users,
+      qtd_students,
+      qtd_teachers,
+      qtd_admins,
+    };
+  }
 }

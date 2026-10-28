@@ -1,59 +1,76 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import StatsCard from "@/components/Cards/StatsCard.vue";
 import Header from "@/components/Header/Header.vue";
 import Ornament from "@/components/Ornament/Ornament.vue";
 import TableUser from "@/components/Table/TableUser.vue";
 import { type User } from "@/api/UserService";
 import { userService } from "@/api/UserService";
-import { useStoreNotify } from "@/stores/StoreNotify";
+import { StatisticsService } from "@/api/StatisticsService";
 import { ApiError } from "@/api/ApiError";
 
-const stats = [
+const dashboardStats = ref({
+  totalUsers: 0,
+  students: 0,
+  teachers: 0,
+  admins: 0,
+});
+
+const stats = computed(() => [
   {
     title: "Total de usuários",
-    value: "2.480",
+    value: dashboardStats.value.totalUsers,
     icon: "mdi-account-group",
     iconColor: "primary",
   },
-
   {
-    title: "Avaliações",
-    value: "8.920",
-    icon: "mdi-star",
-    iconColor: "amber",
+    title: "Estudantes",
+    value: dashboardStats.value.students,
+    icon: "mdi-school",
+    iconColor: "info",
   },
   {
-    title: "Denúncias pendentes",
-    value: "24",
-    icon: "mdi-alert-circle",
-    iconColor: "error",
+    title: "Professores",
+    value: dashboardStats.value.teachers,
+    icon: "mdi-account-tie",
+    iconColor: "success",
   },
-];
+  {
+    title: "Administradores",
+    value: dashboardStats.value.admins,
+    icon: "mdi-shield-account",
+    iconColor: "warning",
+  },
+]);
 
 const currentPage = ref(1);
 const itemsPerPage = ref(5);
 const totalPages = ref(0);
 const users = ref<Array<User>>([]);
 const userLoading = ref<boolean>(false);
-const userError = ref<string | null>(null);
-const notify = useStoreNotify();
+const dashboardErrors = ref({
+  users: null as string | null,
+  statistics: null as string | null,
+  delete: null as string | null,
+});
 
 async function deleteUser(user: User) {
   try {
+    dashboardErrors.value.delete = null;
     await userService.deleteUserByEmail(user.email);
     await fetchUsers();
   } catch (error) {
     if (error instanceof ApiError) {
-      notify.notify(error.message, "error");
+      dashboardErrors.value.delete = error.message;
     } else {
-      notify.notify("Erro ao conectar com o servidor", "error");
+      dashboardErrors.value.delete = "Erro ao conectar com o servidor";
     }
   }
 }
 
 async function fetchUsers() {
-  userLoading.value = false;
+  userLoading.value = true;
+
   try {
     const response = await userService.getAll(
       itemsPerPage.value,
@@ -62,13 +79,27 @@ async function fetchUsers() {
 
     users.value = response.data;
     totalPages.value = response.meta.totalPages;
-    userError.value = null;
-
-    console.log(users.value);
+    dashboardErrors.value.users = null;
   } catch (error) {
-    userError.value = "Não foi possível obter os professores";
+    dashboardErrors.value.users = "Não foi possível obter os usuários";
   } finally {
     userLoading.value = false;
+  }
+}
+
+async function fetchStatistics() {
+  try {
+    dashboardErrors.value.statistics = null;
+    const response = await StatisticsService.getStatisticsDashboardAdm();
+    dashboardStats.value = {
+      totalUsers: Number(response.qtd_users ?? 0),
+      students: Number(response.qtd_students ?? 0),
+      teachers: Number(response.qtd_teachers ?? 0),
+      admins: Number(response.qtd_admins ?? 0),
+    };
+  } catch (error) {
+    dashboardErrors.value.statistics =
+      "Não foi possível carregar as estatísticas do dashboard";
   }
 }
 
@@ -76,7 +107,9 @@ watch([currentPage, itemsPerPage], async () => {
   await fetchUsers();
 });
 
-onMounted(fetchUsers);
+onMounted(async () => {
+  await Promise.all([fetchUsers(), fetchStatistics()]);
+});
 </script>
 
 <template>
@@ -85,6 +118,25 @@ onMounted(fetchUsers);
       :title="'Admin DashBoard'"
       :description="'Visão geral da atividade, crescimento e gestão do site.'"
     />
+
+    <v-alert
+      v-if="
+        dashboardErrors.users ||
+        dashboardErrors.statistics ||
+        dashboardErrors.delete
+      "
+      type="error"
+    >
+      <template v-if="dashboardErrors.users">
+        <div>{{ dashboardErrors.users }}</div>
+      </template>
+      <template v-else-if="dashboardErrors.statistics">
+        <div>{{ dashboardErrors.statistics }}</div>
+      </template>
+      <template v-else-if="dashboardErrors.delete">
+        <div>{{ dashboardErrors.delete }}</div>
+      </template>
+    </v-alert>
 
     <section class="stats-grid">
       <StatsCard
@@ -131,6 +183,10 @@ onMounted(fetchUsers);
 
 .stats-grid > * {
   flex-grow: 1;
+}
+
+.error-banner {
+  margin-bottom: 4px;
 }
 
 @media (max-width: 700px) {

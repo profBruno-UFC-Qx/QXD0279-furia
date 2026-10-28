@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import AuthLayout from "@/layout/AuthLayout.vue";
 import DefaultLayout from "@/layout/DefaultLayout.vue";
+import { authStore } from "@/stores/StoreAuth";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,6 +20,7 @@ const router = createRouter({
     {
       path: "/student",
       component: DefaultLayout,
+      meta: { requiresAuth: true },
       children: [
         {
           path: "home",
@@ -40,6 +42,7 @@ const router = createRouter({
     {
       path: "/professor",
       component: DefaultLayout,
+      meta: { requiresAuth: true },
       children: [
         {
           path: "profile",
@@ -56,6 +59,7 @@ const router = createRouter({
     {
       path: "/adm",
       component: DefaultLayout,
+      meta: { requiresAuth: true, requiresAdmin: true },
       children: [
         {
           path: "dashboard",
@@ -92,6 +96,21 @@ const router = createRouter({
       ],
     },
   ],
+});
+
+router.beforeEach(async (to) => {
+  const auth = authStore();
+  if (to.meta.requiresAuth) {
+    if (!auth.isLoged) {
+      return { name: "login" };
+    }
+  }
+
+  if (to.meta.requiresAdmin) {
+    if (auth.role != "admin") {
+      return { name: "login" };
+    }
+  }
 });
 
 export default router;
