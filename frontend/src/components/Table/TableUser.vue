@@ -1,13 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { type User } from "@/api/UserService";
+import BaseModal from "../Modais/BaseModal.vue";
 
-interface User {
-  id: number;
-  nome: string;
-  course: string;
-  role: string;
-  email: string;
-}
 const { documents } = defineProps<{
   documents: User[];
 }>();
@@ -20,9 +15,33 @@ const itemsPerPage = defineModel<number>("itemsPerPage", {
   required: true,
 });
 
+const totalPages = defineModel<number>("totalPages", {
+  required: true,
+});
+
+const emit = defineEmits<{
+  delete: [user: User];
+}>();
+
+const modal = ref<boolean>(false);
+const userSelected = ref<User>();
+
+function openModal() {
+  modal.value = true;
+}
+
+function selectUser(user: User) {
+  userSelected.value = user;
+}
+
+function handleDelete(user?: User) {
+  if (!user) return;
+  emit("delete", user);
+  modal.value = false;
+}
+
 const headers = [
-  { title: "Nome", align: "start", key: "nome", sortable: false },
-  { title: "Curso", align: "end", key: "course", sortable: false },
+  { title: "Nome", align: "start", key: "name", sortable: false },
   {
     title: "Tipo",
     align: "end",
@@ -46,13 +65,14 @@ const headers = [
 
 <template>
   <div class="tableComponente">
-    <v-data-table
+    <v-data-table-server
       v-model:page="currentPage"
       v-model:items-per-page="itemsPerPage"
       :headers="headers"
       :items="documents"
-      item-value="id"
-      :items-per-page-options="[5, 10]"
+      :items-length="totalPages"
+      item-value="user_id"
+      :items-per-page-options="[5]"
       fixed-header
       class="tabela"
     >
@@ -64,11 +84,36 @@ const headers = [
             size="small"
             variant="text"
             aria-label="Excluir"
+            @click="
+              () => {
+                openModal();
+                selectUser(item);
+              }
+            "
           />
         </div>
       </template>
-    </v-data-table>
+    </v-data-table-server>
   </div>
+  <BaseModal title="Deseja excluir o usuário?" v-model:modal="modal">
+    <div class="d-flex align-center ga-3">
+      <div class="flex-grow-1">
+        <div class="font-weight-bold">{{ userSelected?.name }}</div>
+        <div class="text-caption text-medium-emphasis">
+          {{ userSelected?.email }} · {{ userSelected?.role }}
+        </div>
+      </div>
+
+      <v-btn
+        color="error"
+        icon="mdi-delete"
+        size="large"
+        variant="text"
+        aria-label="Excluir usuário"
+        @click="handleDelete(userSelected)"
+      />
+    </div>
+  </BaseModal>
 </template>
 
 <style scoped>

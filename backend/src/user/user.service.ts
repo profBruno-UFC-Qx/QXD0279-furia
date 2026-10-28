@@ -1,6 +1,7 @@
 import { UserRepository } from "./user.repository.ts";
 import { UserDTO } from "./dto/user.dto.ts";
 import { Conflict, NotFoundError } from "../errors/errors.ts";
+import { pagWrapper } from "../utils/pagWrapper.ts";
 import bcrypt from "bcrypt";
 
 export class UserService {
@@ -38,6 +39,13 @@ export class UserService {
 
   async findUserByEmail(email: string) {
     return await this.userRepository.findUserByEmail(email);
+  }
+
+  async findAll(take = 100, skip = 0) {
+    const total = await this.userRepository.count();
+    const data = await this.userRepository.findAll(take, skip);
+
+    return { data: data, meta: pagWrapper(take, skip, total) };
   }
 
   async findById(id: number) {
@@ -82,5 +90,15 @@ export class UserService {
     }
 
     return await this.userRepository.deleteUser(userId);
+  }
+
+  async deleteUserByEmail(email: string) {
+    const user = await this.userRepository.findUserByEmail(email);
+
+    if (!user) {
+      throw new NotFoundError("Usuario nao encontrado");
+    }
+    
+    return await this.userRepository.deleteUserByEmail(email);
   }
 }

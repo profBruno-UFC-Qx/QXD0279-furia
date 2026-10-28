@@ -1,45 +1,13 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import StatsCard from "@/components/Cards/StatsCard.vue";
 import Header from "@/components/Header/Header.vue";
 import Ornament from "@/components/Ornament/Ornament.vue";
 import TableUser from "@/components/Table/TableUser.vue";
-
-type UserStatus = "Ativo" | "Pendente" | "Bloqueado";
-
-const boats = [
-  {
-    id: 1,
-    nome: "Narciso",
-    course: "matematica",
-    role: "estudante",
-    email: "narciso@gmail.com",
-  },
-  {
-    id: 1,
-    nome: "Narciso",
-    course: "matematica",
-    role: "estudante",
-    email: "narciso@gmail.com",
-  },
-  {
-    id: 1,
-    nome: "Narciso",
-    course: "matematica",
-    role: "estudante",
-    email: "narciso@gmail.com",
-  },
-];
-
-interface SiteUser {
-  id: number;
-  name: string;
-  email: string;
-  role: string;
-  status: UserStatus;
-  joinedAt: string;
-  lastAccess: string;
-}
+import { type User } from "@/api/UserService";
+import { userService } from "@/api/UserService";
+import { useStoreNotify } from "@/stores/StoreNotify";
+import { ApiError } from "@/api/ApiError";
 
 const stats = [
   {
@@ -64,7 +32,51 @@ const stats = [
 ];
 
 const currentPage = ref(1);
-const itemsPerPage = ref(2);
+const itemsPerPage = ref(5);
+const totalPages = ref(0);
+const users = ref<Array<User>>([]);
+const userLoading = ref<boolean>(false);
+const userError = ref<string | null>(null);
+const notify = useStoreNotify();
+
+async function deleteUser(user: User) {
+  try {
+    await userService.deleteUserByEmail(user.email);
+    await fetchUsers();
+  } catch (error) {
+    if (error instanceof ApiError) {
+      notify.notify(error.message, "error");
+    } else {
+      notify.notify("Erro ao conectar com o servidor", "error");
+    }
+  }
+}
+
+async function fetchUsers() {
+  userLoading.value = false;
+  try {
+    const response = await userService.getAll(
+      itemsPerPage.value,
+      currentPage.value,
+    );
+
+    users.value = response.data;
+    totalPages.value = response.meta.totalPages;
+    userError.value = null;
+
+    console.log(users.value);
+  } catch (error) {
+    userError.value = "Não foi possível obter os professores";
+  } finally {
+    userLoading.value = false;
+  }
+}
+
+watch([currentPage, itemsPerPage], async () => {
+  await fetchUsers();
+});
+
+onMounted(fetchUsers);
 </script>
 
 <template>
@@ -89,9 +101,11 @@ const itemsPerPage = ref(2);
       <template #content>
         <div class="table-wrapper">
           <TableUser
-            :documents="boats"
+            :documents="users"
             v-model:current-page="currentPage"
             v-model:itemsPerPage="itemsPerPage"
+            v-model:totalPages="totalPages"
+            @delete="deleteUser"
           />
         </div>
       </template>

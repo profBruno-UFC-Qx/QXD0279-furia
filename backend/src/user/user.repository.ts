@@ -20,6 +20,24 @@ export class UserRepository {
     });
   }
 
+  async findAll(take = 100, skip = 0) {
+    return await this.database.user.findMany({
+      take,
+      skip,
+      orderBy: { user_id: "asc" },
+      where: {
+        role: {
+          not: "admin",
+        },
+      },
+      select: {
+        name: true,
+        role: true,
+        email: true,
+      },
+    });
+  }
+
   async createUser(userData: UserDTO, tx?: any) {
     const prisma = tx ?? this.database;
 
@@ -47,6 +65,19 @@ export class UserRepository {
       });
       return true;
     } catch {
+      return false;
+    }
+  }
+
+  async deleteUserByEmail(email: string) {
+    try {
+      const a = await this.database.user.delete({
+        where: { email },
+      });
+      console.log(a);
+      return true;
+    } catch (e) {
+      console.log(e);
       return false;
     }
   }
