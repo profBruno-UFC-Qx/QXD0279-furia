@@ -39,6 +39,17 @@ export class TeacherController {
     return res.status(200).json(teacher);
   };
 
+  findProfileById = async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+
+    if (!Number.isInteger(id) || id <= 0) {
+      throw new BadRequestError("ID de professor inválido");
+    }
+
+    const teacherProfile = await this.service.findProfileById(id);
+    return res.status(200).json(teacherProfile);
+  };
+
   update = async (req: Request, res: Response) => {
     const id = Number(req.params.id);
 

@@ -71,6 +71,29 @@ export class TeacherService {
     return teacher;
   }
 
+  async findProfileById(id: number) {
+    const teacherProfile = await this.teacherRepository.findProfileById(id);
+
+    if (!teacherProfile) {
+      throw new NotFoundError("Perfil do professor não encontrado");
+    }
+
+    const avaliacoesFormatadas = {
+      ...teacherProfile,
+      media_geral: calculateAverage(
+        teacherProfile.avaliacoes.map((av) => av.nota_geral)
+      ),
+      media_didatica: calculateAverage(
+        teacherProfile.avaliacoes.map((av) => av.nota_didatica)
+      ),
+      media_metodologia: calculateAverage(
+        teacherProfile.avaliacoes.map((av) => av.nota_metodologia)
+      ),
+    };
+
+    return avaliacoesFormatadas;
+  }
+
   async updateTeacher(id: number, teacherData: Partial<TeacherDTO>) {
     const teacher = await this.findById(id);
 

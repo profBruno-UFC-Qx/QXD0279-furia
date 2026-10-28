@@ -42,7 +42,7 @@ const router = createRouter({
       component: DefaultLayout,
       children: [
         {
-          path: "profile",
+          path: "profile/:id",
           component: () => import("@/pages/Professor/ProfessorProfile.vue"),
           name: "professorProfile",
         },
