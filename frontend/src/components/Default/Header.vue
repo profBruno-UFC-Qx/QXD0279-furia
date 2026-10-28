@@ -14,9 +14,12 @@ const logout = () => {
 <template>
   <header class="header-bg">
     <div class="header">
-      <h1 class="title">valiAe</h1>
+      <h1 class="title">AvaliAe</h1>
 
-      <nav class="navigation" v-if="storeAuth.isLoged == true">
+      <nav
+        class="navigation"
+        v-if="storeAuth.isLoged == true && storeAuth.role != 'admin'"
+      >
         <ul>
           <li>
             <v-btn variant="plain" :to="{ name: 'studentHome' }" text="Home" />

@@ -32,6 +32,10 @@ export class DiciplineService {
     return discipline;
   }
 
+  async findAllNames() {
+    return this.repository.findAllNames();
+  }
+
   //   async update(id: number, data: Partial<Discipline>) {
   //     const discipline = await this.repository.update(id, data);
 

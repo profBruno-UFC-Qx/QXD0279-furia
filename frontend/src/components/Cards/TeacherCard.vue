@@ -1,7 +1,11 @@
 <script setup lang="ts">
 const { name, grade, diciplines } = defineProps<{
   name: string;
-  grade: number;
+  grade: {
+    nota_geral_media: number;
+    nota_didatica_media: number;
+    nota_metodologia_media: number;
+  };
   diciplines: Array<string>;
 }>();
 </script>
@@ -16,7 +20,7 @@ const { name, grade, diciplines } = defineProps<{
         </p>
       </div>
       <div class="grade">
-        <p>⭐ {{ grade }}</p>
+        <p>⭐ {{ grade.nota_geral_media }}</p>
       </div>
     </div>
     <div class="diciplines">
@@ -24,6 +28,28 @@ const { name, grade, diciplines } = defineProps<{
       <ul class="list">
         <li v-for="dicipline in diciplines">{{ dicipline }}</li>
       </ul>
+    </div>
+    <div class="progress">
+      <div class="skill">
+        <p>Didatica</p>
+        <v-progress-linear
+          :model-value="grade.nota_didatica_media * 10"
+          color="#0052cc"
+          bg-color="#62697c"
+          :height="8"
+          rounded
+        />
+      </div>
+      <div class="skill">
+        <p>Metodologia</p>
+        <v-progress-linear
+          :model-value="grade.nota_metodologia_media * 10"
+          color="#0052cc"
+          bg-color="#62697c"
+          :height="8"
+          rounded
+        />
+      </div>
     </div>
     <v-btn
       variant="outlined"
@@ -37,6 +63,21 @@ const { name, grade, diciplines } = defineProps<{
 </template>
 
 <style lang="css" scoped>
+.progress {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.progress p {
+  font-weight: bold;
+}
+
+.skill {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
 .card {
   padding: 20px;
   background-color: #f6f7ff;

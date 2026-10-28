@@ -7,20 +7,32 @@ export interface TeacherResponse {
   user_id: number;
   creat_at: string;
   user: {
-    user_id: number;
-    name: string;
     email: string;
+    name: string;
   };
   disciplines: {
     discipline_id: number;
     name: string;
-    course: string;
-    hours: number;
   }[];
+  avaliacoes: {
+    nota_geral_media: number;
+    nota_didatica_media: number;
+    nota_metodologia_media: number;
+  };
 }
 
 export const TeacherService = {
-  getAll: async (): Promise<RequestResponse<TeacherResponse[]>> => {
-    return request<RequestResponse<TeacherResponse[]>>("/teacher", { auth: true });
+  getAll: async (
+    limit: number,
+    page: number,
+    filters?: {
+      search: string;
+      discipline: string;
+    },
+  ): Promise<RequestResponse<TeacherResponse[]>> => {
+    return request<RequestResponse<TeacherResponse[]>>(
+      `/teacher?limit=${limit}&page=${page}&search=${filters?.search ?? ""}&discipline=${filters?.discipline ?? ""}`,
+      { auth: true },
+    );
   },
 };

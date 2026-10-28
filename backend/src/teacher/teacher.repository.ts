@@ -1,6 +1,7 @@
 import { User } from "../generated/prisma/client.ts";
 import { TeacherDTO } from "./dto/teacher.dto.ts";
 import { DataBase } from "../database/dataBase.ts";
+import { filterTeacher } from "../@types/filterTeacher.type.ts";
 
 export class TeacherRepository {
   constructor(private database: DataBase) { }
@@ -26,7 +27,7 @@ export class TeacherRepository {
     });
   }
 
-  async findAll(take: number, skip: number) {
+  async findAll(take: number, skip: number, filter: filterTeacher) {
     return await this.database.teacher.findMany({
       take,
       skip,
@@ -41,6 +42,50 @@ export class TeacherRepository {
           },
         },
         disciplines: true,
+      where: {
+        ...(filter.search && {
+          user: {
+            name: {
+              contains: filter.search,
+              mode: "insensitive",
+            },
+          },
+        }),
+
+        ...(filter.discipline && {
+          disciplines: {
+            some: {
+              name: {
+                equals: filter.discipline,
+                mode: "insensitive",
+              },
+            },
+          },
+        }),
+      },
+      include: {
+        teacher_id: false,
+        user: {
+          omit: {
+            user_id: true,
+            password: true,
+            role: true,
+          },
+        },
+        disciplines: {
+          omit: {
+            discipline_id: true,
+            hours: true,
+            course: true,
+          },
+        },
+        avaliacoes: {
+          select: {
+            nota_geral: true,
+            nota_didatica: true,
+            nota_metodologia: true,
+          },
+        },
       },
     });
   }
