@@ -20,6 +20,24 @@ export class UserRepository {
     });
   }
 
+  async findAll(take = 100, skip = 0) {
+    return await this.database.user.findMany({
+      take,
+      skip,
+      orderBy: { user_id: "asc" },
+      where: {
+        role: {
+          not: "admin",
+        },
+      },
+      select: {
+        name: true,
+        role: true,
+        email: true,
+      },
+    });
+  }
+
   async createUser(userData: UserDTO, tx?: any) {
     const prisma = tx ?? this.database;
 
@@ -51,7 +69,43 @@ export class UserRepository {
     }
   }
 
+  async deleteUserByEmail(email: string) {
+    try {
+      const a = await this.database.user.delete({
+        where: { email },
+      });
+      console.log(a);
+      return true;
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
+  }
+
   async count() {
     return this.database.user.count();
+  }
+
+  async getStats() {
+    const [qtd_users, qtd_students, qtd_teachers, qtd_admins] =
+      await Promise.all([
+        this.database.user.count(),
+        this.database.user.count({
+          where: { role: "student" },
+        }),
+        this.database.user.count({
+          where: { role: "teacher" },
+        }),
+        this.database.user.count({
+          where: { role: "admin" },
+        }),
+      ]);
+
+    return {
+      qtd_users,
+      qtd_students,
+      qtd_teachers,
+      qtd_admins,
+    };
   }
 }

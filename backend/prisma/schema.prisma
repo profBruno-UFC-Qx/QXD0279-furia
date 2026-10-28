@@ -75,7 +75,7 @@ model Avaliacao {
   teacher_id        Int
   discipline_id        Int
 
-  student           Student @relation(fields: [student_id], references: [student_id])
+  student           Student @relation(fields: [student_id], references: [student_id], onDelete: Cascade)
   teacher           Teacher   @relation(fields: [teacher_id], references: [teacher_id])
   discipline           Discipline @relation(fields: [discipline_id], references: [discipline_id])
 
@@ -92,7 +92,7 @@ model Documents {
   teacher_id        Int
   discipline_id        Int
 
-  student           Student? @relation(fields: [student_id], references: [student_id])
+  student           Student @relation(fields: [student_id], references: [student_id], onDelete: Cascade)
   teacher           Teacher   @relation(fields: [teacher_id], references: [teacher_id])
   discipline           Discipline @relation(fields: [discipline_id], references: [discipline_id])
 
