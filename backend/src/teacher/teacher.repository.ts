@@ -4,7 +4,30 @@ import { DataBase } from "../database/dataBase.ts";
 import { filterTeacher } from "../@types/filterTeacher.type.ts";
 
 export class TeacherRepository {
-  constructor(private database: DataBase) { }
+  constructor(private database: DataBase) {}
+
+  private buildWhere(filter?: filterTeacher) {
+    return {
+      ...(filter?.search && {
+        user: {
+          name: {
+            contains: filter.search,
+            mode: "insensitive" as const,
+          },
+        },
+      }),
+      ...(filter?.discipline && {
+        disciplines: {
+          some: {
+            name: {
+              equals: filter.discipline,
+              mode: "insensitive" as const,
+            },
+          },
+        },
+      }),
+    };
+  }
 
   async createTeacher(user: User, teacherData: TeacherDTO, tx?: any) {
     const prisma = tx ?? this.database;
@@ -16,7 +39,7 @@ export class TeacherRepository {
         },
         disciplines: {
           connect: teacherData.disciplines.map((disciplineId) => ({
-            dicipline_id: disciplineId,
+            discipline_id: disciplineId,
           })),
         },
       },
@@ -31,52 +54,20 @@ export class TeacherRepository {
     return await this.database.teacher.findMany({
       take,
       skip,
+      where: this.buildWhere(filter),
       select: {
         teacher_id: true,
         creat_at: true,
         user: {
           select: {
-            user_id: true,
             name: true,
             email: true,
           },
         },
-        disciplines: true,
-      where: {
-        ...(filter.search && {
-          user: {
-            name: {
-              contains: filter.search,
-              mode: "insensitive",
-            },
-          },
-        }),
-
-        ...(filter.discipline && {
-          disciplines: {
-            some: {
-              name: {
-                equals: filter.discipline,
-                mode: "insensitive",
-              },
-            },
-          },
-        }),
-      },
-      include: {
-        teacher_id: false,
-        user: {
-          omit: {
-            user_id: true,
-            password: true,
-            role: true,
-          },
-        },
         disciplines: {
-          omit: {
+          select: {
             discipline_id: true,
-            hours: true,
-            course: true,
+            name: true,
           },
         },
         avaliacoes: {
@@ -111,7 +102,9 @@ export class TeacherRepository {
     }
   }
 
-  async count() {
-    return this.database.teacher.count();
+  async count(filter?: filterTeacher) {
+    return this.database.teacher.count({
+      where: this.buildWhere(filter),
+    });
   }
 }

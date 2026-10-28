@@ -1,37 +1,40 @@
 <script setup lang="ts">
-  import { onMounted, ref } from 'vue'
-  import { type DocumentResponse, DocumentService } from '@/api/DocumentService'
-  import Filters from '@/components/Filters/Filters.vue'
-  import DocumentForm from '@/components/Forms/DocumentForm.vue'
-  import Header from '@/components/Header/Header.vue'
-  import BaseModal from '@/components/Modais/BaseModal.vue'
-  import Ornament from '@/components/Ornament/Ornament.vue'
-  import TableDocs from '@/components/Table/TableDocs.vue'
+import { onMounted, ref } from "vue";
+import { type DocumentResponse, DocumentService } from "@/api/DocumentService";
+import Filters from "@/components/Filters/Filters.vue";
+import DocumentForm from "@/components/Forms/DocumentForm.vue";
+import Header from "@/components/Header/Header.vue";
+import BaseModal from "@/components/Modais/BaseModal.vue";
+import Ornament from "@/components/Ornament/Ornament.vue";
+import TableDocs from "@/components/Table/TableDocs.vue";
 
-  const documents = ref<DocumentResponse[]>([])
-  const isLoading = ref(true)
-  const modal = ref(false)
+const documents = ref<DocumentResponse[]>([]);
+const isLoading = ref(true);
+const modal = ref(false);
 
-  async function loadDocuments () {
-    isLoading.value = true
-    try {
-      const response = await DocumentService.getAll()
-      documents.value = response || []
-    } catch (error) {
-      console.error(error)
-    } finally {
-      isLoading.value = false
-    }
+const filters = ref({
+  search: "",
+  discipline: "",
+});
+
+async function loadDocuments() {
+  isLoading.value = true;
+  try {
+    const response = await DocumentService.getAll();
+    documents.value = response || [];
+  } catch (error) {
+    console.error(error);
+  } finally {
+    isLoading.value = false;
   }
+}
 
-  function handleModalClose () {
-    modal.value = false
-    loadDocuments()
-  }
+function handleModalClose() {
+  modal.value = false;
+  loadDocuments();
+}
 
-  onMounted(() => {
-    loadDocuments()
-  })
+onMounted(loadDocuments);
 </script>
 
 <template>
@@ -43,12 +46,14 @@
       />
 
       <Filters
+        v-model="filters"
         :inputs="{
           text: true,
           dicipline: true,
           course: false,
           teacher: true,
         }"
+        @submit-filter="loadDocuments"
       />
 
       <button class="addDocument" @click="modal = true">
