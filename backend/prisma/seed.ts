@@ -31,6 +31,13 @@ const usersSeed = [
     password: "123456",
     role: Role.teacher,
   },
+  {
+    user_id: 5,
+    email: "admin1@gmail.com",
+    name: "Administrador",
+    password: "123456",
+    role: Role.admin,
+  },
 ] as const;
 
 const studentsSeed = [
@@ -124,13 +131,20 @@ async function main() {
       continue;
     }
 
-    await prisma.user.create({
-      data: {
-        ...userData,
-        teacher: {
-          create: {},
+    if (user.role === Role.teacher) {
+      await prisma.user.create({
+        data: {
+          ...userData,
+          teacher: {
+            create: {},
+          },
         },
-      },
+      });
+      continue;
+    }
+
+    await prisma.user.create({
+      data: userData,
     });
   }
 

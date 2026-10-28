@@ -43,6 +43,14 @@ export class DiciplineRepository {
     return this.database.discipline.count();
   }
 
+  async findAllNames() {
+    return this.database.discipline.findMany({
+      select: {
+        name: true,
+      },
+    });
+  }
+
   //   async update(
   //     id: number,
   //     data: Partial<Discipline>,

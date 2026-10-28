@@ -5,7 +5,7 @@ import { UserTypeRoles } from "../enums/roles.ts";
 export function AutorizationMiddleware(allowed: Array<UserTypeRoles>) {
   return (req: Request, res: Response, next: NextFunction) => {
     if (!allowed) {
-      next();
+      return next();
     }
 
     if (!req.user) {

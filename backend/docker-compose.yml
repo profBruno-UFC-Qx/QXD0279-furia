@@ -37,7 +37,6 @@ services:
       mc mb localminio/avaliae-docs --ignore-existing;
       mc anonymous set download localminio/avaliae-docs;
       "
-
-volumes:
-  avaliae:
-  minio_data:
+  volumes:
+    avaliae:
+    minio_data:

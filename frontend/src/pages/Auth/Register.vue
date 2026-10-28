@@ -20,8 +20,11 @@ async function register(registerData: registerData) {
       router.push({ name: "studentTeachers" });
     }
   } catch (e) {
-    const error = e as ApiError;
-    notify.notify(error.message, "error");
+    if (e instanceof ApiError) {
+      notify.notify(e.message, "error");
+    } else {
+      notify.notify("Erro ao conectar com servidor", "error");
+    }
   }
 }
 </script>

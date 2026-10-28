@@ -5,13 +5,15 @@ import { TeacherDTO } from "./dto/teacher.dto.ts";
 import { TeacherRepository } from "./teacher.repository.ts";
 import { DataBase } from "../database/dataBase.ts";
 import { pagWrapper } from "../utils/pagWrapper.ts";
+import { calculateAverage } from "./utils/calculateAvarege.ts";
+import { filterTeacher } from "../@types/filterTeacher.type.ts";
 
 export class TeacherService {
   constructor(
     private userService: UserService,
     private teacherRepository: TeacherRepository,
     private database: DataBase,
-  ) {}
+  ) { }
 
   async createTeacher(teacherData: TeacherRegisterDTO) {
     const { email, password, name, role, disciplines } = teacherData;
@@ -35,10 +37,28 @@ export class TeacherService {
     });
   }
 
-  async findAll(take: number, skip: number) {
+  async findAll(take: number, skip: number, filters: filterTeacher) {
     const total = await this.teacherRepository.count();
-    const data = await this.teacherRepository.findAll(take, skip);
-    return pagWrapper(data, take, skip, total);
+    const data = await this.teacherRepository.findAll(take, skip, filters);
+
+    const NotasGerais = data.map((prof) => {
+      return {
+        ...prof,
+        avaliacoes: {
+          nota_geral_media: calculateAverage(
+            prof.avaliacoes.map((av) => av.nota_geral),
+          ),
+          nota_didatica_media: calculateAverage(
+            prof.avaliacoes.map((av) => av.nota_didatica),
+          ),
+          nota_metodologia_media: calculateAverage(
+            prof.avaliacoes.map((av) => av.nota_metodologia),
+          ),
+        },
+      };
+    });
+
+    return { data: NotasGerais, meta: pagWrapper(take, skip, total) };
   }
 
   async findById(id: number) {

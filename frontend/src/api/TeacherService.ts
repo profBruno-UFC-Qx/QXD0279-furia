@@ -5,24 +5,34 @@ import { type RequestResponse } from "@/@types/metaData";
 export interface TeacherResponse {
   teacher_id: number;
   user_id: number;
-  creat_at: Date;
+  creat_at: string;
   user: {
-    user_id: number;
-    name: string;
     email: string;
-    password: string;
+    name: string;
   };
   disciplines: {
-    dicipline_id: number;
+    discipline_id: number;
     name: string;
-    course: string;
-    hours: number;
   }[];
+  avaliacoes: {
+    nota_geral_media: number;
+    nota_didatica_media: number;
+    nota_metodologia_media: number;
+  };
 }
 
 export const TeacherService = {
-  getAll: async () => {
-    const data = await request<RequestResponse<TeacherResponse>>("/teacher");
-    return data;
+  getAll: async (
+    limit: number,
+    page: number,
+    filters?: {
+      search: string;
+      discipline: string;
+    },
+  ): Promise<RequestResponse<TeacherResponse[]>> => {
+    return request<RequestResponse<TeacherResponse[]>>(
+      `/teacher?limit=${limit}&page=${page}&search=${filters?.search ?? ""}&discipline=${filters?.discipline ?? ""}`,
+      { auth: true },
+    );
   },
 };
