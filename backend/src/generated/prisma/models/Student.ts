@@ -361,10 +361,12 @@ export type StudentCreateNestedOneWithoutDocumentsInput = {
   connect?: Prisma.StudentWhereUniqueInput
 }
 
-export type StudentUpdateOneRequiredWithoutDocumentsNestedInput = {
+export type StudentUpdateOneWithoutDocumentsNestedInput = {
   create?: Prisma.XOR<Prisma.StudentCreateWithoutDocumentsInput, Prisma.StudentUncheckedCreateWithoutDocumentsInput>
   connectOrCreate?: Prisma.StudentCreateOrConnectWithoutDocumentsInput
   upsert?: Prisma.StudentUpsertWithoutDocumentsInput
+  disconnect?: Prisma.StudentWhereInput | boolean
+  delete?: Prisma.StudentWhereInput | boolean
   connect?: Prisma.StudentWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.StudentUpdateToOneWithWhereWithoutDocumentsInput, Prisma.StudentUpdateWithoutDocumentsInput>, Prisma.StudentUncheckedUpdateWithoutDocumentsInput>
 }

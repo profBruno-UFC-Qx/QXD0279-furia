@@ -4,7 +4,7 @@ import { DataBase } from "../database/dataBase.ts";
 import { filterTeacher } from "../@types/filterTeacher.type.ts";
 
 export class TeacherRepository {
-  constructor(private database: DataBase) {}
+  constructor(private database: DataBase) { }
 
   async createTeacher(user: User, teacherData: TeacherDTO, tx?: any) {
     const prisma = tx ?? this.database;
@@ -31,6 +31,17 @@ export class TeacherRepository {
     return await this.database.teacher.findMany({
       take,
       skip,
+      select: {
+        teacher_id: true,
+        creat_at: true,
+        user: {
+          select: {
+            user_id: true,
+            name: true,
+            email: true,
+          },
+        },
+        disciplines: true,
       where: {
         ...(filter.search && {
           user: {
