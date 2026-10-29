@@ -7,6 +7,7 @@ export function createTeacherRouter(teacherController: TeacherController) {
 
   teacherRouter.get("/teacher", teacherController.findAll); // paginacao
   teacherRouter.get("/teacher/:id", teacherController.findById);
+  teacherRouter.get("/teacher/:id/profile", teacherController.findProfileById);
   teacherRouter.put(
     "/teacher/:id",
     AutorizationMiddleware(["admin"]),

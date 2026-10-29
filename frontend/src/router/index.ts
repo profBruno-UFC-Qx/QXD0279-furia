@@ -45,7 +45,7 @@ const router = createRouter({
       meta: { requiresAuth: true },
       children: [
         {
-          path: "profile",
+          path: "profile/:id",
           component: () => import("@/pages/Professor/ProfessorProfile.vue"),
           name: "professorProfile",
         },

@@ -91,6 +91,23 @@ export class TeacherRepository {
     });
   }
 
+  async findProfileById(id: number) {
+    return await this.database.teacher.findUnique({
+      where: { teacher_id: id },
+      include: {
+        user: true,
+        disciplines: true,
+        avaliacoes: {
+          include: {
+            student: { include: { user: true } },
+            discipline: true,
+          },
+          orderBy: { creat_at: 'desc' }
+        },
+      },
+    });
+  }
+
   async deleteTeacher(id: number) {
     try {
       await this.database.user.delete({

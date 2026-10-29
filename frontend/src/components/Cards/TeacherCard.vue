@@ -1,5 +1,6 @@
 <script setup lang="ts">
-const { name, grade, diciplines } = defineProps<{
+const { id, name, grade, diciplines } = defineProps<{
+  id: number;
   name: string;
   grade: {
     nota_geral_media: number;
@@ -56,6 +57,7 @@ const { name, grade, diciplines } = defineProps<{
       color="grey-lighten-2"
       class="text-none px-8 btn"
       height="38"
+      :to="{ name: 'professorProfile', params: { id: id } }"
     >
       <span class="text-grey-darken-4 font-weight-medium"> View Profile </span>
     </v-btn>

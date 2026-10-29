@@ -35,4 +35,11 @@ export const TeacherService = {
       { auth: true },
     );
   },
+
+  getById: async (id: number): Promise<RequestResponse<any>> => {
+    return request<RequestResponse<any>>(`/teacher/${id}/profile`, {
+      method: "GET",
+      auth: true,
+    });
+  },
 };
