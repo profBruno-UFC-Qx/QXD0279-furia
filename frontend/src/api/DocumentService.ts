@@ -29,6 +29,14 @@ export interface DocumentResponse {
   }
 }
 
+export interface GetDocumentsParams {
+  page?: number;
+  limit?: number;
+  search?: string;
+  discipline?: string;
+  teacher?: string;
+}
+
 export const DocumentService = {
   upload: async (payload: CreateDocumentPayload): Promise<DocumentResponse> => {
     const formData = new FormData()
@@ -50,10 +58,11 @@ export const DocumentService = {
     })
   },
 
-  getAll: async (): Promise<DocumentResponse[]> => {
-    return request<DocumentResponse[]>('/document', {
+  getAll: async (params?: GetDocumentsParams): Promise<RequestResponse<DocumentResponse[]>> => {
+    return request<RequestResponse<DocumentResponse[]>>('/document', {
       method: 'GET',
       auth: true, 
+      params: params, 
     })
   },
 }

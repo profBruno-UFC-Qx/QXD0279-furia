@@ -12,16 +12,27 @@ const documents = ref<DocumentResponse[]>([]);
 const isLoading = ref(true);
 const modal = ref(false);
 
+const page = ref(1);
+const totalPages = ref(1);
+const limit = 10;
+
 const filters = ref({
-  search: "",
-  discipline: "",
+  search: "",     
+  discipline: "", 
+  teacher: "",    
 });
 
 async function loadDocuments() {
   isLoading.value = true;
   try {
-    const response = await DocumentService.getAll();
-    documents.value = response || [];
+    const response = await DocumentService.getAll({
+      page: page.value,
+      limit: limit,
+      search: filters.value.search,       
+      discipline: filters.value.discipline,
+      teacher: filters.value.teacher,     
+    });
+    documents.value = response.data || [];
   } catch (error) {
     console.error(error);
   } finally {
