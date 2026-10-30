@@ -32,7 +32,7 @@ export class DocumentController {
         try {
             const page = parseInt(req.query.page as string) || 1;
             const limit = parseInt(req.query.limit as string) || 10;
-            const documents = await this.service.listDocuments(page, limit);
+            const documents = await this.service.listDocuments(page, limit, req.query);
             return res.status(200).json(documents);
         } catch (error) {
             return next(error);

@@ -35,10 +35,9 @@ export class DocumentService {
         return this.repository.create(document);
     }
 
-    async listDocuments(page: number, limit: number) {
-        const skip = (page - 1) * limit;
-        return this.repository.findAll(skip, limit);
-    }
+    async listDocuments(page: number, limit: number, filters: any = {}) {
+    return this.repository.findAll(page, limit, filters);
+  }
 
     async getDocumentById(id: number) {
         const document = await this.repository.findById(id);
