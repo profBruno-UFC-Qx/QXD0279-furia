@@ -36,6 +36,13 @@ export const TeacherService = {
     );
   },
 
+  getDashboard: async (): Promise<RequestResponse<any>> => {
+    return request<RequestResponse<any>>("/teacher/dashboard", {
+      method: "GET",
+      auth: true, 
+    });
+  },
+
   getById: async (id: number): Promise<RequestResponse<any>> => {
     return request<RequestResponse<any>>(`/teacher/${id}/profile`, {
       method: "GET",

@@ -12,11 +12,11 @@
       >
         <div>
           <h3 class="discipline-name">{{ item.name }}</h3>
-          <span class="student-count">{{ item.studentCount }} alunos</span>
+          <span class="student-count">{{ item.studentCount }} avaliações</span>
         </div>
 
         <div class="rating-info">
-          <strong class="rating-value">{{ item.averageRating.toFixed(1) }}/5</strong>
+          <strong class="rating-value">{{ (item.averageRating || 0).toFixed(1) }}/5</strong>
           <span class="rating-label">nota média</span>
         </div>
       </div>
