@@ -99,6 +99,7 @@ export class TeacherRepository {
         documents: {
           orderBy: { data_publicacao: 'desc' },
           take: 5,
+          include: { discipline: true }
         }
       }
     });

@@ -38,6 +38,13 @@ const logout = () => {
               text="Documentos"
             />
           </li>
+          <li v-if="storeAuth.role === 'teacher'">
+            <v-btn
+              variant="plain"
+              :to="{ name: 'professorDashboard' }"
+              text="Dashboard"
+            />
+          </li>
         </ul>
       </nav>
 

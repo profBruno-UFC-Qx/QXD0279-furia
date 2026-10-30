@@ -96,6 +96,7 @@ export class TeacherService {
       recentDocuments: teacherData.documents.map(doc => ({
         id: doc.id.toString(),
         fileName: doc.titulo,
+        disciplineName: doc.discipline?.name || 'Geral',
       }))
     };
   }

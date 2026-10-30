@@ -8,6 +8,7 @@ import { StudentService } from "../student/student.service.ts";
 import { UserService } from "../user/user.service.ts";
 import { TeacherService } from "../teacher/teacher.service.ts";
 import { TeacherRegisterDTO } from "./dto/register.teacher.dto.ts";
+
 export class AuthService {
   constructor(
     private studentService: StudentService,
@@ -26,7 +27,7 @@ export class AuthService {
     });
 
     return {
-      userResponse: { name: student.user.name, role: "student" },
+      userResponse: { id: student.user.user_id, name: student.user.name, role: "student" },
       token,
     };
   }
@@ -47,7 +48,7 @@ export class AuthService {
     });
 
     return {
-      userResponse: { name: teacherUser.name, role: "teacher" },
+      userResponse: { id: teacherUser.user_id, name: teacherUser.name, role: "teacher" },
       token,
     };
   }
@@ -75,7 +76,7 @@ export class AuthService {
     });
 
     return {
-      userResponse: { name: user.name, role: user.role },
+      userResponse: { id: user.user_id, name: user.name, role: user.role },
       token,
     };
   }

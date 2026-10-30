@@ -48,7 +48,10 @@
     </section>
 
     <BaseModal v-model:modal="isUploadModalOpen" title="Upload Material">
-      <DocumentForm @close="isUploadModalOpen = false" />
+      <DocumentForm 
+        @close="isUploadModalOpen = false" 
+        :is-dashboard="true" 
+      />
     </BaseModal>
   </main>
 </template>
@@ -134,6 +137,7 @@
       recentDocuments.value = data.recentDocuments.map((doc: any) => ({
         id: doc.id.toString(),
         fileName: doc.fileName || doc.titulo, 
+        disciplineName: doc.disciplineName,
       }))
 
     } catch (error) {

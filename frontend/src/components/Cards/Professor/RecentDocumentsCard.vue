@@ -17,6 +17,7 @@
 
         <div class="file-info">
           <span class="file-name">{{ doc.fileName }}</span>
+          <span class="file-size">{{ doc.disciplineName }}</span>
         </div>
       </div>
     </div>

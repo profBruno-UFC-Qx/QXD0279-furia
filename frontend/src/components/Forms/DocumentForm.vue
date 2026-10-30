@@ -5,11 +5,20 @@
   import { DocumentService } from '@/api/DocumentService'
   import { type TeacherResponse, TeacherService } from '@/api/TeacherService'
   import { useStoreNotify } from '@/stores/StoreNotify'
+  import { authStore } from '@/stores/StoreAuth' 
+
+  const props = defineProps({
+    isDashboard: {
+      type: Boolean,
+      default: false
+    }
+  })
 
   const emit = defineEmits<{
     (e: 'close'): void
   }>()
 
+  const auth = authStore() 
   const notify = useStoreNotify()
   const isLoading = ref(true)
   const isSubmitting = ref(false)
@@ -28,14 +37,21 @@
     isLoading.value = true
     errorMessage.value = ''
     try {
-      const [teacherResponse, disciplineResponse] = await Promise.all([
-        TeacherService.getAll(),
-        DiciplineService.getAll(),
-      ])
-      teachers.value = teacherResponse.data || []
-      disciplines.value = disciplineResponse.data || []
+      if (props.isDashboard) {
+        formData.value.teacher = Number(auth.userId) || Number(localStorage.getItem('userId')) || null
+        
+        const disciplineResponse = await DiciplineService.getAll()
+        disciplines.value = disciplineResponse.data || []
+      } else {
+        const [teacherResponse, disciplineResponse] = await Promise.all([
+          TeacherService.getAll(),
+          DiciplineService.getAll(),
+        ])
+        teachers.value = teacherResponse.data || []
+        disciplines.value = disciplineResponse.data || []
+      }
     } catch (error) {
-      errorMessage.value = getErrorMessage(error, 'Não foi possível carregar professores e disciplinas.')
+      errorMessage.value = getErrorMessage(error, 'Não foi possível carregar os dados.')
     } finally {
       isLoading.value = false
     }
@@ -48,7 +64,12 @@
   async function handleSubmit () {
     errorMessage.value = ''
     successMessage.value = ''
-    if (!formData.value.title || !formData.value.discipline || !formData.value.teacher || !formData.value.file) {
+    
+    const resolvedTeacherId = props.isDashboard 
+      ? (Number(auth.userId) || Number(localStorage.getItem('userId')))
+      : formData.value.teacher;
+
+    if (!formData.value.title || !formData.value.discipline || !resolvedTeacherId || !formData.value.file) {
       errorMessage.value = 'Preencha todos os campos obrigatórios.'
       return
     }
@@ -76,12 +97,17 @@
       await DocumentService.upload({
         titulo: formData.value.title,
         discipline_id: formData.value.discipline,
-        teacher_id: formData.value.teacher,
+        teacher_id: resolvedTeacherId, 
         file: fileToUpload,
       })
 
       successMessage.value = 'Documento enviado com sucesso.'
       notify.notify(successMessage.value, 'alert')
+      
+      formData.value.title = ''
+      formData.value.file = []
+      if (!props.isDashboard) formData.value.teacher = null
+      
       emit('close')
     } catch (error) {
       errorMessage.value = getErrorMessage(error, 'Não foi possível enviar o documento.')
@@ -147,7 +173,8 @@
       />
     </div>
 
-    <div class="form-section">
+    <!-- V-IF AQUI: O select só aparece se não for chamado a partir do Dashboard -->
+    <div class="form-section" v-if="!isDashboard">
       <label class="main-label">Professor <span class="required">*</span></label>
 
       <v-select

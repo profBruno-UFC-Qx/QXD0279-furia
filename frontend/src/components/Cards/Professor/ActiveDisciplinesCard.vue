@@ -12,7 +12,7 @@
       >
         <div>
           <h3 class="discipline-name">{{ item.name }}</h3>
-          <span class="student-count">{{ item.studentCount }} alunos</span>
+          <span class="student-count">{{ item.studentCount }} avaliações</span>
         </div>
 
         <div class="rating-info">
