@@ -53,6 +53,7 @@ const router = createRouter({
           path: "dashboard",
           component: () => import("@/pages/Professor/ProfessorDashboard.vue"),
           name: "professorDashboard",
+          meta: { requiresTeacher: true },
         },
       ],
     },
@@ -111,6 +112,14 @@ router.beforeEach(async (to) => {
       return { name: "login" };
     }
   }
+
+  if (to.meta.requiresTeacher) {
+    if (auth.role != "teacher") {
+      return { name: "studentHome" };
+    }
+  }
 });
+
+
 
 export default router;

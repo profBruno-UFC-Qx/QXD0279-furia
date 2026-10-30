@@ -81,6 +81,29 @@ export class TeacherRepository {
     });
   }
 
+  async getDashboardInfo(userId: number) {
+    return await this.database.teacher.findFirst({
+      where: { 
+        user: { user_id: userId } 
+      },
+      include: {
+        user: true,
+        disciplines: true,
+        avaliacoes: {
+          include: {
+            student: { include: { user: true } },
+            discipline: true,
+          },
+          orderBy: { creat_at: 'desc' },
+        },
+        documents: {
+          orderBy: { data_publicacao: 'desc' },
+          take: 5,
+        }
+      }
+    });
+  }
+
   async findById(id: number) {
     return await this.database.teacher.findUnique({
       where: { teacher_id: id },

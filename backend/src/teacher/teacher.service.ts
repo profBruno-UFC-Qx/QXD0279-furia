@@ -61,6 +61,45 @@ export class TeacherService {
     return { data: NotasGerais, meta: pagWrapper(take, skip, total) };
   }
 
+  async getDashboard(userId: number) {
+    const teacherData = await this.teacherRepository.getDashboardInfo(userId);
+
+    if (!teacherData) {
+      throw new NotFoundError("Professor não encontrado para este usuário");
+    }
+
+    const totalReviews = teacherData.avaliacoes.length;
+    const mediaGeral = calculateAverage(
+      teacherData.avaliacoes.map((av) => av.nota_geral)
+    );
+
+    const activeDisciplines = teacherData.disciplines.map(d => {
+      const reviewsDaDisciplina = teacherData.avaliacoes.filter(av => av.discipline_id === d.discipline_id);
+      return {
+        id: d.discipline_id.toString(),
+        name: d.name,
+        studentCount: reviewsDaDisciplina.length, // Usando número de reviews como aproximação
+        averageRating: calculateAverage(reviewsDaDisciplina.map(av => av.nota_geral))
+      };
+    });
+
+    return {
+      professorName: teacherData.user.name,
+      stats: {
+        averageRating: mediaGeral,
+        totalReviews: totalReviews,
+        activeDocuments: teacherData.documents.length,
+        activeDisciplinesCount: teacherData.disciplines.length
+      },
+      recentReviews: teacherData.avaliacoes.slice(0, 5),
+      activeDisciplines: activeDisciplines,
+      recentDocuments: teacherData.documents.map(doc => ({
+        id: doc.id.toString(),
+        fileName: doc.titulo,
+      }))
+    };
+  }
+
   async findById(id: number) {
     const teacher = await this.teacherRepository.findById(id);
 

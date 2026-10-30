@@ -6,6 +6,11 @@ export function createTeacherRouter(teacherController: TeacherController) {
   const teacherRouter = Router();
 
   teacherRouter.get("/teacher", teacherController.findAll); // paginacao
+  teacherRouter.get(
+    "/teacher/dashboard",
+    AutorizationMiddleware(["teacher", "admin"]),
+    teacherController.getDashboard
+  );
   teacherRouter.get("/teacher/:id", teacherController.findById);
   teacherRouter.get("/teacher/:id/profile", teacherController.findProfileById);
   teacherRouter.put(
