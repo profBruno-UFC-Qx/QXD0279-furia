@@ -1,10 +1,11 @@
 import { request } from "./request";
 
 import { type RequestResponse } from "@/@types/metaData";
+
 export interface statisticsHomeResponse {
-  evaluations: number;
-  downloaded: number;
-  uploaded: number;
+  qtd_avaliacoes: number;
+  qtd_downloaded: number;
+  qtd_uploades: number;
 }
 
 export interface statisticsDashboardResponse {
@@ -16,8 +17,9 @@ export interface statisticsDashboardResponse {
 
 export const StatisticsService = {
   getStatisticsHome: async () => {
-    const data = await request<RequestResponse<statisticsHomeResponse>>("/URL");
-
+    const data = await request<statisticsHomeResponse>("/user/stats/home", {
+      auth: true,
+    });
     return data;
   },
 

@@ -70,7 +70,7 @@ const headers = [
       v-model:items-per-page="itemsPerPage"
       :headers="headers"
       :items="documents"
-      :items-length="totalPages"
+      :items-length="totalPages * itemsPerPage"
       item-value="user_id"
       :items-per-page-options="[5]"
       fixed-header

@@ -56,6 +56,10 @@ export class UserService {
     return await this.userRepository.getStats();
   }
 
+  async getsStatsHome() {
+    return await this.userRepository.getsStatsHome();
+  }
+
   async updateUser(userId: number, data: Partial<UserDTO>) {
     const user = await this.userRepository.findUserById(userId);
 

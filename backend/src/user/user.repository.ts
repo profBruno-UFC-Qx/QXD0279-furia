@@ -108,4 +108,17 @@ export class UserRepository {
       qtd_admins,
     };
   }
+
+  async getsStatsHome() {
+    const [qtd_avaliacoes, qtd_uploades] = await Promise.all([
+      this.database.avaliacao.count(),
+      this.database.documents.count(),
+    ]);
+
+    return {
+      qtd_avaliacoes,
+      qtd_downloaded: qtd_uploades,
+      qtd_uploades,
+    };
+  }
 }
