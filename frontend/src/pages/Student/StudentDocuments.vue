@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { type DocumentResponse, DocumentService } from "@/api/DocumentService";
 import Filters from "@/components/Filters/Filters.vue";
 import DocumentForm from "@/components/Forms/DocumentForm.vue";
@@ -14,7 +14,7 @@ const modal = ref(false);
 
 const page = ref(1);
 const totalPages = ref(1);
-const limit = 10;
+const limit = 2;
 
 const filters = ref({
   search: "",     
@@ -33,10 +33,25 @@ async function loadDocuments() {
       teacher: filters.value.teacher,     
     });
     documents.value = response.data || [];
+    if (response.meta) {
+        totalPages.value = response.meta.totalPages || 1;
+    }
   } catch (error) {
     console.error(error);
   } finally {
     isLoading.value = false;
+  }
+}
+
+watch(page, () => {
+  loadDocuments();
+});
+
+function handleFilterSubmit() {
+  if (page.value !== 1) {
+    page.value = 1; 
+  } else {
+    loadDocuments(); 
   }
 }
 
@@ -64,7 +79,7 @@ onMounted(loadDocuments);
           course: false,
           teacher: true,
         }"
-        @submit-filter="loadDocuments"
+        @submit-filter="handleFilterSubmit"
       />
 
       <button class="addDocument" @click="modal = true">
@@ -80,6 +95,16 @@ onMounted(loadDocuments);
 
           <div v-else>
             <TableDocs :documents="documents" />
+            <div class="d-flex justify-center mt-6">
+              <v-pagination
+                v-if="totalPages > 1"
+                v-model="page"
+                :length="totalPages"
+                :total-visible="5"
+                active-color="primary"
+                rounded="circle"
+              ></v-pagination>
+            </div>
           </div>
         </template>
       </Ornament>
