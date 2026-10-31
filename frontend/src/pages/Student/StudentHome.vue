@@ -9,6 +9,7 @@ import { AvaliacaoService } from "@/api/AvaliacaoService";
 import { StatisticsService } from "@/api/StatisticsService";
 import { type metaData } from "@/@types/metaData";
 import { type AvaliacaoResponse } from "@/api/AvaliacaoService";
+import { type statisticsHomeResponse } from "@/api/StatisticsService";
 
 const boats = [
   {
@@ -61,24 +62,19 @@ async function fetchEvaluations() {
   }
 }
 
-const statistics = ref<{
-  evaluations: number;
-  downloaded: number;
-  uploaded: number;
-}>({
-  evaluations: 0,
-  downloaded: 0,
-  uploaded: 0,
+const statistics = ref<statisticsHomeResponse>({
+  qtd_avaliacoes: 0,
+  qtd_downloaded: 0,
+  qtd_uploades: 0,
 });
 const statisticsLoading = ref<boolean>(false);
 const statisticsError = ref<string | null>(null);
 
 async function fetchStatistics() {
   statisticsLoading.value = false;
-
   try {
     const statisticsData = await StatisticsService.getStatisticsHome();
-    statistics.value = statisticsData.data;
+    statistics.value = statisticsData;
   } catch (error) {
     statisticsError.value = "Erro ao obter estatisticas.";
   }
@@ -104,17 +100,17 @@ onMounted(async () => {
     <div class="stats">
       <StatsCard
         title="Reviews Written"
-        :value="statistics.evaluations && 0"
+        :value="statistics.qtd_avaliacoes | 0"
         icon="mdi-star"
       />
       <StatsCard
         title="Documents Uploaded"
-        :value="statistics.uploaded && 0"
+        :value="statistics.qtd_uploades | 0"
         icon="mdi-upload"
       />
       <StatsCard
         title="Documents Downloaded"
-        :value="statistics.downloaded && 0"
+        :value="statistics.qtd_downloaded | 0"
         icon="mdi-upload"
       />
     </div>

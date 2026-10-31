@@ -1,6 +1,22 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import CategoryCard from "@/components/Cards/CategoryCard.vue";
+import { authStore } from "@/stores/StoreAuth";
+import { ref, computed } from "vue";
+
+const useStore = authStore();
+
+const role = ref<string | null>(useStore.role);
+const destiny = computed(() => {
+  if (role.value == "student") {
+    return "studentHome";
+  } else if (role.value == "admin") {
+    return "adminDashboard";
+  } else if (role.value == "teacher") {
+    return "professorDashboard";
+  } else {
+    return "login";
+  }
+});
 </script>
 
 <template>
@@ -12,8 +28,9 @@ import CategoryCard from "@/components/Cards/CategoryCard.vue";
         acesse documentos de estudo para impulsionar sua vida universitária.
       </p>
       <div class="buttons">
-        <v-btn color="#2664EB"> Find a Professor </v-btn>
-        <v-btn variant="outlined"> Browse Documents </v-btn>
+        <v-btn size="large" color="#2664EB" :to="{ name: destiny }">
+          Ver mais
+        </v-btn>
       </div>
     </div>
     <div class="category">

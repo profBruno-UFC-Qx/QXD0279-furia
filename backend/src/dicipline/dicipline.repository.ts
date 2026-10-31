@@ -1,5 +1,6 @@
 import { createDicipline } from "./dto/createDicipline.dto.ts";
 import { DataBase } from "../database/dataBase.ts";
+import { diciplineUpdateDTO } from "./dto/disciplineUpdate.dto.ts";
 
 export class DiciplineRepository {
   constructor(private database: DataBase) {}
@@ -51,20 +52,28 @@ export class DiciplineRepository {
     });
   }
 
-  //   async update(
-  //     id: number,
-  //     data: Partial<Discipline>,
-  //   ): Promise<Discipline | null> {
-  //     const discipline = await this.findById(id);
+  async update(
+    id: number,
+    data: Partial<diciplineUpdateDTO>,
+  ): Promise<diciplineUpdateDTO | null> {
+    const discipline = await this.findById(id);
 
-  //     if (!discipline) return null;
+    if (!discipline) return null;
 
-  //     this.diciplineRepository.merge(discipline, data);
-  //     return this.diciplineRepository.save(discipline);
-  //   }
+    return this.database.discipline.update({
+      where: { discipline_id: id },
+      data: data,
+    });
+  }
 
-  //   async delete(id: number): Promise<boolean> {
-  //     const result = await this.diciplineRepository.delete(id);
-  //     return (result.affected ?? 0) > 0;
-  //   }
+  async delete(id: number): Promise<boolean> {
+    try {
+      const result = await this.database.discipline.delete({
+        where: { discipline_id: id },
+      });
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 }

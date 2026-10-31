@@ -2,6 +2,7 @@ import { DiciplineRepository } from "./dicipline.repository.ts";
 import { createDicipline } from "./dto/createDicipline.dto.ts";
 import { Conflict } from "../errors/errors.ts";
 import { pagWrapper } from "../utils/pagWrapper.ts";
+import { diciplineUpdateDTO } from "./dto/disciplineUpdate.dto.ts";
 
 export class DiciplineService {
   constructor(private repository: DiciplineRepository) { }
@@ -36,21 +37,23 @@ export class DiciplineService {
     return this.repository.findAllNames();
   }
 
-  //   async update(id: number, data: Partial<Discipline>) {
-  //     const discipline = await this.repository.update(id, data);
+  async update(id: number, data: Partial<diciplineUpdateDTO>) {
+    const discipline = await this.repository.update(id, data);
 
-  //     if (!discipline) {
-  //       throw new Error("Disciplina não encontrada");
-  //     }
+    if (!discipline) {
+      throw new Error("Disciplina não encontrada");
+    }
 
-  //     return discipline;
-  //   }
+    return discipline;
+  }
 
-  //   async delete(id: number) {
-  //     const deleted = await this.repository.delete(id);
+  async delete(id: number) {
+    const deleted = await this.repository.delete(id);
 
-  //     if (!deleted) {
-  //       throw new Error("Disciplina não encontrada");
-  //     }
-  //   }
+    if (!deleted) {
+      throw new Error("Disciplina não encontrada");
+    }
+
+    return deleted;
+  }
 }

@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { DiciplineService } from "./dicipline.service.ts";
 import { registerDicipline } from "./schemas/registerDicipline.schema.ts";
 import { BadRequestError } from "../errors/errors.ts";
+import { updateDiscipline } from "./schemas/updateDiscipline.schema.ts";
 
 export class DiciplineController {
   constructor(private service: DiciplineService) {}
@@ -35,48 +36,30 @@ export class DiciplineController {
     return res.status(200).json(disciplines);
   };
 
-  //   findById = async (req: Request, res: Response, next: NextFunction) => {
-  //     try {
-  //       const id = Number(req.params.id);
+  update = async (req: Request, res: Response, next: NextFunction) => {
+    const dataValidate = updateDiscipline.safeParse(req.body);
+    const id = Number(req.params.id);
 
-  //       if (!Number.isInteger(id) || id <= 0) {
-  //         return res.status(400).json({ message: "ID inválido" });
-  //       }
+    if (dataValidate.error) {
+      throw new BadRequestError("body da requisicao mal formatado");
+    }
 
-  //       const discipline = await this.service.findById(id);
-  //       return res.status(200).json(discipline);
-  //     } catch (error) {
-  //       next(error);
-  //     }
-  //   };
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.status(400).json({ message: "ID inválido" });
+    }
 
-  //   update = async (req: Request, res: Response, next: NextFunction) => {
-  //     try {
-  //       const id = Number(req.params.id);
+    const discipline = await this.service.update(id, req.body);
+    return res.status(200).json(discipline);
+  };
 
-  //       if (!Number.isInteger(id) || id <= 0) {
-  //         return res.status(400).json({ message: "ID inválido" });
-  //       }
+  delete = async (req: Request, res: Response, next: NextFunction) => {
+    const id = Number(req.params.id);
 
-  //       const discipline = await this.service.update(id, req.body);
-  //       return res.status(200).json(discipline);
-  //     } catch (error) {
-  //       next(error);
-  //     }
-  //   };
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.status(400).json({ message: "ID inválido" });
+    }
 
-  //   delete = async (req: Request, res: Response, next: NextFunction) => {
-  //     try {
-  //       const id = Number(req.params.id);
-
-  //       if (!Number.isInteger(id) || id <= 0) {
-  //         return res.status(400).json({ message: "ID inválido" });
-  //       }
-
-  //       await this.service.delete(id);
-  //       return res.status(204).send();
-  //     } catch (error) {
-  //       next(error);
-  //     }
-  //   };
+    const result = await this.service.delete(id);
+    return res.status(200).send(result);
+  };
 }

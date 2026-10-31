@@ -1,6 +1,7 @@
 import { ApiError } from './ApiError'
 
-const BASE_URL = 'http://localhost:9876'
+
+const BASE_URL = "http://localhost:9876";
 
 export const TOKEN_KEY = 'token'
 
