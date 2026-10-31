@@ -8,6 +8,7 @@ import { type User } from "@/api/UserService";
 import { userService } from "@/api/UserService";
 import { StatisticsService } from "@/api/StatisticsService";
 import { ApiError } from "@/api/ApiError";
+import { useStoreNotify } from "@/stores/StoreNotify";
 
 const dashboardStats = ref({
   totalUsers: 0,
@@ -43,18 +44,22 @@ const stats = computed(() => [
   },
 ]);
 
+const notify = useStoreNotify();
 const currentPage = ref(1);
 const itemsPerPage = ref(5);
 const totalPages = ref(0);
 const users = ref<Array<User>>([]);
-const userLoading = ref<boolean>(false);
 const dashboardErrors = ref({
   users: null as string | null,
   statistics: null as string | null,
   delete: null as string | null,
 });
+const modalDelete = ref<boolean>();
+const userSelected = ref<User>();
 
 async function deleteUser(user: User) {
+  notify.startLoad();
+
   try {
     dashboardErrors.value.delete = null;
     await userService.deleteUserByEmail(user.email);
@@ -65,11 +70,13 @@ async function deleteUser(user: User) {
     } else {
       dashboardErrors.value.delete = "Erro ao conectar com o servidor";
     }
+  } finally {
+    notify.endLoad();
   }
 }
 
 async function fetchUsers() {
-  userLoading.value = true;
+  notify.startLoad();
 
   try {
     const response = await userService.getAll(
@@ -83,11 +90,13 @@ async function fetchUsers() {
   } catch (error) {
     dashboardErrors.value.users = "Não foi possível obter os usuários";
   } finally {
-    userLoading.value = false;
+    notify.endLoad();
   }
 }
 
 async function fetchStatistics() {
+  notify.startLoad();
+
   try {
     dashboardErrors.value.statistics = null;
     const response = await StatisticsService.getStatisticsDashboardAdm();
@@ -100,6 +109,8 @@ async function fetchStatistics() {
   } catch (error) {
     dashboardErrors.value.statistics =
       "Não foi possível carregar as estatísticas do dashboard";
+  } finally {
+    notify.endLoad();
   }
 }
 

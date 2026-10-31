@@ -74,10 +74,8 @@ export class UserRepository {
       const a = await this.database.user.delete({
         where: { email },
       });
-      console.log(a);
       return true;
     } catch (e) {
-      console.log(e);
       return false;
     }
   }

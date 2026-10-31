@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch, reactive } from "vue";
 import Header from "@/components/Header/Header.vue";
 import Ornament from "@/components/Ornament/Ornament.vue";
 import TableDiscipline from "@/components/Table/TableDiscipline.vue";
-import DisciplinePost from "@/components/Forms/DisciplinePost.vue";
+import DisciplineForm from "@/components/Forms/DisciplineForm.vue";
 import {
   DiciplineService,
   type DiciplineResponse,
@@ -11,47 +11,113 @@ import {
 import BaseModal from "@/components/Modais/BaseModal.vue";
 import { useStoreNotify } from "@/stores/StoreNotify";
 
+interface Modals {
+  create: boolean;
+  delete: boolean;
+  update: boolean;
+}
+
+interface DisciplineCreate {
+  name: string;
+  course: string;
+  hours: number;
+}
+
+interface DisciplineUpdate {
+  discipline_id: number;
+  name: string;
+  course: string;
+  hours: number;
+}
+
 const notify = useStoreNotify();
 const currentPage = ref(1);
 const itemsPerPage = ref(5);
 const totalPages = ref(0);
 const disciplines = ref<DiciplineResponse[]>([]);
-const disciplinesLoading = ref(false);
-const dashboardErrors = ref<string | null>(null);
-const modalPost = ref<boolean>(false);
-const modalUpdate = ref<boolean>(false);
+const disciplineErrors = ref<string | null>(null);
+const modals = reactive<Modals>({
+  create: false,
+  delete: false,
+  update: false,
+});
+const disciplineSelected = ref<DiciplineResponse | null>(null);
 
-async function createDiscipline() {
-  modalPost.value = false;
-  notify.notify("Diciplina cadastrada", "alert");
-  await fetchDisciplines();
+async function Create(data: DisciplineCreate) {
+  notify.startLoad();
+  try {
+    await DiciplineService.create({
+      name: data.name,
+      course: data.course,
+      hours: Number(data.hours),
+    });
+
+    notify.notify("Disciplina cadastrada", "alert");
+    await fetchDisciplines();
+  } catch (error) {
+  } finally {
+    modals.create = false;
+    notify.endLoad();
+  }
+}
+
+async function Delete(discipline: DiciplineResponse | null) {
+  if (!discipline) return;
+
+  notify.startLoad();
+  try {
+    const { discipline_id } = discipline;
+    const result = await DiciplineService.delete(discipline_id);
+    modals.delete = false;
+    if (!result) {
+      throw result;
+    }
+
+    await fetchDisciplines();
+    notify.notify("Disciplina deletada com sucesso", "alert");
+  } catch (error) {
+    notify.notify("Nao foi possivel apagar a disciplina", "error");
+  } finally {
+    notify.endLoad();
+  }
+}
+
+async function Update(data: DisciplineUpdate) {
+  notify.startLoad();
+  try {
+    await DiciplineService.update(data.discipline_id, {
+      name: data.name,
+      course: data.course,
+      hours: Number(data.hours),
+    });
+
+    notify.notify("Disciplina atualizada", "alert");
+    await fetchDisciplines();
+  } catch (error) {
+  } finally {
+    modals.update = false;
+    notify.endLoad();
+  }
 }
 
 async function fetchDisciplines() {
-  disciplinesLoading.value = true;
-  console.log(currentPage.value);
+  notify.startLoad();
   try {
     const response = await DiciplineService.getAll(
       itemsPerPage.value,
       currentPage.value,
     );
-    disciplines.value = response.data ?? [];
-    totalPages.value = 4;
-    dashboardErrors.value = null;
+    disciplines.value = response.data;
+    totalPages.value = response.meta.totalPages;
+    disciplineErrors.value = null;
   } catch (error) {
-    dashboardErrors.value = "Não foi possível obter as disciplinas";
+    disciplineErrors.value = "Não foi possível obter as disciplinas";
   } finally {
-    disciplinesLoading.value = false;
+    notify.endLoad();
   }
-
-  console.log(totalPages.value);
 }
 
 watch([currentPage, itemsPerPage], async () => {
-  if (currentPage.value > totalPages.value) {
-    currentPage.value = totalPages.value || 1;
-  }
-
   await fetchDisciplines();
 });
 
@@ -63,17 +129,17 @@ onMounted(async () => {
 <template>
   <div class="dashboard-page">
     <Header
-      :title="'Admin Diciplinas'"
+      :title="'Admin Disciplinas'"
       :description="'Visão geral das diciplinas cadastradas no sistema.'"
     />
 
-    <v-alert v-if="dashboardErrors" type="error">
-      <div>{{ dashboardErrors }}</div>
+    <v-alert v-if="disciplineErrors" type="error">
+      <div>{{ disciplineErrors }}</div>
     </v-alert>
 
-    <button class="addDiscipline" @click="modalPost = true">
+    <button class="addDiscipline" @click="modals.create = true">
       <v-icon icon="mdi-plus" />
-      Cadastre uma nova diciplina
+      Cadastre uma nova disciplina
     </button>
 
     <Ornament text="Disciplinas Cadastradas">
@@ -84,13 +150,62 @@ onMounted(async () => {
             v-model:current-page="currentPage"
             v-model:itemsPerPage="itemsPerPage"
             v-model:totalPages="totalPages"
+            @delete="
+              (discipline) => {
+                modals.delete = true;
+                disciplineSelected = discipline;
+              }
+            "
+            @update="
+              (discipline) => {
+                modals.update = true;
+                disciplineSelected = discipline;
+              }
+            "
           />
         </div>
       </template>
     </Ornament>
   </div>
-  <BaseModal :title="'Cadastre uma diciplina'" v-model:modal="modalPost">
-    <DisciplinePost @created="createDiscipline" />
+  <BaseModal :title="'Cadastrar disciplina'" v-model:modal="modals.create">
+    <DisciplineForm @create="Create" @close="modals.create = false" />
+  </BaseModal>
+
+  <BaseModal :title="'Atualizar disciplina'" v-model:modal="modals.update">
+    <DisciplineForm
+      @update="Update"
+      :discipline-data="disciplineSelected as DiciplineResponse"
+      :is-update="true"
+      @close="modals.update = false"
+    />
+  </BaseModal>
+
+  <BaseModal
+    :title="'Deseja apagar a diciplina ?'"
+    v-model:modal="modals.delete"
+    @close="disciplineSelected = null"
+  >
+    <div class="d-flex align-center ga-3">
+      <div class="flex-grow-1">
+        <div class="font-weight-bold">{{ disciplineSelected?.name }}</div>
+        <div class="text-caption text-medium-emphasis">
+          {{ disciplineSelected?.hours }}h · {{ disciplineSelected?.course }}
+        </div>
+      </div>
+
+      <v-btn
+        color="error"
+        icon="mdi-delete"
+        size="large"
+        variant="text"
+        aria-label="Excluir usuário"
+        @click="
+          () => {
+            Delete(disciplineSelected);
+          }
+        "
+      />
+    </div>
   </BaseModal>
 </template>
 

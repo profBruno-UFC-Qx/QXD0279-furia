@@ -20,8 +20,22 @@ const totalPages = defineModel<number>("totalPages", {
 const headers = [
   { title: "Nome da disciplina", align: "start", key: "name", sortable: false },
   { title: "Curso", align: "start", key: "course", sortable: false },
-  { title: "Carga horária", align: "end", key: "hours", sortable: false },
+  { title: "Carga horária", align: "center", key: "hours", sortable: false },
+  { title: "Acoes", align: "center", key: "actions", sortable: false },
 ] as any;
+
+const emit = defineEmits<{
+  delete: [discipline: DiciplineResponse];
+  update: [discipline: DiciplineResponse];
+}>();
+
+const Delete = (discipline: DiciplineResponse) => {
+  emit("delete", discipline);
+};
+
+const Update = (discipline: DiciplineResponse) => {
+  emit("update", discipline);
+};
 </script>
 
 <template>
@@ -39,6 +53,34 @@ const headers = [
     >
       <template #item.hours="{ item }">
         <span>{{ item.hours }}h</span>
+      </template>
+      <template #item.actions="{ item }">
+        <div class="d-flex justify-center">
+          <v-btn
+            color="primary"
+            icon="mdi-pencil"
+            size="small"
+            variant="text"
+            aria-label="Excluir"
+            @click="
+              () => {
+                Update(item);
+              }
+            "
+          />
+          <v-btn
+            color="error"
+            icon="mdi-delete"
+            size="small"
+            variant="text"
+            aria-label="Excluir"
+            @click="
+              () => {
+                Delete(item);
+              }
+            "
+          />
+        </div>
       </template>
     </v-data-table-server>
   </div>

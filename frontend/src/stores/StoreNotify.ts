@@ -5,6 +5,7 @@ export const useStoreNotify = defineStore("notify", () => {
   const active = ref(false);
   const message = ref("");
   const type = ref<"error" | "alert">();
+  const loading = ref<boolean>(false);
 
   function notify(msg: string, notificationType: "error" | "alert") {
     message.value = msg;
@@ -16,5 +17,13 @@ export const useStoreNotify = defineStore("notify", () => {
     }, 5000);
   }
 
-  return { active, message, type, notify };
+  function startLoad() {
+    loading.value = true;
+  }
+
+  function endLoad() {
+    loading.value = false;
+  }
+
+  return { active, message, type, notify, startLoad, endLoad ,loading};
 });

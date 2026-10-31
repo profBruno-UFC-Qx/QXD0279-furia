@@ -1,20 +1,45 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { ApiError } from "@/api/ApiError";
-import { DiciplineService } from "@/api/DiciplineService";
+
+interface DisciplineCreate {
+  name: string;
+  course: string;
+  hours: number;
+}
+
+interface DisciplineUpdate {
+  discipline_id: number;
+  name: string;
+  course: string;
+  hours: number;
+}
 
 const emit = defineEmits<{
   close: [];
-  created: [];
+  create: [data: DisciplineCreate];
+  update: [data: DisciplineUpdate];
 }>();
+
+const props = defineProps({
+  disciplineData: {
+    type: Object,
+    required: false,
+    default: () => ({ discipline_id: 0, name: "", corse: "", hours: 0 }),
+  },
+  isUpdate: {
+    type: Boolean,
+    required: false,
+    default: () => false,
+  },
+});
 
 const form = ref(false);
 const loading = ref(false);
 const submitError = ref<string | null>(null);
 const formData = ref({
-  name: "",
-  course: "",
-  hours: null as number | null,
+  name: props.disciplineData.name as string,
+  course: props.disciplineData.course as string,
+  hours: props.disciplineData.hours as number,
 });
 
 function required(v: string | number | null) {
@@ -36,25 +61,19 @@ function hoursRule(value: number | null) {
 async function handleSubmit() {
   if (!form.value) return;
 
-  loading.value = true;
-  submitError.value = null;
+  const data = {
+    name: formData.value.name.trim(),
+    course: formData.value.course.trim(),
+    hours: Number(formData.value.hours),
+  };
 
-  try {
-    await DiciplineService.create({
-      name: formData.value.name.trim(),
-      course: formData.value.course.trim(),
-      hours: Number(formData.value.hours),
+  if (props.isUpdate && props.disciplineData) {
+    emit("update", {
+      ...data,
+      discipline_id: props.disciplineData.discipline_id,
     });
-
-    emit("created");
-    emit("close");
-  } catch (error) {
-    submitError.value =
-      error instanceof ApiError
-        ? error.message
-        : "Não foi possível cadastrar a disciplina";
-  } finally {
-    loading.value = false;
+  } else {
+    emit("create", data);
   }
 }
 </script>
@@ -131,7 +150,7 @@ async function handleSubmit() {
         :loading="loading"
         type="submit"
       >
-        Cadastrar disciplina
+        {{ props.isUpdate ? "Atualizar" : "Cadastrar" }} disciplina
       </v-btn>
     </div>
   </v-form>
