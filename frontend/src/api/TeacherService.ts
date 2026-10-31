@@ -3,12 +3,15 @@ import { request } from "./request";
 import { type RequestResponse } from "@/@types/metaData";
 
 export interface TeacherResponse {
+  teacher_id: number;
+  user_id: number;
   creat_at: string;
   user: {
     email: string;
     name: string;
   };
   disciplines: {
+    discipline_id: number;
     name: string;
   }[];
   avaliacoes: {
@@ -26,11 +29,24 @@ export const TeacherService = {
       search: string;
       discipline: string;
     },
-  ) => {
-    const data = await request<RequestResponse<TeacherResponse[]>>(
-      `/teacher?limit=${limit}&page=${page}&search=${filters?.search}&discipline=${filters?.discipline}`,
+  ): Promise<RequestResponse<TeacherResponse[]>> => {
+    return request<RequestResponse<TeacherResponse[]>>(
+      `/teacher?limit=${limit}&page=${page}&search=${filters?.search ?? ""}&discipline=${filters?.discipline ?? ""}`,
       { auth: true },
     );
-    return data;
+  },
+
+  getDashboard: async (): Promise<RequestResponse<any>> => {
+    return request<RequestResponse<any>>("/teacher/dashboard", {
+      method: "GET",
+      auth: true, 
+    });
+  },
+
+  getById: async (id: number): Promise<RequestResponse<any>> => {
+    return request<RequestResponse<any>>(`/teacher/${id}/profile`, {
+      method: "GET",
+      auth: true,
+    });
   },
 };

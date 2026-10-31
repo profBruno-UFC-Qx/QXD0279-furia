@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import Ornament from "../Ornament/Ornament.vue";
 import { onMounted, ref, defineModel } from "vue";
-import { DiciplineService } from "@/api/DiciplineService.ts";
+import { DiciplineService } from "@/api/DiciplineService";
+import { TeacherService } from "@/api/TeacherService";
 
 interface InputItems {
   text: boolean;
@@ -12,7 +13,8 @@ interface InputItems {
 
 interface FilterSearch {
   search: string;
-  discipline: string;
+  discipline?: string;
+  teacher?: string;
 }
 
 const { inputs } = defineProps<{
@@ -24,8 +26,9 @@ const filters = defineModel<FilterSearch>({
 });
 
 const disciplines = ref<string[]>([]);
-const disciplinesError = ref<string | null>(null);
-const disciplinesLoading = ref(false);
+const teachers = ref<any[]>([]);
+const isLoadingData = ref(false);
+const fetchError = ref<string | null>(null);
 
 const emit = defineEmits<{
   submitFilter: [];
@@ -35,35 +38,53 @@ function submitFilter() {
   emit("submitFilter");
 }
 
-async function getDisciplines() {
-  disciplinesLoading.value = true;
+async function loadFilterData() {
+  isLoadingData.value = true;
+  fetchError.value = null;
 
   try {
-    const data = await DiciplineService.getAllNames();
-    disciplines.value = data.map((discipline) => discipline.name);
+    const promises = [];
+
+    if (inputs.dicipline) {
+      promises.push(
+        DiciplineService.getAllNames().then(data => {
+          disciplines.value = data.map((d: any) => d.name);
+        })
+      );
+    }
+
+    if (inputs.teacher) {
+      promises.push(
+        TeacherService.getAll().then(response => {
+          teachers.value = response.data || [];
+        })
+      );
+    }
+
+    await Promise.all(promises);
   } catch {
-    disciplinesError.value = "Não foi possível obter as disciplinas";
+    fetchError.value = "Não foi possível carregar as opções de filtro.";
   } finally {
-    disciplinesLoading.value = false;
+    isLoadingData.value = false;
   }
 }
 
 function clearFilters() {
-  filters.value = {
-    search: "",
-    discipline: "",
-  };
+  filters.value.search = "";
+  if (inputs.dicipline) filters.value.discipline = "";
+  if (inputs.teacher) filters.value.teacher = "";
+  emit("submitFilter");
 }
 
-onMounted(getDisciplines);
+onMounted(loadFilterData);
 </script>
 
 <template>
   <Ornament text="Filtros para busca">
     <template #content>
       <div class="filters">
-        <v-alert v-if="disciplinesError" type="error" density="compact">
-          {{ disciplinesError }}
+        <v-alert v-if="fetchError" type="error" density="compact">
+          {{ fetchError }}
         </v-alert>
 
         <div class="inputs">
@@ -76,37 +97,44 @@ onMounted(getDisciplines);
             variant="outlined"
             density="compact"
             hide-details
-            :disabled="disciplinesLoading"
+            :disabled="isLoadingData"
+            @keyup.enter="submitFilter"
           />
 
           <v-select
             v-if="inputs.dicipline"
             v-model="filters.discipline"
-            :placeholder="disciplinesLoading ? 'Loading' : 'Todas Disciplinas'"
+            :placeholder="isLoadingData ? 'Loading' : 'Todas Disciplinas'"
             :items="disciplines"
             variant="outlined"
             density="compact"
             hide-details
             clearable
-            :disabled="disciplinesLoading"
+            :disabled="isLoadingData"
           />
 
           <v-select
             v-if="inputs.teacher"
-            placeholder="All Professors"
-            :items="[]"
+            v-model="filters.teacher"
+            :placeholder="isLoadingData ? 'Loading' : 'Todos Professores'"
+            :items="teachers"
+            item-title="user.name"
+            item-value="teacher_id"
             variant="outlined"
             density="compact"
             hide-details
+            clearable
+            :disabled="isLoadingData"
           />
 
           <v-select
             v-if="inputs.course"
-            placeholder="All courses"
+            placeholder="Todos os Cursos"
             :items="[]"
             variant="outlined"
             density="compact"
             hide-details
+            disabled
           />
         </div>
 
@@ -114,7 +142,7 @@ onMounted(getDisciplines);
           <v-btn
             variant="outlined"
             class="mr-2 text-none"
-            :disabled="disciplinesLoading"
+            :disabled="isLoadingData"
             @click="clearFilters"
           >
             Clear Filters
@@ -124,7 +152,7 @@ onMounted(getDisciplines);
             color="primary"
             variant="flat"
             class="text-none"
-            :disabled="disciplinesLoading"
+            :disabled="isLoadingData"
             @click="submitFilter"
           >
             Buscar

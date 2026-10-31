@@ -1,41 +1,43 @@
 <template>
-
   <main class="profile-page">
+    <div v-if="isLoading" class="d-flex justify-center align-center" style="min-height: 50vh;">
+      <v-progress-circular indeterminate color="primary" size="64"></v-progress-circular>
+    </div>
 
-    <section class="top-section">
-      <ProfessorSummaryCard
-        v-if="professorInfo"
-        :professor="professorInfo"
-        @write-review="handleOpenReviewModal"
-      />
-    </section>
-
-    <section class="content-grid">
-
-      <div class="left-column">
-        <RatingBreakdownCard
-          v-if="ratingMetrics"
-          :metrics="ratingMetrics"
+    <template v-else>
+      <section class="top-section">
+        <ProfessorSummaryCard
+          v-if="professorInfo"
+          :professor="professorInfo"
+          @write-review="handleOpenReviewModal"
         />
+      </section>
 
-        <ReviewSection
-          v-if="reviewsList"
-          :reviews="reviewsList"
-          @change-sort="handleSort"
-          @load-more="fetchMoreReviews"
-          @open-filter="handleFilter"
-        />
-      </div>
+      <section class="content-grid">
+        <div class="left-column">
+          <RatingBreakdownCard
+            v-if="ratingMetrics"
+            :metrics="ratingMetrics"
+          />
 
-      <aside class="right-column">
-        <TopDisciplinesCard
-          v-if="topDisciplines"
-          :disciplines="topDisciplines"
-          @select-discipline="handleDisciplineSelect"
-        />
-      </aside>
+          <ReviewSection
+            v-if="reviewsList"
+            :reviews="reviewsList"
+            @change-sort="handleSort"
+            @load-more="fetchMoreReviews"
+            @open-filter="handleFilter"
+          />
+        </div>
 
-    </section>
+        <aside class="right-column">
+          <TopDisciplinesCard
+            v-if="topDisciplines"
+            :disciplines="topDisciplines"
+            @select-discipline="handleDisciplineSelect"
+          />
+        </aside>
+      </section>
+    </template>
 
     <BaseModal v-model:modal="isReviewModalOpen" title="Write a Review">
       <ReviewForm @close="isReviewModalOpen = false" />
@@ -47,6 +49,9 @@
   import type { Discipline, ProfessorData, RatingMetric, ReviewData } from '@/type/ProfessorData'
 
   import { onMounted, ref } from 'vue'
+  import { useRoute } from 'vue-router'
+  import { TeacherService } from '@/api/TeacherService'
+  
   import ProfessorSummaryCard from '@/components/Cards/Professor/ProfessorSummaryCard.vue'
   import RatingBreakdownCard from '@/components/Cards/Professor/RatingBreakdownCard.vue'
   import ReviewSection from '@/components/Cards/Professor/ReviewSection.vue'
@@ -54,84 +59,75 @@
   import ReviewForm from '@/components/Forms/ReviewForm.vue'
   import BaseModal from '@/components/Modais/BaseModal.vue'
 
+  const route = useRoute()
   const isReviewModalOpen = ref(false)
+  const isLoading = ref(true)
+  
   const professorInfo = ref<ProfessorData | null>(null)
   const ratingMetrics = ref<RatingMetric[]>([])
   const topDisciplines = ref<Discipline[]>([])
   const reviewsList = ref<ReviewData[]>([])
 
   onMounted(async () => {
-    await fetchPageData()
+    await fetchPageData(route.params.id)
   })
 
-  async function fetchPageData () {
-    // Simulando uma chamada à API com um atraso de 500ms
-    // Num projeto real, chamarias algo como 'api.getProfessorProfile(id)'
-    setTimeout(() => {
-      // Populando os dados com base no Figma
+  async function fetchPageData (id: string | string[]) {
+    isLoading.value = true
+    try {
+      const teacherId = Number(Array.isArray(id) ? id[0] : id)
+      
+      const response = await TeacherService.getById(teacherId)
+      const data = response.data ? response.data : response
+      
       professorInfo.value = {
-        id: 'p1',
-        name: 'Dr. Helena Martins',
-        department: 'Department of Computer Science',
-        avatarUrl: 'https://i.pravatar.cc/150?u=a04258114e29026702d',
-        rating: 4.9,
-        reviewCount: 124,
+        id: data.teacher_id.toString(),
+        name: data.user.name,
+        department: 'Departamento de TI',
+        avatarUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent(data.user.name)}&background=random`,
+        rating: data.media_geral ?? 0,
+        reviewCount: data.avaliacoes?.length ?? 0,
       }
 
       ratingMetrics.value = [
-        { label: 'Teaching Clarity', score: 4.9 },
-        { label: 'Methodology', score: 4.8 },
-        { label: 'Availability', score: 4.6 },
-        { label: 'Grading Fairness', score: 4.8 },
+        { label: 'Didática', score: data.media_didatica ?? 0 }, 
+        { label: 'Metodologia', score: data.media_metodologia ?? 0 },
       ]
 
-      topDisciplines.value = [
-        { code: 'DS', name: 'Data Structures' },
-        { code: 'AA', name: 'Adv. Algorithms' },
-        { code: 'ML', name: 'Machine Learning' },
-      ]
+      topDisciplines.value = (data.disciplines || []).map((d: any) => ({
+        code: d.name.substring(0, 3).toUpperCase(),
+        name: d.name
+      }))
 
-      reviewsList.value = [
-        {
-          id: 'r1',
-          authorName: 'Computer Science Student',
-          authorInitials: 'JD',
-          discipline: 'Data Structures',
-          date: 'Oct 15, 2023',
-          overallRating: 5,
-          content: 'Professor Martins is exceptional. Her explanations of complex algorithms are clear, and she always makes time during office hours to help students who are struggling. The workload is heavy, but it\'s entirely focused on practical application.',
-          subRatings: [
-            { label: 'Teaching', score: 5 },
-            { label: 'Methodology', score: 5 },
-            { label: 'Availability', score: 5 },
-          ],
-        },
-        {
-          id: 'r2',
-          authorName: 'Anonymous Student',
-          authorInitials: 'LM',
-          discipline: 'Advanced Algorithms',
-          date: 'Sep 28, 2023',
-          overallRating: 4.5,
-          content: 'Great lectures. She really knows her stuff. The exams are quite difficult, but fair if you study the material provided. Could be slightly more available over email, but overall a fantastic learning experience.',
-          subRatings: [
-            { label: 'Teaching', score: 5 },
-            { label: 'Methodology', score: 4.5 },
-            { label: 'Availability', score: 4 },
-          ],
-        },
-      ]
-    }, 500)
+      reviewsList.value = (data.avaliacoes || []).map((av: any) => ({
+        id: String(av.avaliacao_id || Math.random()),
+        authorName: av.student?.user?.name || 'Aluno Anônimo',
+        authorInitials: av.student?.user?.name?.substring(0, 2).toUpperCase() || 'AA',
+        discipline: av.discipline?.name || 'Geral',
+        date: new Date(av.creat_at || av.created_at || new Date()).toLocaleDateString('pt-BR'),
+        overallRating: av.nota_geral ?? 5,
+        content: av.comment || '',
+        subRatings: [
+          { label: 'Didática', score: av.nota_didatica ?? 5 },
+          { label: 'Metodologia', score: av.nota_metodologia ?? 5 },
+        ],
+      }))
+
+    } catch (error) {
+      console.error(error)
+    } finally {
+      isLoading.value = false
+    }
   }
 
   function handleOpenReviewModal () {
     isReviewModalOpen.value = true
   }
 
-  const handleDisciplineSelect = (discipline: Discipline) => alert(`Filtrar por: ${discipline.name}`)
-  const fetchMoreReviews = () => alert('Fazer fetch à API (página 2)...')
-  const handleFilter = () => alert('Abrir menu de filtros!')
-  const handleSort = () => alert('Mudar ordenação!')
+  const handleDisciplineSelect = (discipline: Discipline) => {}
+  const fetchMoreReviews = () => {}
+  const handleFilter = () => {}
+  const handleSort = () => {}
 </script>
 
 <style scoped>

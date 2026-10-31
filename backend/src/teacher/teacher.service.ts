@@ -13,7 +13,7 @@ export class TeacherService {
     private userService: UserService,
     private teacherRepository: TeacherRepository,
     private database: DataBase,
-  ) {}
+  ) { }
 
   async createTeacher(teacherData: TeacherRegisterDTO) {
     const { email, password, name, role, disciplines } = teacherData;
@@ -40,6 +40,7 @@ export class TeacherService {
   async findAll(take: number, skip: number, filters: filterTeacher) {
     const total = await this.teacherRepository.count();
     const data = await this.teacherRepository.findAll(take, skip, filters);
+
     const NotasGerais = data.map((prof) => {
       return {
         ...prof,
@@ -56,7 +57,48 @@ export class TeacherService {
         },
       };
     });
+
     return { data: NotasGerais, meta: pagWrapper(take, skip, total) };
+  }
+
+  async getDashboard(userId: number) {
+    const teacherData = await this.teacherRepository.getDashboardInfo(userId);
+
+    if (!teacherData) {
+      throw new NotFoundError("Professor não encontrado para este usuário");
+    }
+
+    const totalReviews = teacherData.avaliacoes.length;
+    const mediaGeral = calculateAverage(
+      teacherData.avaliacoes.map((av) => av.nota_geral)
+    );
+
+    const activeDisciplines = teacherData.disciplines.map(d => {
+      const reviewsDaDisciplina = teacherData.avaliacoes.filter(av => av.discipline_id === d.discipline_id);
+      return {
+        id: d.discipline_id.toString(),
+        name: d.name,
+        studentCount: reviewsDaDisciplina.length, // Usando número de reviews como aproximação
+        averageRating: calculateAverage(reviewsDaDisciplina.map(av => av.nota_geral))
+      };
+    });
+
+    return {
+      professorName: teacherData.user.name,
+      stats: {
+        averageRating: mediaGeral,
+        totalReviews: totalReviews,
+        activeDocuments: teacherData.documents.length,
+        activeDisciplinesCount: teacherData.disciplines.length
+      },
+      recentReviews: teacherData.avaliacoes.slice(0, 5),
+      activeDisciplines: activeDisciplines,
+      recentDocuments: teacherData.documents.map(doc => ({
+        id: doc.id.toString(),
+        fileName: doc.titulo,
+        disciplineName: doc.discipline?.name || 'Geral',
+      }))
+    };
   }
 
   async findById(id: number) {
@@ -67,6 +109,29 @@ export class TeacherService {
     }
 
     return teacher;
+  }
+
+  async findProfileById(id: number) {
+    const teacherProfile = await this.teacherRepository.findProfileById(id);
+
+    if (!teacherProfile) {
+      throw new NotFoundError("Perfil do professor não encontrado");
+    }
+
+    const avaliacoesFormatadas = {
+      ...teacherProfile,
+      media_geral: calculateAverage(
+        teacherProfile.avaliacoes.map((av) => av.nota_geral)
+      ),
+      media_didatica: calculateAverage(
+        teacherProfile.avaliacoes.map((av) => av.nota_didatica)
+      ),
+      media_metodologia: calculateAverage(
+        teacherProfile.avaliacoes.map((av) => av.nota_metodologia)
+      ),
+    };
+
+    return avaliacoesFormatadas;
   }
 
   async updateTeacher(id: number, teacherData: Partial<TeacherDTO>) {

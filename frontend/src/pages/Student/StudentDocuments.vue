@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref, watch } from "vue";
+import { type DocumentResponse, DocumentService } from "@/api/DocumentService";
 import Filters from "@/components/Filters/Filters.vue";
 import DocumentForm from "@/components/Forms/DocumentForm.vue";
 import Header from "@/components/Header/Header.vue";
@@ -7,65 +8,115 @@ import BaseModal from "@/components/Modais/BaseModal.vue";
 import Ornament from "@/components/Ornament/Ornament.vue";
 import TableDocs from "@/components/Table/TableDocs.vue";
 
-const boats = [
-  {
-    nome: "1 Speedster",
-    disciplina: "matematica",
-    data: "03/06/2026",
-  },
-  {
-    nome: "2 Speedster",
-    disciplina: "matematica",
-    data: "03/06/2026",
-  },
-  {
-    nome: "3 Speedster",
-    disciplina: "matematica",
-    data: "03/06/2026",
-  },
-  {
-    nome: "4 Speedster",
-    disciplina: "matematica",
-    data: "03/06/2026",
-  },
-];
-
+const documents = ref<DocumentResponse[]>([]);
+const isLoading = ref(true);
 const modal = ref(false);
+
+const page = ref(1);
+const totalPages = ref(1);
+const limit = 2;
+
+const filters = ref({
+  search: "",     
+  discipline: "", 
+  teacher: "",    
+});
+
+async function loadDocuments() {
+  isLoading.value = true;
+  try {
+    const response = await DocumentService.getAll({
+      page: page.value,
+      limit: limit,
+      search: filters.value.search,       
+      discipline: filters.value.discipline,
+      teacher: filters.value.teacher,     
+    });
+    documents.value = response.data || [];
+    if (response.meta) {
+        totalPages.value = response.meta.totalPages || 1;
+    }
+  } catch (error) {
+    console.error(error);
+  } finally {
+    isLoading.value = false;
+  }
+}
+
+watch(page, () => {
+  loadDocuments();
+});
+
+function handleFilterSubmit() {
+  if (page.value !== 1) {
+    page.value = 1; 
+  } else {
+    loadDocuments(); 
+  }
+}
+
+function handleModalClose() {
+  modal.value = false;
+  loadDocuments();
+}
+
+onMounted(loadDocuments);
 </script>
+
 <template>
-  <div class="content container">
-    <Header
-      description="Browse, filter, and download study materials from your institution."
-      title="Academic Documents"
-    />
+  <div>
+    <div class="content container">
+      <Header
+        description="Browse, filter, and download study materials from your institution."
+        title="Academic Documents"
+      />
 
-    <Filters
-      :inputs="{
-        text: true,
-        dicipline: true,
-        course: false,
-        teacher: true,
-      }"
-    />
+      <Filters
+        v-model="filters"
+        :inputs="{
+          text: true,
+          dicipline: true,
+          course: false,
+          teacher: true,
+        }"
+        @submit-filter="handleFilterSubmit"
+      />
 
-    <button class="addDocument" @click="modal = true">
-      <v-icon icon="mdi-upload" />
-      Upload a new Document
-    </button>
+      <button class="addDocument" @click="modal = true">
+        <v-icon icon="mdi-upload" />
+        Upload a new Document
+      </button>
 
-    <Ornament :text="'Documents'">
-      <template #content>
-        <div>
-          <TableDocs :documents="boats" />
-        </div>
-      </template>
-    </Ornament>
+      <Ornament :text="'Documents'">
+        <template #content>
+          <div v-if="isLoading" class="d-flex justify-center pa-4">
+            <v-progress-circular color="primary" indeterminate />
+          </div>
+
+          <div v-else>
+            <TableDocs :documents="documents" />
+            <div class="d-flex justify-center mt-6">
+              <v-pagination
+                v-if="totalPages > 1"
+                v-model="page"
+                :length="totalPages"
+                :total-visible="5"
+                active-color="primary"
+                rounded="circle"
+              ></v-pagination>
+            </div>
+          </div>
+        </template>
+      </Ornament>
+    </div>
+
+    <BaseModal
+      v-model:modal="modal"
+      title="Faça o upload de um documento"
+    >
+      <DocumentForm @close="handleModalClose" />
+    </BaseModal>
   </div>
-
-  <BaseModal v-model:modal="modal" title="Faça o upload de um documento">
-    <!-- Passamos um evento @close para o form conseguir fechar o modal -->
-    <DocumentForm @close="modal = false" />
-  </BaseModal>
 </template>
 
 <style lang="css" scoped>

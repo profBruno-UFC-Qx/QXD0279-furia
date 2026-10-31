@@ -67,4 +67,5 @@ export interface RecentDocument {
   id: string
   fileName: string
   fileSize: string
+  disciplineName: string
 }

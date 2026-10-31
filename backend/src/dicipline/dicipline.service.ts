@@ -5,7 +5,7 @@ import { pagWrapper } from "../utils/pagWrapper.ts";
 import { diciplineUpdateDTO } from "./dto/disciplineUpdate.dto.ts";
 
 export class DiciplineService {
-  constructor(private repository: DiciplineRepository) {}
+  constructor(private repository: DiciplineRepository) { }
 
   async create(data: createDicipline) {
     const dicipline = await this.repository.findByName(data.name);

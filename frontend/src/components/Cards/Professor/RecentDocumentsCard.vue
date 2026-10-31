@@ -17,7 +17,7 @@
 
         <div class="file-info">
           <span class="file-name">{{ doc.fileName }}</span>
-          <span class="file-size">{{ doc.fileSize }}</span>
+          <span class="file-size">{{ doc.disciplineName }}</span>
         </div>
       </div>
     </div>
@@ -51,6 +51,8 @@
   padding: 16px 20px;
   background-color: #f1f5f9;
   border-bottom: 1px solid #e2e8f0;
+  width: 100%; 
+  gap: 16px; 
 }
 
 .panel-title {
@@ -58,6 +60,7 @@
   font-weight: 700;
   color: #111827;
   margin: 0;
+  flex: 1; 
 }
 
 .btn-add {

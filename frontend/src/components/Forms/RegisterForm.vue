@@ -7,7 +7,7 @@ import { ApiError } from "@/api/ApiError";
 import { useStoreNotify } from "@/stores/StoreNotify";
 
 interface Discipline {
-  dicipline_id: number;
+  discipline_id: number;
   name: string;
   course: string;
   hours: number;
@@ -48,7 +48,8 @@ async function onSubmit(e: SubmitEvent) {
 
 onMounted(async () => {
   try {
-    disciplines.value = await DiciplineService.getAll();
+    const response = await DiciplineService.getAll();
+    disciplines.value = response.data;
   } catch (e) {
     notify.notify(
       "Nao foi possivel obter as diciplinas, tente recarregar a pagina",
@@ -119,7 +120,7 @@ watch(isTeacher, () => {
         :rules="[required]"
         :items="disciplines"
         item-title="name"
-        item-value="dicipline_id"
+        item-value="discipline_id"
         variant="outlined"
         rounded="10"
         v-model="selectedDisciplines"

@@ -86,6 +86,8 @@ and more to find the right academic fit."
         <div v-else class="table">
           <TeacherCard
             v-for="prof in professores"
+            :key="prof.teacher_id"
+            :id="prof.teacher_id"
             :name="prof.user.name"
             :grade="prof.avaliacoes"
             :diciplines="

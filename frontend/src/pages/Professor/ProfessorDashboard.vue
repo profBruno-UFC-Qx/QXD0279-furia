@@ -48,7 +48,10 @@
     </section>
 
     <BaseModal v-model:modal="isUploadModalOpen" title="Upload Material">
-      <DocumentForm @close="isUploadModalOpen = false" />
+      <DocumentForm 
+        @close="isUploadModalOpen = false" 
+        :is-dashboard="true" 
+      />
     </BaseModal>
   </main>
 </template>
@@ -69,74 +72,79 @@
   import DocumentForm from '@/components/Forms/DocumentForm.vue'
   import BaseModal from '@/components/Modais/BaseModal.vue'
 
-  const professorName = ref('Dra. Helena')
+  import { authStore } from '@/stores/StoreAuth'
+  import { TeacherService } from '@/api/TeacherService'
+
+  const auth = authStore()
+  const professorName = ref(auth.username || 'Professor')
+  const isLoading = ref(true)
+
   const statsList = ref<DashboardStat[]>([])
   const recentReviews = ref<DashboardReview[]>([])
   const activeDisciplines = ref<ActiveDiscipline[]>([])
   const recentDocuments = ref<RecentDocument[]>([])
   const isUploadModalOpen = ref(false)
 
-  onMounted(() => {
-    fetchDashboardData()
+  onMounted(async () => {
+    await fetchDashboardData()
   })
 
-  function fetchDashboardData () {
-    statsList.value = [
-      {
-        label: 'Average Rating',
-        value: 4.9,
-        suffix: '/ 5',
-        subtitle: 'Based on 142 student reviews',
-        icon: 'mdi-star',
-      },
-      {
-        label: 'Total Reviews',
-        value: 850,
-        subtitle: 'Total reviews',
-        icon: 'mdi-school-outline',
-      },
-      {
-        label: 'Active Documents',
-        value: 124,
-        subtitle: 'Across 3 active disciplines',
-        icon: 'mdi-file-document-outline',
-      },
-    ]
+  async function fetchDashboardData () {
+    isLoading.value = true
+    try {
+      const response = await TeacherService.getDashboard()
+      const data = response.data ? response.data : response
 
-    recentReviews.value = [
-      {
-        id: '1',
-        professorName: 'Dr. Helena Martins',
-        discipline: 'Estrutura de Dados',
+      statsList.value = [
+        {
+          label: 'Média Geral',
+          value: parseFloat((data.stats.averageRating || 0).toFixed(1)),
+          suffix: '/ 5',
+          subtitle: `Baseado em ${data.stats.totalReviews} avaliações`,
+          icon: 'mdi-star',
+        },
+        {
+          label: 'Total de Avaliações',
+          value: data.stats.totalReviews,
+          subtitle: 'Avaliações recebidas',
+          icon: 'mdi-school-outline',
+        },
+        {
+          label: 'Documentos Ativos',
+          value: data.stats.activeDocuments,
+          subtitle: `Em ${data.stats.activeDisciplinesCount} disciplinas`,
+          icon: 'mdi-file-document-outline',
+        },
+      ]
+
+      recentReviews.value = data.recentReviews.map((av: any) => ({
+        id: av.id.toString(),
+        professorName: professorName.value,
+        discipline: av.discipline?.name || 'Geral',
         status: 'Publicada',
-        date: '15 out 2023',
-        rating: 4.5,
-        tags: ['Boa Didática', 'Atenciosa'],
-        comment: 'A metodologia foi excelente e as explicações muito claras. Os exercícios práticos foram fundamentais para entender algoritmos complexos.',
-      },
-      {
-        id: '2',
-        professorName: 'Prof. Ricardo Silva',
-        discipline: 'Cálculo II',
-        status: 'Publicada',
-        date: '08 out 2023',
-        rating: 5,
-        tags: ['Boa Didática', 'Atenciosa'],
-        comment: 'Professor excelente. Torna conceitos difíceis muito acessíveis e está sempre disponível para responder dúvidas no horário de atendimento.',
-      },
-    ]
+        date: new Date(av.creat_at || new Date()).toLocaleDateString('pt-BR'),
+        rating: av.nota_geral,
+        tags: ['Avaliação'], 
+        comment: av.comment || 'Sem comentário escrito.',
+      }))
 
-    activeDisciplines.value = [
-      { id: 'd1', name: 'Estrutura de Dados', studentCount: 320, averageRating: 4.9 },
-      { id: 'd2', name: 'Cálculo II', studentCount: 210, averageRating: 4.8 },
-      { id: 'd3', name: 'Algoritmos', studentCount: 180, averageRating: 4.7 },
-    ]
+      activeDisciplines.value = data.activeDisciplines.map((d: any) => ({
+        ...d,
+        averageRating: d.averageRating || 0, 
+        studentCount: d.studentCount || 0
+      }))
 
-    recentDocuments.value = [
-      { id: 'doc1', fileName: 'Aula_04_Estrutura_de_Dados.pdf', fileSize: '2.4 MB' },
-      { id: 'doc2', fileName: 'Lista_01_Calculo_II.pdf', fileSize: '1.8 MB' },
-      { id: 'doc3', fileName: 'Slides_Aula_03_Algoritmos.pdf', fileSize: '3.1 MB' },
-    ]
+      recentDocuments.value = data.recentDocuments.map((doc: any) => ({
+        id: doc.id.toString(),
+        fileName: doc.fileName || doc.titulo, 
+        disciplineName: doc.disciplineName,
+      }))
+
+    } catch (error) {
+      console.error("Erro ao carregar o dashboard:", error)
+    } finally {
+      isLoading.value = false
+    }
   }
 
   function handleUploadMaterial () {

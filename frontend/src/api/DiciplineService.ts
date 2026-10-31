@@ -47,8 +47,6 @@ export const DiciplineService = {
     const data = await request<DisciplineName[]>("/discipline/name", {
       auth: true,
     });
-
-    return data;
   },
 
   delete: async (id: number) => {

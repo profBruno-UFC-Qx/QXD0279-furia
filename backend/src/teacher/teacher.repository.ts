@@ -6,6 +6,29 @@ import { filterTeacher } from "../@types/filterTeacher.type.ts";
 export class TeacherRepository {
   constructor(private database: DataBase) {}
 
+  private buildWhere(filter?: filterTeacher) {
+    return {
+      ...(filter?.search && {
+        user: {
+          name: {
+            contains: filter.search,
+            mode: "insensitive" as const,
+          },
+        },
+      }),
+      ...(filter?.discipline && {
+        disciplines: {
+          some: {
+            name: {
+              equals: filter.discipline,
+              mode: "insensitive" as const,
+            },
+          },
+        },
+      }),
+    };
+  }
+
   async createTeacher(user: User, teacherData: TeacherDTO, tx?: any) {
     const prisma = tx ?? this.database;
 
@@ -16,7 +39,7 @@ export class TeacherRepository {
         },
         disciplines: {
           connect: teacherData.disciplines.map((disciplineId) => ({
-            dicipline_id: disciplineId,
+            discipline_id: disciplineId,
           })),
         },
       },
@@ -31,41 +54,20 @@ export class TeacherRepository {
     return await this.database.teacher.findMany({
       take,
       skip,
-      where: {
-        ...(filter.search && {
-          user: {
-            name: {
-              contains: filter.search,
-              mode: "insensitive",
-            },
-          },
-        }),
-
-        ...(filter.discipline && {
-          disciplines: {
-            some: {
-              name: {
-                equals: filter.discipline,
-                mode: "insensitive",
-              },
-            },
-          },
-        }),
-      },
-      include: {
-        teacher_id: false,
+      where: this.buildWhere(filter),
+      select: {
+        teacher_id: true,
+        creat_at: true,
         user: {
-          omit: {
-            user_id: true,
-            password: true,
-            role: true,
+          select: {
+            name: true,
+            email: true,
           },
         },
         disciplines: {
-          omit: {
+          select: {
             discipline_id: true,
-            hours: true,
-            course: true,
+            name: true,
           },
         },
         avaliacoes: {
@@ -79,12 +81,53 @@ export class TeacherRepository {
     });
   }
 
+  async getDashboardInfo(userId: number) {
+    return await this.database.teacher.findFirst({
+      where: { 
+        user: { user_id: userId } 
+      },
+      include: {
+        user: true,
+        disciplines: true,
+        avaliacoes: {
+          include: {
+            student: { include: { user: true } },
+            discipline: true,
+          },
+          orderBy: { creat_at: 'desc' },
+        },
+        documents: {
+          orderBy: { data_publicacao: 'desc' },
+          take: 5,
+          include: { discipline: true }
+        }
+      }
+    });
+  }
+
   async findById(id: number) {
     return await this.database.teacher.findUnique({
       where: { teacher_id: id },
       include: {
         user: true,
         disciplines: true,
+      },
+    });
+  }
+
+  async findProfileById(id: number) {
+    return await this.database.teacher.findUnique({
+      where: { teacher_id: id },
+      include: {
+        user: true,
+        disciplines: true,
+        avaliacoes: {
+          include: {
+            student: { include: { user: true } },
+            discipline: true,
+          },
+          orderBy: { creat_at: 'desc' }
+        },
       },
     });
   }
@@ -100,7 +143,9 @@ export class TeacherRepository {
     }
   }
 
-  async count() {
-    return this.database.teacher.count();
+  async count(filter?: filterTeacher) {
+    return this.database.teacher.count({
+      where: this.buildWhere(filter),
+    });
   }
 }

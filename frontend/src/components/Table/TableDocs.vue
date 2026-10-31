@@ -1,27 +1,15 @@
 <script setup lang="ts">
-interface Document {
-  nome: string;
-  disciplina: string;
-  data: string;
-}
-const { documents } = defineProps<{ documents: Document[] }>();
+import { type DocumentResponse } from '@/api/DocumentService'
+
+const { documents } = defineProps<{ documents: DocumentResponse[] }>()
 
 const headers = [
-  { title: "Nome", align: "start", key: "nome", sortable: false },
-  { title: "Disciplina", align: "end", key: "disciplina", sortable: false },
-  {
-    title: "Data",
-    align: "end",
-    key: "data",
-    sortable: false,
-  },
-  {
-    title: "Baixar",
-    align: "end",
-    key: "action",
-    sortable: false,
-  },
-] as any;
+  { title: "Título", align: "start", key: "titulo", sortable: false },
+  { title: "Disciplina", align: "start", key: "discipline.name", sortable: false },
+  { title: "Professor", align: "start", key: "teacher", sortable: false },
+  { title: "Data", align: "end", key: "data_publicacao", sortable: false },
+  { title: "Abrir", align: "end", key: "action", sortable: false },
+] as any
 </script>
 
 <template>
@@ -29,19 +17,28 @@ const headers = [
     <v-data-table-virtual
       :headers="headers"
       :items="documents"
-      item-value="name"
+      item-value="id"
       fixed-header
       class="tabela"
     >
+      <template v-slot:item.teacher="{ item }">
+        {{ item.teacher?.user?.name || item.teacher?.user?.name || 'Não informado' }}
+      </template>
+
+      <template v-slot:item.data_publicacao="{ item }">
+        {{ new Date(item.data_publicacao).toLocaleDateString('pt-BR') }}
+      </template>
+
       <template v-slot:item.action="{ item }">
-        <div @click="console.log(item)">
-          <v-btn
-            color="primary"
-            icon="mdi-upload"
-            size="small"
-            variant="text"
-          ></v-btn>
-        </div>
+        <v-btn
+          :href="item.file_url"
+          target="_blank"
+          color="primary"
+          icon="mdi-open-in-new"
+          size="small"
+          variant="text"
+          title="Abrir documento"
+        ></v-btn>
       </template>
     </v-data-table-virtual>
   </div>

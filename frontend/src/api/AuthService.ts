@@ -2,6 +2,7 @@ import { request } from "./request";
 
 type AuthResponse = {
   userResponse: {
+    id: number
     name: string;
     role: "student" | "teacher" | "admin";
   };

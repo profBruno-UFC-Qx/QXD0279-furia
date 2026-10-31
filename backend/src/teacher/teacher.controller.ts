@@ -28,6 +28,17 @@ export class TeacherController {
     return res.status(200).json(teachers);
   };
 
+  getDashboard = async (req: Request, res: Response) => {
+    const userId = Number(req.user?.id);
+
+    if (!Number.isInteger(userId) || userId <= 0) {
+      throw new BadRequestError("Token inválido ou usuário não identificado");
+    }
+
+    const dashboardData = await this.service.getDashboard(userId);
+    return res.status(200).json(dashboardData);
+  };
+
   findById = async (req: Request, res: Response) => {
     const id = Number(req.params.id);
 
@@ -37,6 +48,17 @@ export class TeacherController {
 
     const teacher = await this.service.findById(id);
     return res.status(200).json(teacher);
+  };
+
+  findProfileById = async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+
+    if (!Number.isInteger(id) || id <= 0) {
+      throw new BadRequestError("ID de professor inválido");
+    }
+
+    const teacherProfile = await this.service.findProfileById(id);
+    return res.status(200).json(teacherProfile);
   };
 
   update = async (req: Request, res: Response) => {
