@@ -30,7 +30,10 @@ app.use(
 app.use(express.json());
 
 const documentRepository = new DocumentRepository(databaseInstance);
-const documentService = new DocumentService(documentRepository, uploadFileToStorage);
+const documentService = new DocumentService(
+  documentRepository,
+  uploadFileToStorage,
+);
 const documentController = new DocumentController(documentService);
 const documentRouter = createDocumentRouter(documentController);
 

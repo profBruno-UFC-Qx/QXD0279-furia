@@ -1,3 +1,4 @@
+
 services:
   db:
     container_name: avaliae_db
@@ -12,7 +13,7 @@ services:
       - avaliae:/var/lib/postgresql/data
 
   minio:
-    image: minio/minio
+    image: cgr.dev/chainguard/minio:latest
     container_name: avaliae_storage
     ports:
       - "9000:9000"
@@ -25,14 +26,15 @@ services:
     command: server /data --console-address ":9001"
 
   minio-setup:
-    image: minio/minio
+    image: cgr.dev/chainguard/minio-client:latest-dev
     container_name: avaliae_storage_setup
     depends_on:
       - minio
     entrypoint: >
       /bin/sh -c "
-      sleep 10;
-      mc alias set localminio http://minio:9000 admin admin123;
+      until mc alias set localminio http://minio:9000 admin admin123; do
+        sleep 2;
+      done;
       mc mb localminio/avaliae-docs --ignore-existing;
       mc anonymous set download localminio/avaliae-docs;
       "
