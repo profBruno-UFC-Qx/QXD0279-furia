@@ -15,6 +15,7 @@ export interface RatingMetric {
 }
 
 export interface Discipline {
+  id: number
   code: string
   name: string
 }

@@ -6,7 +6,7 @@
 
   const props = defineProps<{
     teacherId: number
-    disciplines: { code: string, name: string }[] 
+    disciplines: { id: number, code: string, name: string }[] 
   }>()
 
   const emit = defineEmits<{
@@ -75,7 +75,7 @@
         comment: formData.value.comment,
         student_id: studentId,
         teacher_id: props.teacherId,
-        discipline_id: 1, // TODO PEGAR O ID DA DISCIPLINA
+        discipline_id: selectedDiscipline.id,
       })
 
       notify.notify('Avaliação publicada com sucesso!', 'alert')

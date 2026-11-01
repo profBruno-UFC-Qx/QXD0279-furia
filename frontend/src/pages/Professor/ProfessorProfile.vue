@@ -23,7 +23,7 @@
           <ReviewSection
             v-if="reviewsList"
             :reviews="reviewsList"
-            :disciplines="topDisciplines" 
+            :disciplines="topDisciplines"
           />
         </div>
 
@@ -41,8 +41,8 @@
       <ReviewForm 
         :teacherId="Number(route.params.id)"
         :disciplines="topDisciplines"
-        @close="isReviewModalOpen = false" 
-        @success="fetchPageData(route.params.id)" 
+        @close="isReviewModalOpen = false"
+        @success="fetchPageData(route.params.id)"
       />
     </BaseModal>
   </main>
@@ -54,6 +54,7 @@
   import { onMounted, ref } from 'vue'
   import { useRoute } from 'vue-router'
   import { TeacherService } from '@/api/TeacherService'
+  import { useStoreNotify } from '@/stores/StoreNotify'
   
   import ProfessorSummaryCard from '@/components/Cards/Professor/ProfessorSummaryCard.vue'
   import RatingBreakdownCard from '@/components/Cards/Professor/RatingBreakdownCard.vue'
@@ -63,6 +64,8 @@
   import BaseModal from '@/components/Modais/BaseModal.vue'
 
   const route = useRoute()
+  const notify = useStoreNotify()
+  
   const isReviewModalOpen = ref(false)
   const isLoading = ref(true)
   
@@ -75,22 +78,43 @@
     await fetchPageData(route.params.id)
   })
 
+  function mapToProfessorProfile(data: any): ProfessorData {
+    return {
+      id: String(data.teacher_id),
+      name: data.user?.name || 'Professor',
+      department: 'Departamento de TI', // No futuro pode vir do seu backend
+      avatarUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent(data.user?.name || 'P')}&background=random`,
+      rating: data.media_geral ?? 0,
+      reviewCount: data.avaliacoes?.length ?? 0,
+    }
+  }
+
+  function mapToReviews(avaliacoes: any[]): ReviewData[] {
+    return avaliacoes.map(av => ({
+      id: String(av.id),
+      authorName: av.student?.user?.name || 'Aluno Anônimo',
+      authorInitials: av.student?.user?.name?.substring(0, 2).toUpperCase() || 'AA',
+      discipline: av.discipline?.name || 'Geral',
+      date: new Date(av.creat_at || av.created_at || new Date()).toLocaleDateString('pt-BR'),
+      rawDate: av.creat_at || av.created_at || new Date(), 
+      overallRating: av.nota_geral ?? 5,
+      content: av.comment || '', 
+      subRatings: [
+        { label: 'Didática', score: av.nota_didatica ?? 5 },
+        { label: 'Metodologia', score: av.nota_metodologia ?? 5 },
+      ],
+    }))
+  }
+
   async function fetchPageData (id: string | string[]) {
     isLoading.value = true
     try {
       const teacherId = Number(Array.isArray(id) ? id[0] : id)
       
       const response = await TeacherService.getById(teacherId)
-      const data = response.data ? response.data : response
+      const data = response.data || response 
       
-      professorInfo.value = {
-        id: data.teacher_id.toString(),
-        name: data.user.name,
-        department: 'Departamento de TI',
-        avatarUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent(data.user.name)}&background=random`,
-        rating: data.media_geral ?? 0,
-        reviewCount: data.avaliacoes?.length ?? 0,
-      }
+      professorInfo.value = mapToProfessorProfile(data)
 
       ratingMetrics.value = [
         { label: 'Didática', score: data.media_didatica ?? 0 }, 
@@ -98,27 +122,16 @@
       ]
 
       topDisciplines.value = (data.disciplines || []).map((d: any) => ({
+        id: d.discipline_id,
         code: d.name.substring(0, 3).toUpperCase(),
         name: d.name
       }))
 
-      reviewsList.value = (data.avaliacoes || []).map((av: any) => ({
-        id: String(av.avaliacao_id || Math.random()),
-        authorName: av.student?.user?.name || 'Aluno Anônimo',
-        authorInitials: av.student?.user?.name?.substring(0, 2).toUpperCase() || 'AA',
-        discipline: av.discipline?.name || 'Geral',
-        date: new Date(av.creat_at || av.created_at || new Date()).toLocaleDateString('pt-BR'),
-        rawDate: av.creat_at || av.created_at || new Date(),
-        overallRating: av.nota_geral ?? 5,
-        content: av.comment || '',
-        subRatings: [
-          { label: 'Didática', score: av.nota_didatica ?? 5 },
-          { label: 'Metodologia', score: av.nota_metodologia ?? 5 },
-        ],
-      }))
+      reviewsList.value = mapToReviews(data.avaliacoes || [])
 
     } catch (error) {
       console.error(error)
+      notify.notify('Erro ao carregar o perfil do professor. Tente novamente.', 'error')
     } finally {
       isLoading.value = false
     }
@@ -128,10 +141,9 @@
     isReviewModalOpen.value = true
   }
 
-  const handleDisciplineSelect = (discipline: Discipline) => {}
-  const fetchMoreReviews = () => {}
-  const handleFilter = () => {}
-  const handleSort = () => {}
+  function handleDisciplineSelect (discipline: Discipline) {
+    // Espaço preparado para filtrar os dados pela disciplina clicada no TopDisciplinesCard
+  }
 </script>
 
 <style scoped>
