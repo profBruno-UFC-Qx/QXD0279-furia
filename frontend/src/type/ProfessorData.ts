@@ -15,6 +15,7 @@ export interface RatingMetric {
 }
 
 export interface Discipline {
+  id: number
   code: string
   name: string
 }
@@ -30,6 +31,7 @@ export interface ReviewData {
   authorInitials: string
   discipline: string
   date: string
+  rawDate?: string | Date
   overallRating: number
   content: string
   subRatings: SubRating[]

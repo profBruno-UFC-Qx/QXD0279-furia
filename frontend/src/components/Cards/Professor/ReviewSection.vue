@@ -1,52 +1,116 @@
 <template>
   <section class="review-section">
-
     <header class="section-header">
-      <h2 class="title">Student Reviews</h2>
+      <h2 class="title">Avaliações dos Alunos</h2>
 
       <div class="actions">
-        <button class="btn-filter" @click="$emit('open-filter')">
-          <v-icon icon="mdi-filter-variant" size="16" />
-          Filter
-        </button>
+        <v-menu location="bottom end">
+          <template v-slot:activator="{ props }">
+            <button class="btn-filter" v-bind="props">
+              <v-icon icon="mdi-filter-variant" size="16" />
+              <span class="text-truncate" style="max-width: 150px;">
+                {{ selectedDiscipline ? selectedDiscipline : 'Todas as Disciplinas' }}
+              </span>
+            </button>
+          </template>
+          <v-list density="compact">
+            <v-list-item @click="selectedDiscipline = null">
+              <v-list-item-title>Todas as Disciplinas</v-list-item-title>
+            </v-list-item>
+            <v-list-item 
+              v-for="disc in disciplines" 
+              :key="disc.name" 
+              @click="selectedDiscipline = disc.name"
+            >
+              <v-list-item-title>{{ disc.name }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
 
-        <button class="btn-sort" @click="$emit('change-sort')">
-          <v-icon icon="mdi-sort" size="16" />
-          Sort by: Recent
-        </button>
+        <v-menu location="bottom end">
+          <template v-slot:activator="{ props }">
+            <button class="btn-sort" v-bind="props">
+              <v-icon icon="mdi-sort" size="16" />
+              {{ sortBy === 'recent' ? 'Mais Recentes' : 'Mais Antigas' }}
+            </button>
+          </template>
+          <v-list density="compact">
+            <v-list-item @click="sortBy = 'recent'">
+              <v-list-item-title>Mais Recentes</v-list-item-title>
+            </v-list-item>
+            <v-list-item @click="sortBy = 'oldest'">
+              <v-list-item-title>Mais Antigas</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </div>
     </header>
 
-    <div class="reviews-list">
+    <div v-if="displayedReviews.length === 0" class="empty-state">
+      <v-icon icon="mdi-comment-outline" size="48" color="grey-lighten-1" />
+      <p>Nenhuma avaliação encontrada para este filtro.</p>
+    </div>
+
+    <div v-else class="reviews-list">
       <ReviewCard
-        v-for="reviewItem in reviews"
+        v-for="reviewItem in displayedReviews"
         :key="reviewItem.id"
         :review="reviewItem"
       />
     </div>
 
-    <footer class="section-footer">
-      <button class="btn-load-more" @click="$emit('load-more')">
-        Load More Reviews
+    <footer v-if="hasMore" class="section-footer">
+      <button class="btn-load-more" @click="loadMore">
+        Carregar mais avaliações
         <v-icon icon="mdi-chevron-down" size="18" />
       </button>
     </footer>
-
   </section>
 </template>
 
 <script setup lang="ts">
+  import { ref, computed } from 'vue'
   import type { ReviewData } from '@/type/ProfessorData'
-
   import ReviewCard from '@/components/Cards/Professor/ReviewCard.vue'
 
   const props = defineProps<{
     reviews: ReviewData[]
+    disciplines: { code: string, name: string }[]
   }>()
 
-  defineEmits<{
-    (e: 'load-more' | 'open-filter' | 'change-sort'): void
-  }>()
+  const sortBy = ref<'recent' | 'oldest'>('recent')
+  const selectedDiscipline = ref<string | null>(null)
+  const visibleCount = ref(4) 
+
+  const filteredAndSortedReviews = computed(() => {
+    let result = [...props.reviews]
+
+    if (selectedDiscipline.value) {
+      result = result.filter(r => r.discipline === selectedDiscipline.value)
+    }
+
+    result.sort((a, b) => {
+      const dateA = new Date(a.rawDate || a.date).getTime()
+      const dateB = new Date(b.rawDate || b.date).getTime()
+      
+      return sortBy.value === 'recent' ? dateB - dateA : dateA - dateB
+    })
+
+    return result
+  })
+
+
+  const displayedReviews = computed(() => {
+    return filteredAndSortedReviews.value.slice(0, visibleCount.value)
+  })
+
+  const hasMore = computed(() => {
+    return visibleCount.value < filteredAndSortedReviews.value.length
+  })
+
+  function loadMore() {
+    visibleCount.value += 4
+  }
 </script>
 
 <style scoped>
@@ -90,6 +154,19 @@
 
 .btn-filter:hover, .btn-sort:hover {
   background-color: #f3f4f6;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  color: #6b7280;
+  gap: 8px;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  border: 1px dashed #d1d5db;
 }
 
 .reviews-list {
