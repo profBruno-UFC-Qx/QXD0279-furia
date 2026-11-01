@@ -1,39 +1,36 @@
-import { request } from "./request";
+import { request } from './request'
 
-import { type RequestResponse } from "@/@types/metaData";
+export interface CreateAvaliacaoPayload {
+  nota_geral: number
+  nota_didatica: number
+  nota_metodologia: number
+  comment: string
+  student_id: number
+  teacher_id: number
+  discipline_id: number
+}
 
 export interface AvaliacaoResponse {
-  nota_geral: number;
-  comment: string;
-  creat_at: Date;
-  teacher: {
-    creat_at: string;
-    user: {
-      name: string;
-    };
-  };
-  discipline: {
-    name: string;
-  };
+  id: number
+  nota_geral: number
+  nota_didatica: number
+  nota_metodologia: number
+  comment: string
+  creat_at: string
+  student_id: number
+  teacher_id: number
+  discipline_id: number
 }
 
 export const AvaliacaoService = {
-  getMine: async (limit: number, page: number) => {
-    const data = await request<RequestResponse<AvaliacaoResponse[]>>(
-      `/avaliacao/me?limit=${limit}&page=${page}`,
-      {
-        auth: true,
+  create: async (payload: CreateAvaliacaoPayload): Promise<AvaliacaoResponse> => {
+    return request<AvaliacaoResponse>('/avaliacao', {
+      method: 'POST',
+      auth: true,
+      headers: {
+        'Content-Type': 'application/json',
       },
-    );
-
-    return data;
+      body: JSON.stringify(payload),
+    })
   },
-
-  // countMineEvaluations: async () => {
-  //   const data = await request<number>("/avaliacao/me/count", {
-  //     auth: true,
-  //   });
-
-  //   return data;
-  // },
-};
+}

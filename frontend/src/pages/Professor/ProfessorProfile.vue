@@ -23,9 +23,7 @@
           <ReviewSection
             v-if="reviewsList"
             :reviews="reviewsList"
-            @change-sort="handleSort"
-            @load-more="fetchMoreReviews"
-            @open-filter="handleFilter"
+            :disciplines="topDisciplines" 
           />
         </div>
 
@@ -40,7 +38,12 @@
     </template>
 
     <BaseModal v-model:modal="isReviewModalOpen" title="Write a Review">
-      <ReviewForm @close="isReviewModalOpen = false" />
+      <ReviewForm 
+        :teacherId="Number(route.params.id)"
+        :disciplines="topDisciplines"
+        @close="isReviewModalOpen = false" 
+        @success="fetchPageData(route.params.id)" 
+      />
     </BaseModal>
   </main>
 </template>
@@ -105,6 +108,7 @@
         authorInitials: av.student?.user?.name?.substring(0, 2).toUpperCase() || 'AA',
         discipline: av.discipline?.name || 'Geral',
         date: new Date(av.creat_at || av.created_at || new Date()).toLocaleDateString('pt-BR'),
+        rawDate: av.creat_at || av.created_at || new Date(),
         overallRating: av.nota_geral ?? 5,
         content: av.comment || '',
         subRatings: [

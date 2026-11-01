@@ -30,6 +30,7 @@ export interface ReviewData {
   authorInitials: string
   discipline: string
   date: string
+  rawDate?: string | Date
   overallRating: number
   content: string
   subRatings: SubRating[]
