@@ -75,7 +75,7 @@
 
   const props = defineProps<{
     reviews: ReviewData[]
-    disciplines: { code: string, name: string }[]
+    disciplines: { id: number, code: string, name: string }[]
   }>()
 
   const sortBy = ref<'recent' | 'oldest'>('recent')

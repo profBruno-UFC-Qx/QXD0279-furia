@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Ornament from "../Ornament/Ornament.vue";
 import { onMounted, ref, defineModel } from "vue";
-import { DiciplineService } from "@/api/DiciplineService";
+import { DiciplineService } from "@/api/DisciplineService.ts";
 import { TeacherService } from "@/api/TeacherService";
 
 interface InputItems {

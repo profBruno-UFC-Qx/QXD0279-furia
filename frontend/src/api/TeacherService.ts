@@ -36,6 +36,17 @@ export const TeacherService = {
     );
   },
 
+  updateDisciplines: async (disciplineIds: number[]) => {
+    return request('/teacher/disciplines', {
+      method: 'PUT',
+      auth: true,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ disciplines: disciplineIds }),
+    })
+  },
+
   getDashboard: async (): Promise<RequestResponse<any>> => {
     return request<RequestResponse<any>>("/teacher/dashboard", {
       method: "GET",

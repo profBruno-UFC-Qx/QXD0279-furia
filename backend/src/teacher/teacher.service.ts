@@ -61,6 +61,16 @@ export class TeacherService {
     return { data: NotasGerais, meta: pagWrapper(take, skip, total) };
   }
 
+  async updateDisciplines(teacherId: number, disciplineIds: number[]) {
+    const teacherExists = await this.teacherRepository.findById(teacherId);
+
+    if (!teacherExists) {
+      throw new NotFoundError("Professor não encontrado");
+    }
+
+    return await this.teacherRepository.updateDisciplines(teacherId, disciplineIds);
+  }
+
   async getDashboard(userId: number) {
     const teacherData = await this.teacherRepository.getDashboardInfo(userId);
 

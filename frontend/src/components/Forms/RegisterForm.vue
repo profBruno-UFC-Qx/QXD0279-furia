@@ -2,7 +2,7 @@
 import { RouterLink } from "vue-router";
 import { onMounted, ref, watch } from "vue";
 import { type registerData } from "@/@types/registerData";
-import { DiciplineService } from "@/api/DiciplineService";
+import { DiciplineService } from "@/api/DisciplineService";
 import { ApiError } from "@/api/ApiError";
 import { useStoreNotify } from "@/stores/StoreNotify";
 

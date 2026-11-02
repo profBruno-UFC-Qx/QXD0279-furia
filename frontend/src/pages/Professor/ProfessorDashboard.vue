@@ -6,11 +6,16 @@
         <h1 class="welcome-title">Olá, {{ professorName }}!</h1>
 
         <p class="welcome-subtitle">
-          Your academic impact this semester is exceptional. Here is your overview.
+          O seu impacto académico este semestre é excecional. Aqui está o seu resumo.
         </p>
       </div>
 
       <div class="header-actions">
+        <button class="btn-secondary" @click="isManageModalOpen = true">
+          <v-icon icon="mdi-book-edit-outline" class="mr-1" size="18" />
+          Gerir Disciplinas
+        </button>
+
         <button class="btn-primary" @click="handleUploadMaterial">
           + Upload Material
         </button>
@@ -31,10 +36,16 @@
 
     <section class="content-grid">
       <div class="left-column">
-        <RecentReviewsCard
+        <ReviewSection
+          v-if="recentReviews.length > 0"
           :reviews="recentReviews"
-          @view-all="handleViewAllReviews"
+          :disciplines="activeDisciplines"
         />
+        
+        <div v-else class="empty-reviews-state">
+          <v-icon icon="mdi-comment-outline" size="48" color="grey-lighten-1" />
+          <p>Ainda não recebeu nenhuma avaliação.</p>
+        </div>
       </div>
 
       <aside class="right-column">
@@ -53,24 +64,30 @@
         :is-dashboard="true" 
       />
     </BaseModal>
+    <ManageDisciplinesModal 
+      v-model:modal="isManageModalOpen"
+      :active-disciplines="activeDisciplines"
+      @success="fetchDashboardData" 
+    />
   </main>
 </template>
 
 <script setup lang="ts">
   import type {
     ActiveDiscipline,
-    DashboardReview,
     DashboardStat,
     RecentDocument,
+    ReviewData 
   } from '@/type/ProfessorData'
 
   import { onMounted, ref } from 'vue'
   import ActiveDisciplinesCard from '@/components/Cards/Professor/ActiveDisciplinesCard.vue'
   import DashboardStatCard from '@/components/Cards/Professor/DashboardStatCard.vue'
   import RecentDocumentsCard from '@/components/Cards/Professor/RecentDocumentsCard.vue'
-  import RecentReviewsCard from '@/components/Cards/Professor/RecentReviewsCard.vue'
+  import ReviewSection from '@/components/Cards/Professor/ReviewSection.vue' 
   import DocumentForm from '@/components/Forms/DocumentForm.vue'
   import BaseModal from '@/components/Modais/BaseModal.vue'
+  import ManageDisciplinesModal from '@/components/Modais/ManageDisciplinesModal.vue'
 
   import { authStore } from '@/stores/StoreAuth'
   import { TeacherService } from '@/api/TeacherService'
@@ -80,14 +97,32 @@
   const isLoading = ref(true)
 
   const statsList = ref<DashboardStat[]>([])
-  const recentReviews = ref<DashboardReview[]>([])
+  const recentReviews = ref<ReviewData[]>([]) 
   const activeDisciplines = ref<ActiveDiscipline[]>([])
   const recentDocuments = ref<RecentDocument[]>([])
   const isUploadModalOpen = ref(false)
+  const isManageModalOpen = ref(false)
 
   onMounted(async () => {
     await fetchDashboardData()
   })
+
+  function mapToReviews(avaliacoes: any[]): ReviewData[] {
+    return avaliacoes.map(av => ({
+      id: String(av.id), 
+      authorName: av.student?.user?.name || 'Aluno Anônimo',
+      authorInitials: av.student?.user?.name?.substring(0, 2).toUpperCase() || 'AA',
+      discipline: av.discipline?.name || 'Geral',
+      date: new Date(av.creat_at || av.created_at || new Date()).toLocaleDateString('pt-BR'),
+      rawDate: av.creat_at || av.created_at || new Date(), 
+      overallRating: av.nota_geral ?? 5,
+      content: av.comment || 'Sem comentário escrito.',
+      subRatings: [
+        { label: 'Didática', score: av.nota_didatica ?? 5 },
+        { label: 'Metodologia', score: av.nota_metodologia ?? 5 },
+      ],
+    }))
+  }
 
   async function fetchDashboardData () {
     isLoading.value = true
@@ -117,19 +152,12 @@
         },
       ]
 
-      recentReviews.value = data.recentReviews.map((av: any) => ({
-        id: av.id.toString(),
-        professorName: professorName.value,
-        discipline: av.discipline?.name || 'Geral',
-        status: 'Publicada',
-        date: new Date(av.creat_at || new Date()).toLocaleDateString('pt-BR'),
-        rating: av.nota_geral,
-        tags: ['Avaliação'], 
-        comment: av.comment || 'Sem comentário escrito.',
-      }))
+      recentReviews.value = mapToReviews(data.recentReviews || [])
 
       activeDisciplines.value = data.activeDisciplines.map((d: any) => ({
         ...d,
+        id: Number(d.discipline_id || d.id),
+        code: d.name.substring(0, 3).toUpperCase(),
         averageRating: d.averageRating || 0, 
         studentCount: d.studentCount || 0
       }))
@@ -150,8 +178,8 @@
   function handleUploadMaterial () {
     isUploadModalOpen.value = true
   }
+  
   const handleExportReport = () => alert('Exportar relatório!')
-  const handleViewAllReviews = () => alert('Ver todas as avaliações!')
 </script>
 
 <style scoped>
@@ -238,6 +266,19 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+}
+
+.empty-reviews-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 0;
+  color: #6b7280;
+  gap: 8px;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  border: 1px dashed #d1d5db;
 }
 
 @media (max-width: 900px) {

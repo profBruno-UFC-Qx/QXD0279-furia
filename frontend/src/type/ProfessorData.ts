@@ -59,7 +59,8 @@ export interface DashboardReview {
 }
 
 export interface ActiveDiscipline {
-  id: string
+  id: number       
+  code: string      
   name: string
   studentCount: number
   averageRating: number

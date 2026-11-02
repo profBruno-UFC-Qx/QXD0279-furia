@@ -1,7 +1,7 @@
 import { request } from "./request";
 
 import { type RequestResponse } from "@/@types/metaData";
-export interface DiciplineResponse {
+export interface DisciplineResponse {
   discipline_id: number;
   name: string;
   course: string;
@@ -12,9 +12,9 @@ export interface DisciplineName {
   name: string;
 }
 
-export const DiciplineService = {
-  getAll: async (): Promise<RequestResponse<DiciplineResponse[]>> => {
-    return request<RequestResponse<DiciplineResponse[]>>("/dicipline", {
+export const DisciplineService = {
+  getAll: async (): Promise<RequestResponse<DisciplineResponse[]>> => {
+    return request<RequestResponse<DisciplineResponse[]>>("/dicipline", {
       auth: true,
     });
   },

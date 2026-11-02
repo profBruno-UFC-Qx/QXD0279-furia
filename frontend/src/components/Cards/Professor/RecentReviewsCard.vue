@@ -37,17 +37,7 @@
           <strong class="rating-score">{{ review.rating.toFixed(1) }}/5</strong>
         </div>
 
-        <div class="tags-row">
-          <span
-            v-for="tag in review.tags"
-            :key="tag"
-            class="tag-pill"
-          >
-            {{ tag }}
-          </span>
-        </div>
-
-        <p class="review-comment">"{{ review.comment }}"</p>
+        <p class="review-comment">{{ review.comment }}</p>
       </div>
     </div>
   </div>

@@ -3,6 +3,7 @@ import z from "zod";
 import { BadRequestError } from "../errors/errors.ts";
 import { TeacherService } from "./teacher.service.ts";
 import { updateTeacherSchema } from "./schema/teacherUpdate.schema.ts";
+import { updateTeacherDisciplinesSchema } from "./schema/teacher.schema.ts";
 import { filterTeacher } from "../@types/filterTeacher.type.ts";
 
 export class TeacherController {
@@ -26,6 +27,26 @@ export class TeacherController {
       filters as filterTeacher,
     );
     return res.status(200).json(teachers);
+  };
+
+  updateDisciplines = async (req: Request, res: Response) => {
+    const teacherId = req.user?.id;
+
+    if (!Number.isInteger(teacherId) || Number(teacherId) <= 0 || !teacherId) {
+      throw new BadRequestError("ID de utilizador inválido");
+    }
+
+    const parsedData = updateTeacherDisciplinesSchema.safeParse(req.body);
+
+    if (!parsedData.success) {
+      throw new BadRequestError(
+        "Formato de disciplinas inválido",
+        parsedData.error
+      );
+    }
+
+    await this.service.updateDisciplines(teacherId, parsedData.data.disciplines);
+    return res.status(204).send();
   };
 
   getDashboard = async (req: Request, res: Response) => {
