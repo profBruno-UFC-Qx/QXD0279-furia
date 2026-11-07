@@ -72,24 +72,33 @@ export class AvaliacaoRepository {
     });
   }
 
-  async findAll(take: number, skip: number) {
-    return await this.database.avaliacao.findMany({
+  async findAll(take: number, skip: number, page: number) {
+    const avaliacoes = await this.database.avaliacao.findMany({
       take,
       skip,
       include: {
         student: {
-          include: {
-            user: true,
-          },
+          include: { user: true },
         },
         teacher: {
-          include: {
-            user: true,
-          },
+          include: { user: true },
         },
         discipline: true,
       },
+      orderBy: { creat_at: 'desc' } 
     });
+
+    const total = await this.count();
+
+    return {
+      data: avaliacoes,
+      meta: {
+        total,
+        page,
+        limit: take,
+        totalPages: Math.ceil(total / take)
+      }
+    };
   }
 
   async findById(id: number) {

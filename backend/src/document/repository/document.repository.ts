@@ -53,6 +53,46 @@ export class DocumentRepository {
         return this.database.documents.findUnique({ where: { id } });
     }
 
+    async findMine(page: number, limit: number, userId: number, role?: string) {
+        const skip = (page - 1) * limit;
+        
+        const whereCondition: any = {};
+
+        if (role === "student") {
+            whereCondition.student_id = userId;
+        } else if (role === "teacher") {
+            whereCondition.teacher_id = userId;
+        } else {
+            whereCondition.OR = [
+                { student_id: userId },
+                { teacher_id: userId }
+            ];
+        }
+
+        const documents = await this.database.documents.findMany({
+            where: whereCondition,
+            skip: skip,
+            take: limit,
+            include: {
+                teacher: { include: { user: true } },
+                discipline: true
+            },
+            orderBy: { data_publicacao: 'desc' }
+        });
+
+        const total = await this.database.documents.count({ where: whereCondition });
+
+        return {
+            data: documents,
+            meta: {
+                total,
+                page,
+                limit,
+                totalPages: Math.ceil(total / limit)
+            }
+        };
+    }
+
     async delete(id: number) {
         return this.database.documents.delete({ where: { id } });
     }

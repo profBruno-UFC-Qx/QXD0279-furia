@@ -40,12 +40,12 @@
       if (props.isDashboard) {
         formData.value.teacher = Number(auth.userId) || Number(localStorage.getItem('userId')) || null
         
-        const disciplineResponse = await DisciplineService.getAll()
+        const disciplineResponse = await DisciplineService.getAll(100, 1)
         disciplines.value = disciplineResponse.data || []
       } else {
         const [teacherResponse, disciplineResponse] = await Promise.all([
-          TeacherService.getAll(),
-          DisciplineService.getAll(),
+          TeacherService.getAll(100, 1),
+          DisciplineService.getAll(100, 1),
         ])
         teachers.value = teacherResponse.data || []
         disciplines.value = disciplineResponse.data || []

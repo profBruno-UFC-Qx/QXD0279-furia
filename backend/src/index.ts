@@ -1,13 +1,11 @@
 import express, { Request, Response } from "express";
 import { authRouter } from "./auth/auth.module.ts";
 import { errorHandling } from "./middlewares/error-handling.midlewares.ts";
-import { diciplineRouter } from "./dicipline/dicipline.module.ts";
+import { disciplineRouter } from "./discipline/discipline.module.ts";
 import { teacherRouter } from "./teacher/teacher.module.ts";
 import { studentRouter } from "./student/student.module.ts";
 import { avaliacaoRouter } from "./avaliacao/avaliacao.module.ts";
-import { userRouter } from "./user/user.module.ts";
-import { AutorizationMiddleware } from "./middlewares/autorization.middleware.ts";
-import { AuthMiddleware } from "./auth/middlewares/auth.middleware.ts";
+import { userRouter } from "./user/user.module.ts";import { AuthMiddleware } from "./auth/middlewares/auth.middleware.ts";
 import cors from "cors";
 
 import { DocumentController } from "./document/controller/document.controller.ts";
@@ -16,7 +14,7 @@ import { DocumentService } from "./document/service/document.service.ts";
 import { DocumentRepository } from "./document/repository/document.repository.ts";
 import { databaseInstance } from "./database/dataBase.ts";
 import { uploadFileToStorage } from "./utils/storage.ts";
-import { diciplineControllerInstance } from "./dicipline/dicipline.module.ts";
+import { disciplineControllerInstance } from "./discipline/discipline.module.ts";
 const app = express();
 
 app.use(
@@ -38,11 +36,12 @@ const documentController = new DocumentController(documentService);
 const documentRouter = createDocumentRouter(documentController);
 
 // Rotas publicas
-app.get("/public/discipline/name", diciplineControllerInstance.findAllNames);
+app.get("/public/discipline/name", disciplineControllerInstance.findAllNames);
 
 app.use(authRouter);
 app.use(AuthMiddleware);
-app.use(diciplineRouter);
+app.use(userRouter);
+app.use(disciplineRouter);
 app.use(userRouter);
 app.use(studentRouter);
 app.use(teacherRouter);

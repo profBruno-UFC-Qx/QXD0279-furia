@@ -106,7 +106,7 @@
       if (allDisciplinesList.value.length === 0) {
         isLoading.value = true
         try {
-          const response = await DisciplineService.getAll()
+          const response = await DisciplineService.getAll(100, 1)
           const data = response.data || response
           allDisciplinesList.value = data.map((d: any) => ({
             id: d.discipline_id,

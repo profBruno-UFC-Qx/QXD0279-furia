@@ -59,7 +59,7 @@ e outros critérios para encontrar o perfil acadêmico ideal para você."
       v-model="filtersSearch"
       :inputs="{
         text: true,
-        dicipline: true,
+        discipline: true,
         course: false,
         teacher: false,
       }"
@@ -90,7 +90,7 @@ e outros critérios para encontrar o perfil acadêmico ideal para você."
             :id="prof.teacher_id"
             :name="prof.user.name"
             :grade="prof.avaliacoes"
-            :diciplines="
+            :disciplines="
               prof.disciplines.map((diciplina) => {
                 return diciplina.name;
               })

@@ -133,6 +133,29 @@ onMounted(async () => {
       :description="'Visão geral da atividade, crescimento e gestão do site.'"
     />
 
+    <section class="quick-actions">
+      <v-btn 
+        color="primary" 
+        elevation="0"
+        to="/adm/reviews"
+        prepend-icon="mdi-star-check-outline"
+        class="admin-btn"
+      >
+        Gerenciar Reviews
+      </v-btn>
+
+      <v-btn 
+        color="primary" 
+        variant="tonal"
+        elevation="0"
+        to="/adm/documents"
+        prepend-icon="mdi-file-document-multiple"
+        class="admin-btn"
+      >
+        Gerenciar Documentos
+      </v-btn>
+    </section>
+
     <v-alert
       v-if="
         dashboardErrors.users ||
@@ -215,6 +238,21 @@ onMounted(async () => {
   gap: 24px;
 }
 
+.quick-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: -8px; 
+}
+
+.admin-btn {
+  height: 48px;
+  padding: 0 24px;
+  text-transform: none;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
 .stats-grid {
   display: flex;
   gap: 20px;
@@ -234,6 +272,10 @@ onMounted(async () => {
   }
 
   .stats-grid {
+    flex-direction: column;
+  }
+  
+  .quick-actions {
     flex-direction: column;
   }
 }

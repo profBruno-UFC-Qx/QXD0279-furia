@@ -1,16 +1,16 @@
-import { createDicipline } from "./dto/createDicipline.dto.ts";
+import { createDiscipline } from "./dto/createDiscipline.dto.ts";
 import { DataBase } from "../database/dataBase.ts";
-import { diciplineUpdateDTO } from "./dto/disciplineUpdate.dto.ts";
+import { disciplineUpdateDTO } from "./dto/disciplineUpdate.dto.ts";
 
-export class DiciplineRepository {
+export class disciplineRepository {
   constructor(private database: DataBase) {}
 
-  async create(diciplineData: createDicipline) {
+  async create(disciplineData: createDiscipline) {
     return this.database.discipline.create({
       data: {
-        name: diciplineData.name,
-        course: diciplineData.course,
-        hours: diciplineData.hours,
+        name: disciplineData.name,
+        course: disciplineData.course,
+        hours: disciplineData.hours,
       },
     });
   }
@@ -55,8 +55,8 @@ export class DiciplineRepository {
 
   async update(
     id: number,
-    data: Partial<diciplineUpdateDTO>,
-  ): Promise<diciplineUpdateDTO | null> {
+    data: Partial<disciplineUpdateDTO>,
+  ): Promise<disciplineUpdateDTO | null> {
     const discipline = await this.findById(id);
 
     if (!discipline) return null;

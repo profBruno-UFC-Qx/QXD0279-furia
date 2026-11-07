@@ -17,6 +17,8 @@ export function createDocumentRouter(documentController: DocumentController) {
 
     documentRouter.get("/document", AuthMiddleware, documentController.list);
 
+    documentRouter.get("/document/mine", AuthMiddleware, documentController.getMine);
+
     documentRouter.get("/document/:id", AuthMiddleware, documentController.getById);
 
     documentRouter.delete(

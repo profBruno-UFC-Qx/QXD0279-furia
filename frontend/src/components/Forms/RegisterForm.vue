@@ -2,10 +2,10 @@
 import { RouterLink } from "vue-router";
 import { onMounted, ref, watch } from "vue";
 import { type registerData } from "@/@types/registerData";
-import { DiciplineService } from "@/api/DisciplineService";
+import { DisciplineService } from "@/api/DisciplineService";
 import { ApiError } from "@/api/ApiError";
 import { useStoreNotify } from "@/stores/StoreNotify";
-import { type DisciplineName } from "@/api/DiciplineService";
+import { type DisciplineName } from "@/api/DisciplineService";
 
 interface Discipline {
   discipline_id: number;
@@ -50,7 +50,7 @@ async function onSubmit(e: SubmitEvent) {
 onMounted(async () => {
   notify.startLoad();
   try {
-    const data = await DiciplineService.getAllNames();
+    const data = await DisciplineService.getAllNames();
     disciplines.value = data;
   } catch (e) {
     notify.notify(

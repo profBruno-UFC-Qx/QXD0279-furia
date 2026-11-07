@@ -20,6 +20,15 @@ export class DocumentController {
                 );
             }
 
+            const userId = res.locals.user?.id || (req as any).user?.id; 
+            const role = res.locals.user?.role || (req as any).user?.role;
+
+            if (role === 'student') {
+                validatedData.data.student_id = userId;
+            } else if (role === 'teacher') {
+                validatedData.data.teacher_id = userId;
+            }
+
             const document = await this.service.createDocument(validatedData.data, req.file);
 
             return res.status(201).json(document);
@@ -42,8 +51,30 @@ export class DocumentController {
     getById = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = parseInt(req.params.id as string);
+            if (isNaN(id)) {
+                throw new AppError(400, "ID do documento inválido");
+            }
             const document = await this.service.getDocumentById(id);
             return res.status(200).json(document);
+        } catch (error) {
+            return next(error);
+        }
+    };
+
+    getMine = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const page = parseInt(req.query.page as string) || 1;
+            const limit = parseInt(req.query.limit as string) || 10;
+            
+            const userId = res.locals.user?.id || (req as any).user?.id; 
+            const role = res.locals.user?.role || (req as any).user?.role;
+
+            if (!userId) {
+                throw new AppError(401, "Usuário não autenticado");
+            }
+
+            const documents = await this.service.getMineDocuments(page, limit, userId, role);
+            return res.status(200).json(documents);
         } catch (error) {
             return next(error);
         }
