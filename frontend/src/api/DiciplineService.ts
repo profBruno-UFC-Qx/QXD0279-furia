@@ -9,6 +9,7 @@ export interface DiciplineResponse {
 }
 
 export interface DisciplineName {
+  discipline_id: number;
   name: string;
 }
 
@@ -44,9 +45,8 @@ export const DiciplineService = {
   },
 
   getAllNames: async () => {
-    const data = await request<DisciplineName[]>("/discipline/name", {
-      auth: true,
-    });
+    const data = await request<DisciplineName[]>("/public/discipline/name");
+    return data;
   },
 
   delete: async (id: number) => {

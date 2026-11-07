@@ -9,6 +9,7 @@ export const AuthMiddleware = (
   next: NextFunction,
 ) => {
   const bearToken = req.headers.authorization;
+  const isPubli = req.url;
 
   if (!bearToken) {
     throw new UnauthorizedError("Authorization header missing");

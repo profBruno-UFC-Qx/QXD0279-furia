@@ -16,20 +16,28 @@ const logout = () => {
     <div class="header">
       <h1 class="title">AvaliAe</h1>
 
-      <nav
-        class="navigation"
-        v-if="storeAuth.isLoged == true && storeAuth.role != 'admin'"
-      >
+      <nav class="navigation" v-if="storeAuth.role == 'admin'">
         <ul>
           <li>
-            <v-btn variant="plain" :to="{ name: 'studentHome' }" text="Home" />
+            <v-btn
+              variant="plain"
+              :to="{ name: 'adminDashboard' }"
+              text="Dashboard"
+            />
           </li>
           <li>
             <v-btn
               variant="plain"
-              :to="{ name: 'studentTeachers' }"
-              text="Professor"
+              :to="{ name: 'adminDisciplines' }"
+              text="Discipline"
             />
+          </li>
+        </ul>
+      </nav>
+      <nav class="navigation" v-if="storeAuth.role == 'student'">
+        <ul>
+          <li>
+            <v-btn variant="plain" :to="{ name: 'studentHome' }" text="Home" />
           </li>
           <li>
             <v-btn
@@ -38,7 +46,18 @@ const logout = () => {
               text="Documentos"
             />
           </li>
-          <li v-if="storeAuth.role === 'teacher'">
+          <li>
+            <v-btn
+              variant="plain"
+              :to="{ name: 'studentTeachers' }"
+              text="Professores"
+            />
+          </li>
+        </ul>
+      </nav>
+      <nav class="navigation" v-if="storeAuth.role == 'teacher'">
+        <ul>
+          <li>
             <v-btn
               variant="plain"
               :to="{ name: 'professorDashboard' }"

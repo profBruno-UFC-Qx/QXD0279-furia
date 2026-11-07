@@ -5,6 +5,7 @@ import { type registerData } from "@/@types/registerData";
 import { DiciplineService } from "@/api/DiciplineService";
 import { ApiError } from "@/api/ApiError";
 import { useStoreNotify } from "@/stores/StoreNotify";
+import { type DisciplineName } from "@/api/DiciplineService";
 
 interface Discipline {
   discipline_id: number;
@@ -25,7 +26,7 @@ const password = ref("");
 const name = ref("");
 const loading = ref(false);
 const course = ref("");
-const disciplines = ref<Discipline[]>([]);
+const disciplines = ref<DisciplineName[]>([]);
 const selectedDisciplines = ref<number[]>([]);
 
 async function onSubmit(e: SubmitEvent) {
@@ -47,14 +48,17 @@ async function onSubmit(e: SubmitEvent) {
 }
 
 onMounted(async () => {
+  notify.startLoad();
   try {
-    const response = await DiciplineService.getAll();
-    disciplines.value = response.data;
+    const data = await DiciplineService.getAllNames();
+    disciplines.value = data;
   } catch (e) {
     notify.notify(
       "Nao foi possivel obter as diciplinas, tente recarregar a pagina",
       "error",
     );
+  } finally {
+    notify.endLoad();
   }
 });
 
