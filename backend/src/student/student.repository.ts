@@ -1,6 +1,6 @@
 import { DataBase } from "../database/dataBase.ts";
 import { CreateStudentDTO } from "./dto/student.dto.ts";
-import { User } from "@prisma/client";
+import type { User } from "../generated/prisma/client.ts";
 
 export class StudentRepository {
   constructor(private database: DataBase) {}
