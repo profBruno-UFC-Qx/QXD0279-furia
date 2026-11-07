@@ -1,4 +1,5 @@
 import { request } from './request'
+import { type RequestResponse } from "@/@types/metaData";
 
 export interface CreateAvaliacaoPayload {
   nota_geral: number
@@ -22,6 +23,21 @@ export interface AvaliacaoResponse {
   discipline_id: number
 }
 
+export interface AvaliacaoResponseWithData {
+  nota_geral: number;
+  comment: string;
+  creat_at: Date;
+  teacher: {
+    creat_at: string;
+    user: {
+      name: string;
+    };
+  };
+  discipline: {
+    name: string;
+  };
+}
+
 export const AvaliacaoService = {
   create: async (payload: CreateAvaliacaoPayload): Promise<AvaliacaoResponse> => {
     return request<AvaliacaoResponse>('/avaliacao', {
@@ -32,5 +48,16 @@ export const AvaliacaoService = {
       },
       body: JSON.stringify(payload),
     })
+  },
+  getMine: async (limit: number, page: number) => {
+    const data = await request<RequestResponse<AvaliacaoResponseWithData[]>>(
+      `/avaliacao/me?limit=${limit}&page=${page}`,
+      {
+        auth: true,
+
+      },
+    );
+
+    return data;
   },
 }

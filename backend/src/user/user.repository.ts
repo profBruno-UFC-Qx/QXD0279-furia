@@ -108,10 +108,14 @@ export class UserRepository {
     };
   }
 
-  async getsStatsHome() {
+  async getsStatsHome(id: number) {
     const [qtd_avaliacoes, qtd_uploades] = await Promise.all([
-      this.database.avaliacao.count(),
-      this.database.documents.count(),
+      this.database.avaliacao.count({
+        where: { student_id: id },
+      }),
+      this.database.documents.count({
+        where: { student_id: id },
+      }),
     ]);
 
     return {

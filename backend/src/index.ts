@@ -41,7 +41,7 @@ const documentRouter = createDocumentRouter(documentController);
 app.get("/public/discipline/name", diciplineControllerInstance.findAllNames);
 
 app.use(authRouter);
-// app.use(AuthMiddleware);
+app.use(AuthMiddleware);
 app.use(diciplineRouter);
 app.use(userRouter);
 app.use(studentRouter);

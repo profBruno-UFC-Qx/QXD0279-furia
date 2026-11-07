@@ -56,8 +56,8 @@ export class UserService {
     return await this.userRepository.getStats();
   }
 
-  async getsStatsHome() {
-    return await this.userRepository.getsStatsHome();
+  async getsStatsHome(id: number) {
+    return await this.userRepository.getsStatsHome(id);
   }
 
   async updateUser(userId: number, data: Partial<UserDTO>) {

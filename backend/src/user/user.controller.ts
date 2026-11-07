@@ -32,8 +32,14 @@ export class UserController {
     return res.status(200).json(stats);
   };
 
-  getsStatsHome = async (_req: Request, res: Response) => {
-    const stats = await this.service.getsStatsHome();
+  getsStatsHome = async (req: Request, res: Response) => {
+    const id = req.user?.id;
+
+    if (!id || !Number.isInteger(id) || Number(id) <= 0) {
+      throw new BadRequestError("ID de usuário inválido");
+    }
+
+    const stats = await this.service.getsStatsHome(id);
     return res.status(200).json(stats);
   };
 

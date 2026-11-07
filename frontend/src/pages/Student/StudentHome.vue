@@ -9,6 +9,7 @@ import { AvaliacaoService } from "@/api/AvaliacaoService";
 import { StatisticsService } from "@/api/StatisticsService";
 import { type metaData } from "@/@types/metaData";
 import { type AvaliacaoResponse } from "@/api/AvaliacaoService";
+import { type AvaliacaoResponseWithData } from "@/api/AvaliacaoService";
 import { type statisticsHomeResponse } from "@/api/StatisticsService";
 
 const boats = [
@@ -34,9 +35,9 @@ const boats = [
   },
 ];
 
-const avaliacoes = ref<AvaliacaoResponse[]>([]);
+const avaliacoes = ref<AvaliacaoResponseWithData[]>([]);
 const currentPage = ref(1);
-const pageSize = ref(1);
+const pageSize = ref(5);
 const totalPages = ref(1);
 
 const avaliacoesLoading = ref(false);
