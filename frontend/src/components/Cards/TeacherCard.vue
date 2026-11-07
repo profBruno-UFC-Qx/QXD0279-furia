@@ -21,7 +21,7 @@ const { id, name, grade, diciplines } = defineProps<{
         </p>
       </div>
       <div class="grade">
-        <p>⭐ {{ grade.nota_geral_media }}</p>
+        <p>⭐ {{ grade.nota_geral_media.toFixed(2) }}</p>
       </div>
     </div>
     <div class="diciplines">
