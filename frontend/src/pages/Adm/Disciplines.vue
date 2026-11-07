@@ -5,9 +5,9 @@ import Ornament from "@/components/Ornament/Ornament.vue";
 import TableDiscipline from "@/components/Table/TableDiscipline.vue";
 import DisciplineForm from "@/components/Forms/DisciplineForm.vue";
 import {
-  DiciplineService,
-  type DiciplineResponse,
-} from "@/api/DiciplineService";
+  DisciplineService,
+  type DisciplineResponse,
+} from "@/api/DisciplineService";
 import BaseModal from "@/components/Modais/BaseModal.vue";
 import { useStoreNotify } from "@/stores/StoreNotify";
 
@@ -34,19 +34,19 @@ const notify = useStoreNotify();
 const currentPage = ref(1);
 const itemsPerPage = ref(5);
 const totalPages = ref(0);
-const disciplines = ref<DiciplineResponse[]>([]);
+const disciplines = ref<DisciplineResponse[]>([]);
 const disciplineErrors = ref<string | null>(null);
 const modals = reactive<Modals>({
   create: false,
   delete: false,
   update: false,
 });
-const disciplineSelected = ref<DiciplineResponse | null>(null);
+const disciplineSelected = ref<DisciplineResponse | null>(null);
 
 async function Create(data: DisciplineCreate) {
   notify.startLoad();
   try {
-    await DiciplineService.create({
+    await DisciplineService.create({
       name: data.name,
       course: data.course,
       hours: Number(data.hours),
@@ -55,19 +55,20 @@ async function Create(data: DisciplineCreate) {
     notify.notify("Disciplina cadastrada", "alert");
     await fetchDisciplines();
   } catch (error) {
+    notify.notify("Nao foi possivel adicionar a disciplina", "error");
   } finally {
     modals.create = false;
     notify.endLoad();
   }
 }
 
-async function Delete(discipline: DiciplineResponse | null) {
+async function Delete(discipline: DisciplineResponse | null) {
   if (!discipline) return;
 
   notify.startLoad();
   try {
     const { discipline_id } = discipline;
-    const result = await DiciplineService.delete(discipline_id);
+    const result = await DisciplineService.delete(discipline_id);
     modals.delete = false;
     if (!result) {
       throw result;
@@ -85,7 +86,7 @@ async function Delete(discipline: DiciplineResponse | null) {
 async function Update(data: DisciplineUpdate) {
   notify.startLoad();
   try {
-    await DiciplineService.update(data.discipline_id, {
+    await DisciplineService.update(data.discipline_id, {
       name: data.name,
       course: data.course,
       hours: Number(data.hours),
@@ -103,7 +104,7 @@ async function Update(data: DisciplineUpdate) {
 async function fetchDisciplines() {
   notify.startLoad();
   try {
-    const response = await DiciplineService.getAll(
+    const response = await DisciplineService.getAll(
       itemsPerPage.value,
       currentPage.value,
     );
@@ -133,7 +134,7 @@ onMounted(async () => {
       :description="'Visão geral das diciplinas cadastradas no sistema.'"
     />
 
-    <v-alert v-if="disciplineErrors" type="error">
+    <v-alert v-if="disciplineErrors" type="error" class="erro">
       <div>{{ disciplineErrors }}</div>
     </v-alert>
 
@@ -174,7 +175,7 @@ onMounted(async () => {
   <BaseModal :title="'Atualizar disciplina'" v-model:modal="modals.update">
     <DisciplineForm
       @update="Update"
-      :discipline-data="disciplineSelected as DiciplineResponse"
+      :discipline-data="disciplineSelected as DisciplineResponse"
       :is-update="true"
       @close="modals.update = false"
     />
@@ -210,6 +211,11 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+.erro {
+  flex-grow: 0;
+  min-height: 60px;
+}
+
 .addDiscipline {
   display: flex;
   justify-content: center;

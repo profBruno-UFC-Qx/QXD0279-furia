@@ -29,7 +29,7 @@ const logout = () => {
             <v-btn
               variant="plain"
               :to="{ name: 'adminDisciplines' }"
-              text="Discipline"
+              text="Disciplina"
             />
           </li>
         </ul>
