@@ -175,11 +175,7 @@ onMounted(async () => {
   <BaseModal :title="'Atualizar disciplina'" v-model:modal="modals.update">
     <DisciplineForm
       @update="Update"
-<<<<<<< HEAD
       :discipline-data="disciplineSelected || undefined"
-=======
-      :discipline-data="disciplineSelected as DisciplineResponse"
->>>>>>> origin/develop
       :is-update="true"
       @close="modals.update = false"
     />
