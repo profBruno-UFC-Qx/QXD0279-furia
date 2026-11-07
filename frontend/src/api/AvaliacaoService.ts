@@ -1,3 +1,4 @@
+import type { RequestResponse } from '@/@types/metaData'
 import { request } from './request'
 
 export interface CreateAvaliacaoPayload {
@@ -11,7 +12,7 @@ export interface CreateAvaliacaoPayload {
 }
 
 export interface AvaliacaoResponse {
-  id: number
+  id: number  
   nota_geral: number
   nota_didatica: number
   nota_metodologia: number
@@ -20,6 +21,19 @@ export interface AvaliacaoResponse {
   student_id: number
   teacher_id: number
   discipline_id: number
+  teacher?: {
+    user?: {
+      name: string
+    }
+  }
+  discipline?: {
+    name: string
+  }
+  student?: {
+    user?: {
+      name: string
+    }
+  }
 }
 
 export const AvaliacaoService = {
@@ -33,4 +47,19 @@ export const AvaliacaoService = {
       body: JSON.stringify(payload),
     })
   },
+
+  getAll: async (limit: number = 10, page: number = 1): Promise<RequestResponse<AvaliacaoResponse[]>> => {
+    return request<RequestResponse<AvaliacaoResponse[]>>('/avaliacao', {
+      method: 'GET',
+      auth: true,
+      params: { limit, page }
+    });
+  },
+
+  delete: async (id: number): Promise<void> => {
+    return request(`/avaliacao/${id}`, {
+      method: 'DELETE',
+      auth: true,
+    });
+  }
 }

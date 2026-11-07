@@ -10,9 +10,9 @@ export class AvaliacaoService {
     return await this.avaliacaoRepository.createAvaliacao(avaliacaoData);
   }
 
-  async findAll(take: number, skip: number) {
+  async findAll(take: number, skip: number, page: number) {
     const total = await this.avaliacaoRepository.count();
-    const data = await this.avaliacaoRepository.findAll(take, skip);
+    const data = await this.avaliacaoRepository.findAll(take, skip, page);
     return { data: data, meta: pagWrapper(take, skip, total) };
   }
 

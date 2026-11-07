@@ -28,7 +28,7 @@ export class DocumentController {
             } else if (role === 'teacher') {
                 validatedData.data.teacher_id = userId;
             }
-            
+
             const document = await this.service.createDocument(validatedData.data, req.file);
 
             return res.status(201).json(document);
@@ -74,7 +74,6 @@ export class DocumentController {
             }
 
             const documents = await this.service.getMineDocuments(page, limit, userId, role);
-            console.log("-> TESTE GET MINE: UserId =", userId, "| Role =", role);
             return res.status(200).json(documents);
         } catch (error) {
             return next(error);
