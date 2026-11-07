@@ -50,9 +50,9 @@ watch(currentPage, () => {
 <template>
   <div class="content container">
     <Header
-      title="Find a Professor"
-      description="Discover and evaluate professors across disciplines. Filter by ratings, courses,
-and more to find the right academic fit."
+      title="Encontrar um professor"
+      description="Descubra e avalie professores de diversas áreas. Filtre por avaliações, disciplinas
+e outros critérios para encontrar o perfil acadêmico ideal para você."
     />
 
     <Filters

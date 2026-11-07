@@ -55,6 +55,7 @@ async function Create(data: DisciplineCreate) {
     notify.notify("Disciplina cadastrada", "alert");
     await fetchDisciplines();
   } catch (error) {
+    notify.notify("Nao foi possivel adicionar a disciplina", "error");
   } finally {
     modals.create = false;
     notify.endLoad();
@@ -127,13 +128,13 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="dashboard-page">
+  <div class="discipline-page">
     <Header
       :title="'Admin Disciplinas'"
       :description="'Visão geral das diciplinas cadastradas no sistema.'"
     />
 
-    <v-alert v-if="disciplineErrors" type="error">
+    <v-alert v-if="disciplineErrors" type="error" class="erro">
       <div>{{ disciplineErrors }}</div>
     </v-alert>
 
@@ -174,7 +175,11 @@ onMounted(async () => {
   <BaseModal :title="'Atualizar disciplina'" v-model:modal="modals.update">
     <DisciplineForm
       @update="Update"
+<<<<<<< HEAD
       :discipline-data="disciplineSelected || undefined"
+=======
+      :discipline-data="disciplineSelected as DisciplineResponse"
+>>>>>>> origin/develop
       :is-update="true"
       @close="modals.update = false"
     />
@@ -210,6 +215,11 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+.erro {
+  flex-grow: 0;
+  min-height: 60px;
+}
+
 .addDiscipline {
   display: flex;
   justify-content: center;
@@ -224,7 +234,8 @@ onMounted(async () => {
   cursor: pointer;
 }
 
-.dashboard-page {
+.discipline-page {
+  flex-grow: 1;
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;

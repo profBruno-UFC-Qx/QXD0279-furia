@@ -2,6 +2,7 @@ import { type RequestResponse } from "@/@types/metaData";
 import { request } from "./request";
 
 export interface User {
+  user_id: number;
   email: string;
   name: string;
   role: "student" | "teacher" | "admin";
@@ -29,6 +30,15 @@ export const userService = {
         auth: true,
       },
     );
+    return data;
+  },
+
+  delete: async (id: number) => {
+    const data = await request<RequestResponse<User[]>>(`/user/${id}`, {
+      method: "DELETE",
+
+      auth: true,
+    });
     return data;
   },
 };

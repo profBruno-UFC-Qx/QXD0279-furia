@@ -11,7 +11,7 @@ defineProps<{
 <template>
   <v-card class="card" rounded="10">
     <div class="info">
-      <h1>{{ teacherName }}</h1>
+      <h1>Professor: {{ teacherName }}</h1>
       <span>{{ dicipline }}</span>
       <span>Nota: {{ "⭐".repeat(rating) }}</span>
       <p>"{{ comment }}"</p>

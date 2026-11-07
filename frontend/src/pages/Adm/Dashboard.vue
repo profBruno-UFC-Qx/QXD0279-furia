@@ -9,6 +9,7 @@ import { userService } from "@/api/UserService";
 import { StatisticsService } from "@/api/StatisticsService";
 import { ApiError } from "@/api/ApiError";
 import { useStoreNotify } from "@/stores/StoreNotify";
+import BaseModal from "@/components/Modais/BaseModal.vue";
 
 const dashboardStats = ref({
   totalUsers: 0,
@@ -55,23 +56,25 @@ const dashboardErrors = ref({
   delete: null as string | null,
 });
 const modalDelete = ref<boolean>();
-const userSelected = ref<User>();
+const userSelected = ref<User | null>(null);
 
-async function deleteUser(user: User) {
+async function Delete(user: User | null) {
+  if (!user) return;
   notify.startLoad();
 
   try {
     dashboardErrors.value.delete = null;
-    await userService.deleteUserByEmail(user.email);
+    await userService.delete(user.user_id);
     await fetchUsers();
   } catch (error) {
     if (error instanceof ApiError) {
       dashboardErrors.value.delete = error.message;
     } else {
-      dashboardErrors.value.delete = "Erro ao conectar com o servidor";
+      notify.notify("Erro ao conectar com o servidor", "error");
     }
   } finally {
     notify.endLoad();
+    modalDelete.value = false;
   }
 }
 
@@ -191,16 +194,41 @@ onMounted(async () => {
             v-model:current-page="currentPage"
             v-model:itemsPerPage="itemsPerPage"
             v-model:totalPages="totalPages"
-            @delete="deleteUser"
+            @delete="
+              (user) => {
+                modalDelete = true;
+                userSelected = user;
+              }
+            "
           />
         </div>
       </template>
     </Ornament>
   </div>
+  <BaseModal title="Deseja excluir o usuário?" v-model:modal="modalDelete">
+    <div class="d-flex align-center ga-3">
+      <div class="flex-grow-1">
+        <div class="font-weight-bold">{{ userSelected?.name }}</div>
+        <div class="text-caption text-medium-emphasis">
+          {{ userSelected?.email }} · {{ userSelected?.role }}
+        </div>
+      </div>
+
+      <v-btn
+        color="error"
+        icon="mdi-delete"
+        size="large"
+        variant="text"
+        aria-label="Excluir usuário"
+        @click="Delete(userSelected)"
+      />
+    </div>
+  </BaseModal>
 </template>
 
 <style scoped>
 .dashboard-page {
+  flex-grow: 1;
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;

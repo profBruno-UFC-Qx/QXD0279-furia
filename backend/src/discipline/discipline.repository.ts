@@ -47,6 +47,7 @@ export class disciplineRepository {
   async findAllNames() {
     return this.database.discipline.findMany({
       select: {
+        discipline_id:true,
         name: true,
       },
     });

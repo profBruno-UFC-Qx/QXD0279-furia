@@ -6,18 +6,8 @@
       <div class="footer-left">
         <h2 class="brand-title">valiAe</h2>
 
-        <p class="copyright-text">
-          © 2026 valiAe Academic Platform. All rights reserved.
-        </p>
+        <p class="copyright-text">© 2026 valiAe.</p>
       </div>
-
-      <nav class="footer-nav">
-        <a class="footer-link" href="#about">About Us</a>
-        <a class="footer-link" href="#terms">Terms of Service</a>
-        <a class="footer-link" href="#privacy">Privacy Policy</a>
-        <a class="footer-link" href="#support">Contact Support</a>
-        <a class="footer-link" href="#guidelines">Academic Guidelines</a>
-      </nav>
     </div>
   </footer>
 </template>

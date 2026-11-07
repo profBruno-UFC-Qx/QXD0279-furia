@@ -1,5 +1,5 @@
-import type { RequestResponse } from '@/@types/metaData'
 import { request } from './request'
+import { type RequestResponse } from "@/@types/metaData";
 
 export interface CreateAvaliacaoPayload {
   nota_geral: number
@@ -36,14 +36,26 @@ export interface AvaliacaoResponse {
   }
 }
 
+export interface AvaliacaoResponseWithData {
+  nota_geral: number;
+  comment: string;
+  creat_at: Date;
+  teacher: {
+    creat_at: string;
+    user: {
+      name: string;
+    };
+  };
+  discipline: {
+    name: string;
+  };
+}
 export const AvaliacaoService = {
   create: async (payload: CreateAvaliacaoPayload): Promise<AvaliacaoResponse> => {
     return request<AvaliacaoResponse>('/avaliacao', {
       method: 'POST',
       auth: true,
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     })
   },
@@ -52,7 +64,7 @@ export const AvaliacaoService = {
     return request<RequestResponse<AvaliacaoResponse[]>>('/avaliacao', {
       method: 'GET',
       auth: true,
-      params: { limit, page }
+      params: { limit, page },
     });
   },
 
@@ -61,5 +73,13 @@ export const AvaliacaoService = {
       method: 'DELETE',
       auth: true,
     });
-  }
+  },
+
+  getMine: async (limit: number, page: number) => {
+    const data = await request<RequestResponse<AvaliacaoResponseWithData[]>>(
+      `/avaliacao/me?limit=${limit}&page=${page}`,
+      { auth: true },
+    );
+    return data;
+  },
 }

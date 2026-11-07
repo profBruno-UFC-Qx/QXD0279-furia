@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { type DiciplineResponse } from "@/api/DiciplineService";
+import { type DisciplineResponse } from "@/api/DisciplineService";
 
 const { documents } = defineProps<{
-  documents: DiciplineResponse[];
+  documents: DisciplineResponse[];
 }>();
 
 const currentPage = defineModel<number>("currentPage", {
@@ -25,15 +25,15 @@ const headers = [
 ] as any;
 
 const emit = defineEmits<{
-  delete: [discipline: DiciplineResponse];
-  update: [discipline: DiciplineResponse];
+  delete: [discipline: DisciplineResponse];
+  update: [discipline: DisciplineResponse];
 }>();
 
-const Delete = (discipline: DiciplineResponse) => {
+const Delete = (discipline: DisciplineResponse) => {
   emit("delete", discipline);
 };
 
-const Update = (discipline: DiciplineResponse) => {
+const Update = (discipline: DisciplineResponse) => {
   emit("update", discipline);
 };
 </script>

@@ -17,9 +17,9 @@ const totalPages = ref(1);
 const limit = 2;
 
 const filters = ref({
-  search: "",     
-  discipline: "", 
-  teacher: "",    
+  search: "",
+  discipline: "",
+  teacher: "",
 });
 
 async function loadDocuments() {
@@ -28,13 +28,13 @@ async function loadDocuments() {
     const response = await DocumentService.getAll({
       page: page.value,
       limit: limit,
-      search: filters.value.search,       
+      search: filters.value.search,
       discipline: filters.value.discipline,
-      teacher: filters.value.teacher,     
+      teacher: filters.value.teacher,
     });
     documents.value = response.data || [];
     if (response.meta) {
-        totalPages.value = response.meta.totalPages || 1;
+      totalPages.value = response.meta.totalPages || 1;
     }
   } catch (error) {
     console.error(error);
@@ -49,9 +49,9 @@ watch(page, () => {
 
 function handleFilterSubmit() {
   if (page.value !== 1) {
-    page.value = 1; 
+    page.value = 1;
   } else {
-    loadDocuments(); 
+    loadDocuments();
   }
 }
 
@@ -67,8 +67,8 @@ onMounted(loadDocuments);
   <div>
     <div class="content container">
       <Header
-        description="Browse, filter, and download study materials from your institution."
-        title="Academic Documents"
+        description="Explore, filtre e baixe materiais de estudo da sua instituição."
+        title="Documentos academicos"
       />
 
       <Filters
@@ -87,7 +87,7 @@ onMounted(loadDocuments);
         Upload a new Document
       </button>
 
-      <Ornament :text="'Documents'">
+      <Ornament :text="'Documentos'">
         <template #content>
           <div v-if="isLoading" class="d-flex justify-center pa-4">
             <v-progress-circular color="primary" indeterminate />
@@ -110,10 +110,7 @@ onMounted(loadDocuments);
       </Ornament>
     </div>
 
-    <BaseModal
-      v-model:modal="modal"
-      title="Faça o upload de um documento"
-    >
+    <BaseModal v-model:modal="modal" title="Faça o upload de um documento">
       <DocumentForm @close="handleModalClose" />
     </BaseModal>
   </div>

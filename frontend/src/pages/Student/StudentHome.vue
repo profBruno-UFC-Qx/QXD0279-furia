@@ -9,12 +9,13 @@ import { AvaliacaoService } from "@/api/AvaliacaoService";
 import { StatisticsService } from "@/api/StatisticsService";
 import { type metaData } from "@/@types/metaData";
 import { type AvaliacaoResponse } from "@/api/AvaliacaoService";
+import { type AvaliacaoResponseWithData } from "@/api/AvaliacaoService";
 import { type statisticsHomeResponse } from "@/api/StatisticsService";
 import { DocumentService, type DocumentResponse } from "@/api/DocumentService";
 
-const avaliacoes = ref<AvaliacaoResponse[]>([]);
+const avaliacoes = ref<AvaliacaoResponseWithData[]>([]);
 const currentPage = ref(1);
-const pageSize = ref(1);
+const pageSize = ref(5);
 const totalPages = ref(1);
 
 const avaliacoesLoading = ref(false);
@@ -90,30 +91,30 @@ onMounted(async () => {
   <div class="content container">
     <Header
       title="Olá, Aluno!"
-      description="Here's what's happening with your academic journey today."
+      description="Veja o que está acontecendo com a sua trajetória acadêmica hoje."
     />
     <v-alert v-if="statisticsError" type="error">
       {{ statisticsError }}
     </v-alert>
     <div class="stats">
       <StatsCard
-        title="Reviews Written"
+        title="Reviews Escritas"
         :value="statistics.qtd_avaliacoes | 0"
         icon="mdi-star"
       />
       <StatsCard
-        title="Documents Uploaded"
+        title="Documentos Uploaded"
         :value="statistics.qtd_uploades | 0"
         icon="mdi-upload"
       />
       <StatsCard
-        title="Documents Downloaded"
+        title="Documentos Downloaded"
         :value="statistics.qtd_downloaded | 0"
         icon="mdi-upload"
       />
     </div>
 
-    <Ornament :text="'My documents'">
+    <Ornament :text="'Meus Documentos'">
       <template #content>
         <div class="pa-4">
           <div v-if="docsLoading" class="text-center py-4">
@@ -135,7 +136,7 @@ onMounted(async () => {
       </template>
     </Ornament>
 
-    <Ornament :text="'My reviews'">
+    <Ornament :text="'Minhas reviews'">
       <template #content>
         <div class="reviews">
           <div v-if="avaliacoesLoading" class="text-center pa-4 full-center">

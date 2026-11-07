@@ -13,4 +13,8 @@ const disciplineControllerInstance = new DisciplineController(
 );
 const disciplineRouter = createdisciplineRouter(disciplineControllerInstance);
 
-export { disciplineRouter, disciplineRepositoryInstance };
+export {
+  disciplineRouter,
+  disciplineRepositoryInstance,
+  disciplineControllerInstance,
+};
