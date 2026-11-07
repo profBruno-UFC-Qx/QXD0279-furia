@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Ornament from "../Ornament/Ornament.vue";
 import { onMounted, ref, defineModel } from "vue";
-import { DiciplineService } from "@/api/DisciplineService.ts";
+import { DisciplineService } from "@/api/DisciplineService.ts";
 import { TeacherService } from "@/api/TeacherService";
 
 interface InputItems {
@@ -47,17 +47,17 @@ async function loadFilterData() {
 
     if (inputs.dicipline) {
       promises.push(
-        DiciplineService.getAllNames().then(data => {
+        DisciplineService.getAllNames().then((data) => {
           disciplines.value = data.map((d: any) => d.name);
-        })
+        }),
       );
     }
 
     if (inputs.teacher) {
       promises.push(
-        TeacherService.getAll().then(response => {
+        TeacherService.getAll().then((response) => {
           teachers.value = response.data || [];
-        })
+        }),
       );
     }
 
