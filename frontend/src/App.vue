@@ -1,11 +1,16 @@
 <script lang="ts" setup>
 import NotifyContainer from "./components/Notify/NotifyContainer.vue";
+import Loading from "./components/Notify/Loading.vue";
+import { useStoreNotify } from "./stores/StoreNotify.ts";
+
+const notify = useStoreNotify();
 </script>
 
 <template>
   <v-app>
     <v-main>
-      <NotifyContainer />
+      <Loading v-if="notify.loading" />
+      <NotifyContainer v-if="notify.active" />
       <router-view />
     </v-main>
   </v-app>

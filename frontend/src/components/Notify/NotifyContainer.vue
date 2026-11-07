@@ -7,7 +7,6 @@ const storeNotify = useStoreNotify();
 <template>
   <Transition name="toast">
     <div
-      v-if="storeNotify.active"
       class="toast"
       :class="storeNotify.type"
       role="alert"

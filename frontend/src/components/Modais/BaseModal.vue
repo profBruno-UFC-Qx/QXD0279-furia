@@ -1,13 +1,18 @@
 <script setup lang="ts">
-  defineProps<{
-    title: string
-  }>()
+defineProps<{
+  title: string;
+}>();
 
-  const modal = defineModel<boolean>('modal')
+const emit = defineEmits<{
+  close: [];
+}>();
 
-  function close () {
-    modal.value = false
-  }
+const modal = defineModel<boolean>("modal");
+
+function close() {
+  emit("close");
+  modal.value = false;
+}
 </script>
 
 <template>

@@ -74,10 +74,8 @@ export class UserRepository {
       const a = await this.database.user.delete({
         where: { email },
       });
-      console.log(a);
       return true;
     } catch (e) {
-      console.log(e);
       return false;
     }
   }
@@ -106,6 +104,19 @@ export class UserRepository {
       qtd_students,
       qtd_teachers,
       qtd_admins,
+    };
+  }
+
+  async getsStatsHome() {
+    const [qtd_avaliacoes, qtd_uploades] = await Promise.all([
+      this.database.avaliacao.count(),
+      this.database.documents.count(),
+    ]);
+
+    return {
+      qtd_avaliacoes,
+      qtd_downloaded: qtd_uploades,
+      qtd_uploades,
     };
   }
 }

@@ -16,6 +16,11 @@ export function createUserRouter(userController: UserController) {
     userController.getStats,
   );
   userRouter.get(
+    "/user/stats/home",
+    AutorizationMiddleware(["admin", "student", "teacher"]),
+    userController.getsStatsHome,
+  );
+  userRouter.get(
     "/user/:id",
     AutorizationMiddleware(["admin", "student", "teacher"]),
     userController.findById,

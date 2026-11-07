@@ -32,6 +32,11 @@ export class UserController {
     return res.status(200).json(stats);
   };
 
+  getsStatsHome = async (_req: Request, res: Response) => {
+    const stats = await this.service.getsStatsHome();
+    return res.status(200).json(stats);
+  };
+
   update = async (req: Request, res: Response) => {
     const id = Number(req.params.id);
 
