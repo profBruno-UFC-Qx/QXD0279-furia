@@ -75,7 +75,7 @@ onMounted(loadDocuments);
         v-model="filters"
         :inputs="{
           text: true,
-          dicipline: true,
+          discipline: true,
           course: false,
           teacher: true,
         }"

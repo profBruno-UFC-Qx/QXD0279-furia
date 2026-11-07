@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Ornament from "../Ornament/Ornament.vue";
-import { onMounted, ref, defineModel } from "vue";
+import { onMounted, ref } from "vue";
 import { DisciplineService } from "@/api/DisciplineService.ts";
 import { TeacherService } from "@/api/TeacherService";
 
@@ -55,7 +55,7 @@ async function loadFilterData() {
 
     if (inputs.teacher) {
       promises.push(
-        TeacherService.getAll().then(response => {
+        TeacherService.getAll(100, 1).then(response => {
           teachers.value = response.data || [];
         })
       );
