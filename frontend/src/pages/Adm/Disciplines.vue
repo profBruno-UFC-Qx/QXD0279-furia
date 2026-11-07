@@ -127,7 +127,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="dashboard-page">
+  <div class="discipline-page">
     <Header
       :title="'Admin Disciplinas'"
       :description="'Visão geral das diciplinas cadastradas no sistema.'"
@@ -224,7 +224,8 @@ onMounted(async () => {
   cursor: pointer;
 }
 
-.dashboard-page {
+.discipline-page {
+  flex-grow: 1;
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;

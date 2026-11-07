@@ -31,6 +31,7 @@ export class UserRepository {
         },
       },
       select: {
+        user_id: true,
         name: true,
         role: true,
         email: true,

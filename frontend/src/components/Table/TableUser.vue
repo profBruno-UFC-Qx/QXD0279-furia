@@ -23,21 +23,9 @@ const emit = defineEmits<{
   delete: [user: User];
 }>();
 
-const modal = ref<boolean>(false);
-const userSelected = ref<User>();
-
-function openModal() {
-  modal.value = true;
-}
-
-function selectUser(user: User) {
-  userSelected.value = user;
-}
-
-function handleDelete(user?: User) {
+function Delete(user?: User) {
   if (!user) return;
   emit("delete", user);
-  modal.value = false;
 }
 
 const headers = [
@@ -76,6 +64,20 @@ const headers = [
       fixed-header
       class="tabela"
     >
+      <template #item.role="{ item }">
+        <span
+          :class="item.role == 'student' ? 'estudante' : 'professor'"
+          class="destaque"
+        >
+          {{
+            item.role == "student"
+              ? "Estudante"
+              : item.role == "teacher"
+                ? "Professor"
+                : item.role
+          }}
+        </span>
+      </template>
       <template #item.action="{ item }">
         <div class="d-flex justify-center">
           <v-btn
@@ -86,8 +88,7 @@ const headers = [
             aria-label="Excluir"
             @click="
               () => {
-                openModal();
-                selectUser(item);
+                Delete(item);
               }
             "
           />
@@ -95,25 +96,6 @@ const headers = [
       </template>
     </v-data-table-server>
   </div>
-  <BaseModal title="Deseja excluir o usuário?" v-model:modal="modal">
-    <div class="d-flex align-center ga-3">
-      <div class="flex-grow-1">
-        <div class="font-weight-bold">{{ userSelected?.name }}</div>
-        <div class="text-caption text-medium-emphasis">
-          {{ userSelected?.email }} · {{ userSelected?.role }}
-        </div>
-      </div>
-
-      <v-btn
-        color="error"
-        icon="mdi-delete"
-        size="large"
-        variant="text"
-        aria-label="Excluir usuário"
-        @click="handleDelete(userSelected)"
-      />
-    </div>
-  </BaseModal>
 </template>
 
 <style scoped>
@@ -126,5 +108,20 @@ const headers = [
 .tabela :deep(table) {
   border-top: 1px solid #c3c6d7;
   overflow: hidden;
+}
+
+.destaque {
+  padding: 5px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.estudante {
+  color: #001f53;
+  background-color: #0049c663;
+}
+.professor {
+  color: #ff7b00;
+  background-color: #ff7b0063;
 }
 </style>

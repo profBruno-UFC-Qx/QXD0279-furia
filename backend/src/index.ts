@@ -16,7 +16,7 @@ import { DocumentService } from "./document/service/document.service.ts";
 import { DocumentRepository } from "./document/repository/document.repository.ts";
 import { databaseInstance } from "./database/dataBase.ts";
 import { uploadFileToStorage } from "./utils/storage.ts";
-
+import { diciplineControllerInstance } from "./dicipline/dicipline.module.ts";
 const app = express();
 
 app.use(
@@ -30,26 +30,24 @@ app.use(
 app.use(express.json());
 
 const documentRepository = new DocumentRepository(databaseInstance);
-const documentService = new DocumentService(documentRepository, uploadFileToStorage);
+const documentService = new DocumentService(
+  documentRepository,
+  uploadFileToStorage,
+);
 const documentController = new DocumentController(documentService);
 const documentRouter = createDocumentRouter(documentController);
 
+// Rotas publicas
+app.get("/public/discipline/name", diciplineControllerInstance.findAllNames);
+
 app.use(authRouter);
-app.use(AuthMiddleware);
-app.use(userRouter);
+// app.use(AuthMiddleware);
 app.use(diciplineRouter);
+app.use(userRouter);
 app.use(studentRouter);
 app.use(teacherRouter);
 app.use(avaliacaoRouter);
 app.use(documentRouter);
-
-app.get(
-  "/",
-  AutorizationMiddleware(["student"]),
-  async (req: Request, res: Response) => {
-    res.json(req.user);
-  },
-);
 
 app.use(errorHandling);
 

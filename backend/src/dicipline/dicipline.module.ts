@@ -13,4 +13,8 @@ const diciplineControllerInstance = new DiciplineController(
 );
 const diciplineRouter = createDiciplineRouter(diciplineControllerInstance);
 
-export { diciplineRouter, diciplineRepositoryInstance };
+export {
+  diciplineRouter,
+  diciplineRepositoryInstance,
+  diciplineControllerInstance,
+};

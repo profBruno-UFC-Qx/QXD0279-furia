@@ -7,9 +7,16 @@ export function createDiciplineRouter(
   diciplineController: DiciplineController,
 ) {
   const diciplineRouter = Router();
-  diciplineRouter.post("/dicipline", diciplineController.create);
-  diciplineRouter.get("/dicipline", diciplineController.findAll);
-  diciplineRouter.get("/discipline/name", diciplineController.findAllNames);
+  diciplineRouter.post(
+    "/dicipline",
+    AutorizationMiddleware(["admin"]),
+    diciplineController.create,
+  );
+  diciplineRouter.get("/discipline", diciplineController.findAll);
+  // diciplineRouter.get(
+  //   "public/discipline/name",
+  //   diciplineController.findAllNames,
+  // );
   diciplineRouter.delete(
     "/discipline/:id",
     AutorizationMiddleware(["admin"]),
