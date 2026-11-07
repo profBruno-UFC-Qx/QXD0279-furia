@@ -66,9 +66,12 @@ async function Delete(user: User | null) {
     dashboardErrors.value.delete = null;
     await userService.delete(user.user_id);
     await fetchUsers();
+    await fetchStatistics();
+    notify.notify("Usuario deletado com sucesso", "alert");
   } catch (error) {
     if (error instanceof ApiError) {
       dashboardErrors.value.delete = error.message;
+      notify.notify("Nao foi possivel deletar usuario", "error");
     } else {
       notify.notify("Erro ao conectar com o servidor", "error");
     }
@@ -134,8 +137,8 @@ onMounted(async () => {
     />
 
     <section class="quick-actions">
-      <v-btn 
-        color="primary" 
+      <v-btn
+        color="primary"
         elevation="0"
         to="/adm/reviews"
         prepend-icon="mdi-star-check-outline"
@@ -144,8 +147,8 @@ onMounted(async () => {
         Gerenciar Reviews
       </v-btn>
 
-      <v-btn 
-        color="primary" 
+      <v-btn
+        color="primary"
         variant="tonal"
         elevation="0"
         to="/adm/documents"
@@ -241,7 +244,7 @@ onMounted(async () => {
 .quick-actions {
   display: flex;
   gap: 16px;
-  margin-top: -8px; 
+  margin-top: -8px;
 }
 
 .admin-btn {
@@ -274,7 +277,7 @@ onMounted(async () => {
   .stats-grid {
     flex-direction: column;
   }
-  
+
   .quick-actions {
     flex-direction: column;
   }

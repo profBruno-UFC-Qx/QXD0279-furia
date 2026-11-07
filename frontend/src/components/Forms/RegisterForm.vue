@@ -66,6 +66,18 @@ function required(v: string) {
   return !!v || "Field is required";
 }
 
+function nameRule(v: string) {
+  return v.length >= 3 || "O nome deve conter pelo menos 3 caracteres";
+}
+
+function emailRule(v: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || "E-mail invalido";
+}
+
+function passRule(v: string) {
+  return v.length >= 8 || "A senha deve conter pelo menos 8 caracteres";
+}
+
 watch(isTeacher, () => {
   selectedDisciplines.value = [];
 });
@@ -78,7 +90,7 @@ watch(isTeacher, () => {
       <v-text-field
         v-model="name"
         :readonly="loading"
-        :rules="[required]"
+        :rules="[required, nameRule]"
         rounded="10"
         id="name"
         name="name"
@@ -93,7 +105,7 @@ watch(isTeacher, () => {
       <v-text-field
         v-model="email"
         :readonly="loading"
-        :rules="[required]"
+        :rules="[required, emailRule]"
         rounded="10"
         id="email"
         name="email"
@@ -108,7 +120,7 @@ watch(isTeacher, () => {
       <v-text-field
         v-model="password"
         :readonly="loading"
-        :rules="[required]"
+        :rules="[required, passRule]"
         rounded="10"
         id="password"
         name="password"

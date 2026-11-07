@@ -62,8 +62,8 @@ async function fetchDocuments() {
 
 const statistics = ref<statisticsHomeResponse>({
   qtd_avaliacoes: 0,
-  qtd_downloaded: 0,
-  qtd_uploades: 0,
+  qtd_myUploades: 0,
+  qtd_allUploades: 0,
 });
 const statisticsLoading = ref<boolean>(false);
 const statisticsError = ref<string | null>(null);
@@ -103,13 +103,13 @@ onMounted(async () => {
         icon="mdi-star"
       />
       <StatsCard
-        title="Documentos Uploaded"
-        :value="statistics.qtd_uploades | 0"
+        title="Meus Documentos"
+        :value="statistics.qtd_myUploades | 0"
         icon="mdi-upload"
       />
       <StatsCard
-        title="Documentos Downloaded"
-        :value="statistics.qtd_downloaded | 0"
+        title="Todos os Documentos"
+        :value="statistics.qtd_allUploades | 0"
         icon="mdi-upload"
       />
     </div>

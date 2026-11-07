@@ -21,7 +21,7 @@ const { id, name, grade, disciplines } = defineProps<{
         </p>
       </div>
       <div class="grade">
-        <p>⭐ {{ grade.nota_geral_media.toFixed(2) }}</p>
+        <p>⭐ {{ grade.nota_geral_media?.toFixed(2) }}</p>
       </div>
     </div>
     <div class="diciplines">
@@ -34,7 +34,7 @@ const { id, name, grade, disciplines } = defineProps<{
       <div class="skill">
         <p>Didatica</p>
         <v-progress-linear
-          :model-value="grade.nota_didatica_media * 10"
+          :model-value="grade.nota_didatica_media * 20"
           color="#0052cc"
           bg-color="#62697c"
           :height="8"
@@ -44,7 +44,7 @@ const { id, name, grade, disciplines } = defineProps<{
       <div class="skill">
         <p>Metodologia</p>
         <v-progress-linear
-          :model-value="grade.nota_metodologia_media * 10"
+          :model-value="grade.nota_metodologia_media * 20"
           color="#0052cc"
           bg-color="#62697c"
           :height="8"
@@ -85,6 +85,7 @@ const { id, name, grade, disciplines } = defineProps<{
   background-color: #f6f7ff;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 20px;
   border-radius: 10px;
   box-shadow:

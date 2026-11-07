@@ -28,10 +28,10 @@ export class AuthController {
     const isValidUser = RegisterUserSchema.safeParse(req.body);
 
     if (!isValidUser.success) {
-      throw new BadRequestError(
-        "Dados de cadastro mal formatados",
-        isValidUser.error,
-      );
+      const message = isValidUser.error.issues
+        .map((issue) => issue.message)
+        .join(", ");
+      throw new BadRequestError(message, isValidUser.error);
     }
 
     if (isValidUser.data.role === "student") {

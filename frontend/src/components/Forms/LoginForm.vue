@@ -21,6 +21,14 @@ async function onSubmit() {
 function required(v: string) {
   return !!v || "Field is required";
 }
+
+function emailRule(v: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || "E-mail invalido";
+}
+
+function passRule(v: string) {
+  return v.length >= 8 || "A senha deve conter pelo menos 8 caracteres";
+}
 </script>
 
 <template>
@@ -30,7 +38,7 @@ function required(v: string) {
       <v-text-field
         v-model="email"
         :readonly="loading"
-        :rules="[required]"
+        :rules="[required, emailRule]"
         rounded="10"
         id="email"
         name="email"
@@ -45,7 +53,7 @@ function required(v: string) {
       <v-text-field
         v-model="password"
         :readonly="loading"
-        :rules="[required]"
+        :rules="[required, passRule]"
         rounded="10"
         id="password"
         name="password"

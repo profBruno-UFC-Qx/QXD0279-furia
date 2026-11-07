@@ -4,8 +4,8 @@ import { type RequestResponse } from "@/@types/metaData";
 
 export interface statisticsHomeResponse {
   qtd_avaliacoes: number;
-  qtd_downloaded: number;
-  qtd_uploades: number;
+  qtd_myUploades: number;
+  qtd_allUploades: number;
 }
 
 export interface statisticsDashboardResponse {

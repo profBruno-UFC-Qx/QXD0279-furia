@@ -80,6 +80,7 @@ async function Delete(discipline: DisciplineResponse | null) {
     notify.notify("Nao foi possivel apagar a disciplina", "error");
   } finally {
     notify.endLoad();
+    modals.delete = false
   }
 }
 
