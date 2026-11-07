@@ -111,7 +111,7 @@ onMounted(async () => {
       <template #content>
         <div class="pa-4">
           
-          <div v-if="avaliacoes.length === 0 && !notify.isLoading" class="text-center py-8 text-grey">
+          <div v-if="avaliacoes.length === 0 && !notify.loading" class="text-center py-8 text-grey">
             Nenhuma avaliação encontrada na plataforma.
           </div>
 
@@ -170,12 +170,12 @@ onMounted(async () => {
 
           <div v-if="totalPages > 1" class="d-flex justify-center mt-6">
             <v-pagination
-              v-model="currentPage"
-              :length="totalPages"
-              :disabled="notify.isLoading"
-              :total-visible="5"
-              rounded="circle"
-            />
+                v-model="currentPage"
+                :length="totalPages"
+                :disabled="notify.loading"
+                :total-visible="5"
+                rounded="circle"
+                />
           </div>
 
         </div>
