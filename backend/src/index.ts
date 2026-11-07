@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import { authRouter } from "./auth/auth.module.ts";
 import { errorHandling } from "./middlewares/error-handling.midlewares.ts";
-import { diciplineRouter } from "./dicipline/dicipline.module.ts";
+import { disciplineRouter } from "./discipline/discipline.module.ts";
 import { teacherRouter } from "./teacher/teacher.module.ts";
 import { studentRouter } from "./student/student.module.ts";
 import { avaliacaoRouter } from "./avaliacao/avaliacao.module.ts";
@@ -37,7 +37,7 @@ const documentRouter = createDocumentRouter(documentController);
 app.use(authRouter);
 app.use(AuthMiddleware);
 app.use(userRouter);
-app.use(diciplineRouter);
+app.use(disciplineRouter);
 app.use(studentRouter);
 app.use(teacherRouter);
 app.use(avaliacaoRouter);

@@ -65,4 +65,11 @@ export const DocumentService = {
       params: params, 
     })
   },
+
+  delete: async (id: number): Promise<void> => {
+    return request(`/document/${id}`, {
+      method: 'DELETE',
+      auth: true,
+    })
+  }
 }

@@ -5,9 +5,9 @@ import Ornament from "@/components/Ornament/Ornament.vue";
 import TableDiscipline from "@/components/Table/TableDiscipline.vue";
 import DisciplineForm from "@/components/Forms/DisciplineForm.vue";
 import {
-  DiciplineService,
-  type DiciplineResponse,
-} from "@/api/DiciplineService";
+  DisciplineService,
+  type DisciplineResponse,
+} from "@/api/DisciplineService";
 import BaseModal from "@/components/Modais/BaseModal.vue";
 import { useStoreNotify } from "@/stores/StoreNotify";
 
@@ -34,19 +34,19 @@ const notify = useStoreNotify();
 const currentPage = ref(1);
 const itemsPerPage = ref(5);
 const totalPages = ref(0);
-const disciplines = ref<DiciplineResponse[]>([]);
+const disciplines = ref<DisciplineResponse[]>([]);
 const disciplineErrors = ref<string | null>(null);
 const modals = reactive<Modals>({
   create: false,
   delete: false,
   update: false,
 });
-const disciplineSelected = ref<DiciplineResponse | null>(null);
+const disciplineSelected = ref<DisciplineResponse | null>(null);
 
 async function Create(data: DisciplineCreate) {
   notify.startLoad();
   try {
-    await DiciplineService.create({
+    await DisciplineService.create({
       name: data.name,
       course: data.course,
       hours: Number(data.hours),
@@ -61,13 +61,13 @@ async function Create(data: DisciplineCreate) {
   }
 }
 
-async function Delete(discipline: DiciplineResponse | null) {
+async function Delete(discipline: DisciplineResponse | null) {
   if (!discipline) return;
 
   notify.startLoad();
   try {
     const { discipline_id } = discipline;
-    const result = await DiciplineService.delete(discipline_id);
+    const result = await DisciplineService.delete(discipline_id);
     modals.delete = false;
     if (!result) {
       throw result;
@@ -85,7 +85,7 @@ async function Delete(discipline: DiciplineResponse | null) {
 async function Update(data: DisciplineUpdate) {
   notify.startLoad();
   try {
-    await DiciplineService.update(data.discipline_id, {
+    await DisciplineService.update(data.discipline_id, {
       name: data.name,
       course: data.course,
       hours: Number(data.hours),
@@ -103,7 +103,7 @@ async function Update(data: DisciplineUpdate) {
 async function fetchDisciplines() {
   notify.startLoad();
   try {
-    const response = await DiciplineService.getAll(
+    const response = await DisciplineService.getAll(
       itemsPerPage.value,
       currentPage.value,
     );
@@ -174,7 +174,7 @@ onMounted(async () => {
   <BaseModal :title="'Atualizar disciplina'" v-model:modal="modals.update">
     <DisciplineForm
       @update="Update"
-      :discipline-data="disciplineSelected as DiciplineResponse"
+      :discipline-data="disciplineSelected || undefined"
       :is-update="true"
       @close="modals.update = false"
     />

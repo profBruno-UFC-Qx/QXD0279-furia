@@ -25,7 +25,7 @@ export const DisciplineService = {
     page: number,
   ): Promise<RequestResponse<DisciplineResponse[]>> => {
     const data = await request<RequestResponse<DisciplineResponse[]>>(
-      `/dicipline?limit=${limit}&page=${page}`,
+      `/discipline?limit=${limit}&page=${page}`,
       {
         auth: true,
       },
@@ -35,7 +35,7 @@ export const DisciplineService = {
   },
 
   create: async (payload: Discipline) => {
-    const data = await request<DisciplineResponse>("/dicipline", {
+    const data = await request<DisciplineResponse>("/discipline", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

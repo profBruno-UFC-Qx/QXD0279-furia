@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { id, name, grade, diciplines } = defineProps<{
+const { id, name, grade, disciplines } = defineProps<{
   id: number;
   name: string;
   grade: {
@@ -7,7 +7,7 @@ const { id, name, grade, diciplines } = defineProps<{
     nota_didatica_media: number;
     nota_metodologia_media: number;
   };
-  diciplines: Array<string>;
+  disciplines: Array<string>;
 }>();
 </script>
 
@@ -27,7 +27,7 @@ const { id, name, grade, diciplines } = defineProps<{
     <div class="diciplines">
       <p class="title">Diciplinas</p>
       <ul class="list">
-        <li v-for="dicipline in diciplines">{{ dicipline }}</li>
+        <li v-for="discipline in disciplines">{{ discipline }}</li>
       </ul>
     </div>
     <div class="progress">

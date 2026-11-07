@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import Ornament from "../Ornament/Ornament.vue";
 import { onMounted, ref, defineModel } from "vue";
-import { DiciplineService } from "@/api/DisciplineService.ts";
+import { DisciplineService } from "@/api/DisciplineService.ts";
 import { TeacherService } from "@/api/TeacherService";
 
 interface InputItems {
   text: boolean;
-  dicipline: boolean;
+  discipline: boolean;
   course: boolean;
   teacher: boolean;
 }
@@ -45,9 +45,9 @@ async function loadFilterData() {
   try {
     const promises = [];
 
-    if (inputs.dicipline) {
+    if (inputs.discipline) {
       promises.push(
-        DiciplineService.getAllNames().then(data => {
+        DisciplineService.getAllNames().then(data => {
           disciplines.value = data.map((d: any) => d.name);
         })
       );
@@ -71,7 +71,7 @@ async function loadFilterData() {
 
 function clearFilters() {
   filters.value.search = "";
-  if (inputs.dicipline) filters.value.discipline = "";
+  if (inputs.discipline) filters.value.discipline = "";
   if (inputs.teacher) filters.value.teacher = "";
   emit("submitFilter");
 }
@@ -102,7 +102,7 @@ onMounted(loadFilterData);
           />
 
           <v-select
-            v-if="inputs.dicipline"
+            v-if="inputs.discipline"
             v-model="filters.discipline"
             :placeholder="isLoadingData ? 'Loading' : 'Todas Disciplinas'"
             :items="disciplines"

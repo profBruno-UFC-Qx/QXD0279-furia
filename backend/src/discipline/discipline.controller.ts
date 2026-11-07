@@ -1,19 +1,19 @@
 import { Request, Response, NextFunction } from "express";
-import { DiciplineService } from "./dicipline.service.ts";
-import { registerDicipline } from "./schemas/registerDicipline.schema.ts";
+import { disciplineService } from "./discipline.service.ts";
+import { registerDiscipline } from "./schemas/registerDiscipline.schema.ts";
 import { BadRequestError } from "../errors/errors.ts";
 import { updateDiscipline } from "./schemas/updateDiscipline.schema.ts";
 
-export class DiciplineController {
-  constructor(private service: DiciplineService) {}
+export class DisciplineController {
+  constructor(private service: disciplineService) {}
 
   create = async (req: Request, res: Response) => {
-    const isValidDicipline = registerDicipline.safeParse(req.body);
+    const isValiddiscipline = registerDiscipline.safeParse(req.body);
 
-    if (!isValidDicipline.success) {
+    if (!isValiddiscipline.success) {
       throw new BadRequestError(
         "Dados de diciplina mal formatados",
-        isValidDicipline.error,
+        isValiddiscipline.error,
       );
     }
 

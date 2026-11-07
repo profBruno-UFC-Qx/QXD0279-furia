@@ -1,16 +1,16 @@
-import { DiciplineRepository } from "./dicipline.repository.ts";
-import { createDicipline } from "./dto/createDicipline.dto.ts";
+import { disciplineRepository } from "./discipline.repository.ts";
+import { createDiscipline } from "./dto/createDiscipline.dto.ts";
 import { Conflict } from "../errors/errors.ts";
 import { pagWrapper } from "../utils/pagWrapper.ts";
-import { diciplineUpdateDTO } from "./dto/disciplineUpdate.dto.ts";
+import { disciplineUpdateDTO } from "./dto/disciplineUpdate.dto.ts";
 
-export class DiciplineService {
-  constructor(private repository: DiciplineRepository) { }
+export class disciplineService {
+  constructor(private repository: disciplineRepository) { }
 
-  async create(data: createDicipline) {
-    const dicipline = await this.repository.findByName(data.name);
+  async create(data: createDiscipline) {
+    const discipline = await this.repository.findByName(data.name);
 
-    if (dicipline) {
+    if (discipline) {
       throw new Conflict("Diciplina ja cadastrada");
     }
 
@@ -37,7 +37,7 @@ export class DiciplineService {
     return this.repository.findAllNames();
   }
 
-  async update(id: number, data: Partial<diciplineUpdateDTO>) {
+  async update(id: number, data: Partial<disciplineUpdateDTO>) {
     const discipline = await this.repository.update(id, data);
 
     if (!discipline) {

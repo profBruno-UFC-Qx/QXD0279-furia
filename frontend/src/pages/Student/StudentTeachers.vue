@@ -59,7 +59,7 @@ and more to find the right academic fit."
       v-model="filtersSearch"
       :inputs="{
         text: true,
-        dicipline: true,
+        discipline: true,
         course: false,
         teacher: false,
       }"
@@ -90,7 +90,7 @@ and more to find the right academic fit."
             :id="prof.teacher_id"
             :name="prof.user.name"
             :grade="prof.avaliacoes"
-            :diciplines="
+            :disciplines="
               prof.disciplines.map((diciplina) => {
                 return diciplina.name;
               })

@@ -72,6 +72,11 @@ const router = createRouter({
           component: () => import("@/pages/Adm/Disciplines.vue"),
           name: "adminDisciplines",
         },
+        {
+          path: "documents",
+          component: () => import("@/pages/Adm/AdminDocuments.vue"),
+          name: "adminDocuments",
+        },
       ],
     },
     {

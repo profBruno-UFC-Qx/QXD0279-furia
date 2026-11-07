@@ -1,4 +1,4 @@
-export interface diciplineDTO {
+export interface disciplineDTO {
   dicipline_id: number;
   name: string;
   course: string;
