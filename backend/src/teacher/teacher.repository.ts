@@ -81,6 +81,17 @@ export class TeacherRepository {
     });
   }
 
+  async updateDisciplines(teacherId: number, disciplineIds: number[]) {
+    return await this.database.teacher.update({
+      where: { teacher_id: teacherId },
+      data: {
+        disciplines: {
+          set: disciplineIds.map((id) => ({ discipline_id: id })),
+        },
+      },
+    });
+  }
+
   async getDashboardInfo(userId: number) {
     return await this.database.teacher.findFirst({
       where: { 

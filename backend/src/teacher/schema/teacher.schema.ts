@@ -7,3 +7,7 @@ export const teacherSchema = z.object({
   role: z.enum(["teacher"]).default("teacher"),
   disciplines: z.array(z.number()),
 });
+
+export const updateTeacherDisciplinesSchema = z.object({
+  disciplines: z.array(z.number().int().positive())
+});

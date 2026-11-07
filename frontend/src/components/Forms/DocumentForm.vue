@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { onMounted, ref } from 'vue'
   import { ApiError } from '@/api/ApiError'
-  import { type DiciplineResponse, DiciplineService } from '@/api/DiciplineService'
+  import { type DisciplineResponse, DisciplineService } from '@/api/DisciplineService'
   import { DocumentService } from '@/api/DocumentService'
   import { type TeacherResponse, TeacherService } from '@/api/TeacherService'
   import { useStoreNotify } from '@/stores/StoreNotify'
@@ -25,7 +25,7 @@
   const errorMessage = ref('')
   const successMessage = ref('')
   const teachers = ref<TeacherResponse[]>([])
-  const disciplines = ref<DiciplineResponse[]>([])
+  const disciplines = ref<DisciplineResponse[]>([])
   const formData = ref({
     title: '',
     discipline: null as number | null,
@@ -40,12 +40,12 @@
       if (props.isDashboard) {
         formData.value.teacher = Number(auth.userId) || Number(localStorage.getItem('userId')) || null
         
-        const disciplineResponse = await DiciplineService.getAll()
+        const disciplineResponse = await DisciplineService.getAll()
         disciplines.value = disciplineResponse.data || []
       } else {
         const [teacherResponse, disciplineResponse] = await Promise.all([
           TeacherService.getAll(),
-          DiciplineService.getAll(),
+          DisciplineService.getAll(),
         ])
         teachers.value = teacherResponse.data || []
         disciplines.value = disciplineResponse.data || []

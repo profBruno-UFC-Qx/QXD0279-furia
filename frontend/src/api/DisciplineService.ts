@@ -1,7 +1,8 @@
 import { request } from "./request";
 
 import { type RequestResponse } from "@/@types/metaData";
-export interface DiciplineResponse {
+
+export interface DisciplineResponse {
   discipline_id: number;
   name: string;
   course: string;
@@ -18,9 +19,12 @@ export interface Discipline {
   hours: number;
 }
 
-export const DiciplineService = {
-  getAll: async (limit: number, page: number) => {
-    const data = await request<RequestResponse<DiciplineResponse[]>>(
+export const DisciplineService = {
+  getAll: async (
+    limit: number,
+    page: number,
+  ): Promise<RequestResponse<DisciplineResponse[]>> => {
+    const data = await request<RequestResponse<DisciplineResponse[]>>(
       `/dicipline?limit=${limit}&page=${page}`,
       {
         auth: true,
@@ -31,7 +35,7 @@ export const DiciplineService = {
   },
 
   create: async (payload: Discipline) => {
-    const data = await request<DiciplineResponse>("/dicipline", {
+    const data = await request<DisciplineResponse>("/dicipline", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -47,6 +51,8 @@ export const DiciplineService = {
     const data = await request<DisciplineName[]>("/discipline/name", {
       auth: true,
     });
+
+    return data;
   },
 
   delete: async (id: number) => {
@@ -59,7 +65,6 @@ export const DiciplineService = {
   },
 
   update: async (id: number, body: Discipline) => {
-    console.log(body);
     const data = await request<Partial<Discipline>>(`/discipline/${id}`, {
       method: "PUT",
       auth: true,
