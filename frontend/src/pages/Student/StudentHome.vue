@@ -10,29 +10,7 @@ import { StatisticsService } from "@/api/StatisticsService";
 import { type metaData } from "@/@types/metaData";
 import { type AvaliacaoResponse } from "@/api/AvaliacaoService";
 import { type statisticsHomeResponse } from "@/api/StatisticsService";
-
-const boats = [
-  {
-    nome: "1 Speedster",
-    disciplina: "matematica",
-    data: "03/06/2026",
-  },
-  {
-    nome: "2 Speedster",
-    disciplina: "matematica",
-    data: "03/06/2026",
-  },
-  {
-    nome: "3 Speedster",
-    disciplina: "matematica",
-    data: "03/06/2026",
-  },
-  {
-    nome: "4 Speedster",
-    disciplina: "matematica",
-    data: "03/06/2026",
-  },
-];
+import { DocumentService, type DocumentResponse } from "@/api/DocumentService";
 
 const avaliacoes = ref<AvaliacaoResponse[]>([]);
 const currentPage = ref(1);
@@ -62,6 +40,25 @@ async function fetchEvaluations() {
   }
 }
 
+const meusDocumentos = ref<DocumentResponse[]>([]); 
+const docsLoading = ref(false);
+const docsError = ref<string | null>(null);
+
+async function fetchDocuments() {
+  docsLoading.value = true;
+  docsError.value = null;
+
+  try {
+    const response = await DocumentService.getMine(); 
+  
+    meusDocumentos.value = response.data; 
+  } catch {
+    docsError.value = "Não foi possível obter os documentos.";
+  } finally {
+    docsLoading.value = false;
+  }
+}
+
 const statistics = ref<statisticsHomeResponse>({
   qtd_avaliacoes: 0,
   qtd_downloaded: 0,
@@ -85,6 +82,7 @@ watch(currentPage, fetchEvaluations);
 onMounted(async () => {
   await fetchEvaluations();
   await fetchStatistics();
+  await fetchDocuments();
 });
 </script>
 
@@ -117,8 +115,22 @@ onMounted(async () => {
 
     <Ornament :text="'My documents'">
       <template #content>
-        <div>
-          <TableDocs :documents="boats" />
+        <div class="pa-4">
+          <div v-if="docsLoading" class="text-center py-4">
+            <v-progress-circular indeterminate :size="40" :width="4" />
+          </div>
+
+          <v-alert v-else-if="docsError" type="error">
+            {{ docsError }}
+          </v-alert>
+          
+          <p v-else-if="meusDocumentos.length === 0" class="text-center py-4">
+            Você ainda não fez upload de nenhum documento.
+          </p>
+
+          <div v-else>
+            <TableDocs :documents="meusDocumentos" />
+          </div>
         </div>
       </template>
     </Ornament>

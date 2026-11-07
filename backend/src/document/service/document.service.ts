@@ -47,6 +47,10 @@ export class DocumentService {
         return document;
     }
 
+    async getMineDocuments(page: number, limit: number, userId: number, role?: string) {
+        return this.repository.findMine(page, limit, userId, role);
+    }
+
     async deleteDocument(id: number) {
         await this.getDocumentById(id);
         return this.repository.delete(id);

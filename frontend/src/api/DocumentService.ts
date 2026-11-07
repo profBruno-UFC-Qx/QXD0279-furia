@@ -66,6 +66,14 @@ export const DocumentService = {
     })
   },
 
+  getMine: async (limit: number = 10, page: number = 1): Promise<RequestResponse<DocumentResponse[]>> => {
+    return request<RequestResponse<DocumentResponse[]>>('/document/mine', {
+      method: 'GET',
+      auth: true,
+      params: { limit, page }
+    })
+  },
+
   delete: async (id: number): Promise<void> => {
     return request(`/document/${id}`, {
       method: 'DELETE',
