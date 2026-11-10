@@ -9,7 +9,7 @@ import { type TeacherResponse } from "@/api/TeacherService";
 
 const professores = ref<Array<TeacherResponse>>([]);
 const currentPage = ref(1);
-const pageSize = ref(4);
+const pageSize = ref(3);
 const totalPages = ref(1);
 
 const professoresLogin = ref(false);
