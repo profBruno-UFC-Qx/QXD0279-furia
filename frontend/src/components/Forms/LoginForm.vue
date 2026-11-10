@@ -67,10 +67,6 @@ function passRule(v: string) {
       <p>{{ error.msg }}</p>
     </div>
 
-    <div class="actions">
-      <v-btn text="Forgot password?" variant="text" color="#004AC6"> </v-btn>
-    </div>
-
     <div class="submit">
       <v-btn
         rounded="10"
