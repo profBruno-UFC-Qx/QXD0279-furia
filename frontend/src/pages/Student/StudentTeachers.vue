@@ -70,7 +70,7 @@ e outros critérios para encontrar o perfil acadêmico ideal para você."
       <Ornament :text="'Professores buscados:'">
         <template #content>
           <div class="headerTable">
-            <p>{{ professores.length }} resultados</p>
+            <p>{{ pageSize * totalPages }} resultados</p>
           </div>
         </template>
       </Ornament>
