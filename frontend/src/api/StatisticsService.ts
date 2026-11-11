@@ -1,19 +1,6 @@
 import { request } from "./request";
-
-import { type RequestResponse } from "@/@types/metaData";
-
-export interface statisticsHomeResponse {
-  qtd_avaliacoes: number;
-  qtd_myUploades: number;
-  qtd_allUploades: number;
-}
-
-export interface statisticsDashboardResponse {
-  qtd_users: number;
-  qtd_students: number;
-  qtd_teachers: number;
-  qtd_admins: number;
-}
+import { type statisticsDashboardResponse } from "@/@types/estatistic";
+import { type statisticsHomeResponse } from "@/@types/estatistic";
 
 export const StatisticsService = {
   getStatisticsHome: async () => {

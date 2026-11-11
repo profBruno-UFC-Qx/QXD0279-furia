@@ -1,10 +1,11 @@
 import { request } from "./request";
+import { type Roles } from "@/@types/role";
 
 type AuthResponse = {
   userResponse: {
-    id: number
+    id: number;
     name: string;
-    role: "student" | "teacher" | "admin";
+    role: Roles;
   };
   token: string;
 };

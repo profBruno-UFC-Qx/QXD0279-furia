@@ -4,10 +4,8 @@ import Header from "@/components/Header/Header.vue";
 import Ornament from "@/components/Ornament/Ornament.vue";
 import TableDiscipline from "@/components/Table/TableDiscipline.vue";
 import DisciplineForm from "@/components/Forms/DisciplineForm.vue";
-import {
-  DisciplineService,
-  type DisciplineResponse,
-} from "@/api/DisciplineService";
+import { DisciplineService } from "@/api/DisciplineService";
+import { type DisciplineResponse } from "@/@types/discipline";
 import BaseModal from "@/components/Modais/BaseModal.vue";
 import { useStoreNotify } from "@/stores/StoreNotify";
 
@@ -80,7 +78,7 @@ async function Delete(discipline: DisciplineResponse | null) {
     notify.notify("Nao foi possivel apagar a disciplina", "error");
   } finally {
     notify.endLoad();
-    modals.delete = false
+    modals.delete = false;
   }
 }
 
