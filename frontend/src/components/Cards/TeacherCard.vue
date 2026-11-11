@@ -15,7 +15,7 @@ const { id, name, grade, disciplines } = defineProps<{
   <div class="card">
     <div class="header">
       <div class="personalInformarion">
-        <v-icon :icon="'mdi-school'" size="40" color="primary" class="icon" />
+        <v-icon class="icon" :icon="'mdi-school'" size="35" color="primary" />
         <p class="name">
           {{ name.length > 13 ? name.slice(0, 13) + "..." : name }}
         </p>
@@ -25,7 +25,7 @@ const { id, name, grade, disciplines } = defineProps<{
       </div>
     </div>
     <div class="diciplines">
-      <p class="title">Diciplinas</p>
+      <p class="title">Disciplinas</p>
       <ul class="list">
         <li v-for="discipline in disciplines">{{ discipline }}</li>
       </ul>
@@ -54,12 +54,11 @@ const { id, name, grade, disciplines } = defineProps<{
     </div>
     <v-btn
       variant="outlined"
-      color="grey-lighten-2"
-      class="text-none px-8 btn"
-      height="38"
+      class="text-none px-10 btn"
+      height="45"
       :to="{ name: 'professorProfile', params: { id: id } }"
     >
-      <span class="text-grey-darken-4 font-weight-medium"> View Profile </span>
+      <span class="white font-weight-medium"> View Profile </span>
     </v-btn>
   </div>
 </template>
@@ -107,9 +106,10 @@ const { id, name, grade, disciplines } = defineProps<{
 }
 
 .grade {
-  background-color: #fcfcff;
-  padding: 5px;
-  border-radius: 5px;
+  background-color: #fffbe2;
+  border: 1px solid #ffeb6d;
+  padding: 10px;
+  border-radius: 10px;
   box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.05),
     0 2px 4px -1px rgba(0, 0, 0, 0.03);
@@ -121,27 +121,48 @@ const { id, name, grade, disciplines } = defineProps<{
 }
 
 .name {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
+  font-weight: bold;
 }
 
 .personalInformarion {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
+}
+
+.personalInformarion .icon {
+  background-color: #dee0ff;
+  padding: 25px;
+  border-radius: 10px;
 }
 
 .btn {
   border-radius: 10px;
+  background-color: #1868c1;
+  color: #fff;
 }
 
 .diciplines .list {
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
+.diciplines .title {
+  color: #838993;
+  font-size: 1rem;
+  margin-bottom: 5px;
+}
 .list li {
-  background-color: #f2f3ff;
+  background-color: #f0f2fe;
   padding: 5px;
   border-radius: 3px;
+  font-size: 0.8rem;
+  color: #4a4a70;
+  font-weight: bold;
+  white-space: nowrap;
+  border: 1px solid #e2e1e7;
+  border-radius: 10px;
 }
 </style>

@@ -72,41 +72,40 @@ e outros critérios para encontrar o perfil acadêmico ideal para você."
           <div class="headerTable">
             <p>{{ pageSize * totalPages }} resultados</p>
           </div>
+          <div class="contentTable">
+            <div v-if="professoresLogin" class="text-center pa-4 full-center">
+              <v-progress-circular :size="64" :width="6" indeterminate />
+            </div>
+
+            <v-alert v-else-if="professoresErro" type="error">
+              {{ professoresErro }}
+            </v-alert>
+            <div v-else class="table">
+              <TeacherCard
+                v-for="prof in professores"
+                :key="prof.teacher_id"
+                :id="prof.teacher_id"
+                :name="prof.user.name"
+                :grade="prof.avaliacoes"
+                :disciplines="
+                  prof.disciplines.map((diciplina) => {
+                    return diciplina.name;
+                  })
+                "
+              />
+            </div>
+            <div class="d-flex justify-center mt-4">
+              <v-pagination
+                v-model="currentPage"
+                :length="totalPages"
+                :disabled="professoresLogin"
+                :total-visible="5"
+                rounded="circle"
+              />
+            </div>
+          </div>
         </template>
       </Ornament>
-
-      <div class="contentTable">
-        <div v-if="professoresLogin" class="text-center pa-4 full-center">
-          <v-progress-circular :size="64" :width="6" indeterminate />
-        </div>
-
-        <v-alert v-else-if="professoresErro" type="error">
-          {{ professoresErro }}
-        </v-alert>
-        <div v-else class="table">
-          <TeacherCard
-            v-for="prof in professores"
-            :key="prof.teacher_id"
-            :id="prof.teacher_id"
-            :name="prof.user.name"
-            :grade="prof.avaliacoes"
-            :disciplines="
-              prof.disciplines.map((diciplina) => {
-                return diciplina.name;
-              })
-            "
-          />
-        </div>
-        <div class="d-flex justify-center mt-4">
-          <v-pagination
-            v-model="currentPage"
-            :length="totalPages"
-            :disabled="professoresLogin"
-            :total-visible="5"
-            rounded="circle"
-          />
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -121,6 +120,7 @@ e outros critérios para encontrar o perfil acadêmico ideal para você."
 
 .contentTable {
   min-height: 220px;
+  padding: 20px;
 }
 
 .content {
@@ -147,7 +147,11 @@ e outros critérios para encontrar o perfil acadêmico ideal para você."
   padding-bottom: 20px;
 }
 
-/* .headerTable p {
-  font-size: 1.3rem;
-}  */
+.headerTable p {
+  background-color: #f0f2fe;
+  font-size: 1rem;
+  color: #4a4a70;
+  font-weight: bold;
+  white-space: nowrap;
+}
 </style>
