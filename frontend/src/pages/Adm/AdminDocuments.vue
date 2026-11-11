@@ -3,7 +3,8 @@ import { onMounted, ref, watch, reactive } from "vue";
 import Header from "@/components/Header/Header.vue";
 import Ornament from "@/components/Ornament/Ornament.vue";
 import TableDocument from "@/components/Table/TableDocs.vue";
-import { DocumentService, type DocumentResponse } from "@/api/DocumentService";
+import { DocumentService } from "@/api/DocumentService";
+import { type DocumentResponse } from "@/@types/documents";
 import BaseModal from "@/components/Modais/BaseModal.vue";
 import { useStoreNotify } from "@/stores/StoreNotify";
 
@@ -29,7 +30,7 @@ async function fetchDocuments() {
   try {
     const response = await DocumentService.getAll({
       limit: itemsPerPage.value,
-      page: currentPage.value
+      page: currentPage.value,
     });
     documents.value = response.data;
     totalPages.value = response.meta.totalPages;
@@ -49,7 +50,7 @@ async function Delete(document: DocumentResponse | null) {
     const { id } = document;
     await DocumentService.delete(id);
     modals.delete = false;
-    
+
     await fetchDocuments();
     notify.notify("Documento deletado com sucesso", "alert");
   } catch (error) {
@@ -108,7 +109,8 @@ onMounted(async () => {
       <div class="flex-grow-1">
         <div class="font-weight-bold">{{ documentSelected?.titulo }}</div>
         <div class="text-caption text-medium-emphasis">
-          Enviado por: {{ documentSelected?.teacher?.user?.name || 'Aluno' }} · {{ documentSelected?.discipline?.name || 'Geral' }}
+          Enviado por: {{ documentSelected?.teacher?.user?.name || "Aluno" }} ·
+          {{ documentSelected?.discipline?.name || "Geral" }}
         </div>
       </div>
 

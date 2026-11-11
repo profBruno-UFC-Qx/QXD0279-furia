@@ -2,7 +2,8 @@
 import { onMounted, ref, watch } from "vue";
 import Header from "@/components/Header/Header.vue";
 import Ornament from "@/components/Ornament/Ornament.vue";
-import { AvaliacaoService, type AvaliacaoResponse } from "@/api/AvaliacaoService";
+import { AvaliacaoService } from "@/api/AvaliacaoService";
+import { type AvaliacaoResponse } from "@/@types/avaliacao";
 import { useStoreNotify } from "@/stores/StoreNotify";
 import { ApiError } from "@/api/ApiError";
 
@@ -29,12 +30,12 @@ async function fetchAllReviews() {
   try {
     const response = await AvaliacaoService.getAll(
       itemsPerPage.value,
-      currentPage.value
+      currentPage.value,
     );
 
     const res = response as any;
     let arrayReal = [];
-    
+
     if (Array.isArray(res)) {
       arrayReal = res;
     } else if (res.data && Array.isArray(res.data)) {
@@ -44,11 +45,8 @@ async function fetchAllReviews() {
     }
 
     avaliacoes.value = arrayReal;
-    
-    totalPages.value = res.meta?.totalPages 
-                      || res.data?.meta?.totalPages 
-                      || 1;
-                      
+
+    totalPages.value = res.meta?.totalPages || res.data?.meta?.totalPages || 1;
   } catch (error) {
     if (error instanceof ApiError) {
       pageError.value = error.message;
@@ -61,7 +59,9 @@ async function fetchAllReviews() {
 }
 
 async function deleteReview(id: number) {
-  const confirmDelete = confirm("Tem certeza que deseja excluir esta avaliação?");
+  const confirmDelete = confirm(
+    "Tem certeza que deseja excluir esta avaliação?",
+  );
   if (!confirmDelete) return;
 
   notify.startLoad();
@@ -110,8 +110,10 @@ onMounted(async () => {
     <Ornament text="Todas as Avaliações">
       <template #content>
         <div class="pa-4">
-          
-          <div v-if="avaliacoes.length === 0 && !notify.loading" class="text-center py-8 text-grey">
+          <div
+            v-if="avaliacoes.length === 0 && !notify.loading"
+            class="text-center py-8 text-grey"
+          >
             Nenhuma avaliação encontrada na plataforma.
           </div>
 
@@ -130,22 +132,29 @@ onMounted(async () => {
             <tbody>
               <tr v-for="avaliacao in avaliacoes" :key="avaliacao.id">
                 <td>#{{ avaliacao.id }}</td>
-                <td>{{ avaliacao.teacher?.user?.name || 'Desconhecido' }}</td>
-                <td>{{ avaliacao.discipline?.name || 'N/A' }}</td>
+                <td>{{ avaliacao.teacher?.user?.name || "Desconhecido" }}</td>
+                <td>{{ avaliacao.discipline?.name || "N/A" }}</td>
                 <td class="text-center font-weight-bold">
-                  {{ (avaliacao.nota_geral != null ? Number(avaliacao.nota_geral) : 0).toFixed(1) }} ⭐
+                  {{
+                    (avaliacao.nota_geral != null
+                      ? Number(avaliacao.nota_geral)
+                      : 0
+                    ).toFixed(1)
+                  }}
+                  ⭐
                 </td>
                 <td class="comment-cell">
-                  {{ avaliacao.comment?.length > 30 
-                      ? avaliacao.comment.substring(0, 30) + '...' 
-                      : avaliacao.comment || 'Sem comentário' 
+                  {{
+                    avaliacao.comment?.length > 30
+                      ? avaliacao.comment.substring(0, 30) + "..."
+                      : avaliacao.comment || "Sem comentário"
                   }}
-                  
-                  <v-btn 
-                    v-if="avaliacao.comment?.length > 30" 
-                    size="x-small" 
-                    variant="text" 
-                    color="primary" 
+
+                  <v-btn
+                    v-if="avaliacao.comment?.length > 30"
+                    size="x-small"
+                    variant="text"
+                    color="primary"
                     class="ml-1 px-1"
                     @click="openCommentModal(avaliacao.comment)"
                   >
@@ -153,7 +162,7 @@ onMounted(async () => {
                   </v-btn>
                 </td>
                 <td class="text-center">
-                  {{ new Date(avaliacao.creat_at).toLocaleDateString('pt-BR') }}
+                  {{ new Date(avaliacao.creat_at).toLocaleDateString("pt-BR") }}
                 </td>
                 <td class="text-center">
                   <v-btn
@@ -170,31 +179,33 @@ onMounted(async () => {
 
           <div v-if="totalPages > 1" class="d-flex justify-center mt-6">
             <v-pagination
-                v-model="currentPage"
-                :length="totalPages"
-                :disabled="notify.loading"
-                :total-visible="5"
-                rounded="circle"
-                />
+              v-model="currentPage"
+              :length="totalPages"
+              :disabled="notify.loading"
+              :total-visible="5"
+              rounded="circle"
+            />
           </div>
-
         </div>
       </template>
     </Ornament>
 
     <v-dialog v-model="showDialog" max-width="500">
       <v-card>
-        <v-card-title class="text-h6 pb-2 mt-2">Comentário Completo</v-card-title>
+        <v-card-title class="text-h6 pb-2 mt-2"
+          >Comentário Completo</v-card-title
+        >
         <v-card-text class="text-body-1 pb-4">
           {{ selectedComment }}
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" variant="text" @click="showDialog = false">Fechar</v-btn>
+          <v-btn color="primary" variant="text" @click="showDialog = false"
+            >Fechar</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
-
   </div>
 </template>
 

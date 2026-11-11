@@ -5,7 +5,7 @@ import { type registerData } from "@/@types/registerData";
 import { DisciplineService } from "@/api/DisciplineService";
 import { ApiError } from "@/api/ApiError";
 import { useStoreNotify } from "@/stores/StoreNotify";
-import { type DisciplineName } from "@/api/DisciplineService";
+import { type DisciplineName } from "@/@types/discipline";
 
 interface Discipline {
   discipline_id: number;

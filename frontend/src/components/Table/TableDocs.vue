@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type DocumentResponse } from '@/api/DocumentService'
+import { type DocumentResponse } from '@/@types/documents';
 
 const props = defineProps<{ 
   documents: DocumentResponse[]

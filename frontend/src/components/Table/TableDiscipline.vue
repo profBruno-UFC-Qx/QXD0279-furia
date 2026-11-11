@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type DisciplineResponse } from "@/api/DisciplineService";
+import { type DisciplineResponse } from '@/@types/discipline';
 
 const { documents } = defineProps<{
   documents: DisciplineResponse[];

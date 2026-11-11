@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from "vue";
-import { type DocumentResponse, DocumentService } from "@/api/DocumentService";
+import { DocumentService } from "@/api/DocumentService";
+import { type DocumentResponse } from "@/@types/documents";
 import Filters from "@/components/Filters/Filters.vue";
 import DocumentForm from "@/components/Forms/DocumentForm.vue";
 import Header from "@/components/Header/Header.vue";
@@ -14,7 +15,7 @@ const modal = ref(false);
 
 const page = ref(1);
 const totalPages = ref(1);
-const limit = 2;
+const limit = 5;
 
 const filters = ref({
   search: "",
