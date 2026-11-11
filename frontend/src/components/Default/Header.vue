@@ -122,6 +122,7 @@ const logout = () => {
 
 .navigation ul {
   display: flex;
+  flex-wrap: wrap;
   gap: 16px;
 }
 
@@ -131,13 +132,15 @@ const logout = () => {
 }
 
 .header-bg {
-  background-color: rgb(255, 255, 255);
   padding: 8px 16px;
-  border-bottom: 1px solid #c3c6d7;
 }
 
 .header {
+  background: linear-gradient(135deg, #eef4ff 0%, #f6f7ff 55%, #eef2ff 100%);
+  border: 1px solid rgba(99, 102, 241, 0.14);
+  padding: 26px 28px;
   max-width: 1200px;
+  border-radius: 18px;
   margin: 0px auto;
   display: flex;
   justify-content: space-between;
@@ -169,5 +172,12 @@ const logout = () => {
   color: #fff;
   padding: 8px 16px;
   border-radius: 8px;
+}
+
+@media (max-width: 832px) {
+  .header{
+    flex-direction: column;
+    gap: 20px;
+  }
 }
 </style>
