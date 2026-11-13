@@ -69,18 +69,22 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, computed } from 'vue'
-  import type { ReviewData } from '@/type/ProfessorData'
+  import { ref, computed, watch } from 'vue'
+  import type { TeacherReviewView, TeacherDisciplineView } from '@/api/TeacherService'
   import ReviewCard from '@/components/Cards/Professor/ReviewCard.vue'
 
   const props = defineProps<{
-    reviews: ReviewData[]
-    disciplines: { id: number, code: string, name: string }[]
+    reviews: TeacherReviewView[]
+    disciplines: TeacherDisciplineView[]
   }>()
 
   const sortBy = ref<'recent' | 'oldest'>('recent')
   const selectedDiscipline = ref<string | null>(null)
   const visibleCount = ref(4) 
+
+  watch([sortBy, selectedDiscipline], () => {
+    visibleCount.value = 4
+  })
 
   const filteredAndSortedReviews = computed(() => {
     let result = [...props.reviews]
@@ -89,16 +93,12 @@
       result = result.filter(r => r.discipline === selectedDiscipline.value)
     }
 
-    result.sort((a, b) => {
+    return result.sort((a, b) => {
       const dateA = new Date(a.rawDate || a.date).getTime()
       const dateB = new Date(b.rawDate || b.date).getTime()
-      
       return sortBy.value === 'recent' ? dateB - dateA : dateA - dateB
     })
-
-    return result
   })
-
 
   const displayedReviews = computed(() => {
     return filteredAndSortedReviews.value.slice(0, visibleCount.value)

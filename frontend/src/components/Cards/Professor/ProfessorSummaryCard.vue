@@ -32,10 +32,10 @@
 </template>
 
 <script setup lang="ts">
-  import type { ProfessorData } from '@/type/ProfessorData'
-
-  const props = defineProps<{
-    professor: ProfessorData
+  import type { TeacherProfileView } from '@/api/TeacherService'
+  
+  const props = defineProps<{ 
+    professor: TeacherProfileView 
   }>()
 
   const emit = defineEmits<{

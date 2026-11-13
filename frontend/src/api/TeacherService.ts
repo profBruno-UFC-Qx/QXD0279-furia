@@ -21,6 +21,38 @@ export interface TeacherResponse {
   };
 }
 
+export interface TeacherProfileView {
+  id: string;
+  name: string;
+  department: string;
+  avatarUrl: string;
+  rating: number;
+  reviewCount: number;
+}
+
+export interface TeacherRatingMetric {
+  label: string;
+  score: number;
+}
+
+export interface TeacherDisciplineView {
+  id: number;
+  code: string;
+  name: string;
+}
+
+export interface TeacherReviewView {
+  id: string;
+  authorName: string;
+  authorInitials: string;
+  discipline: string;
+  date: string;
+  rawDate: string | Date;
+  overallRating: number;
+  content: string;
+  subRatings: TeacherRatingMetric[];
+}
+
 export const TeacherService = {
   getAll: async (
     limit: number,

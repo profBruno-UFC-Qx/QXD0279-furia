@@ -31,7 +31,6 @@
           <TopDisciplinesCard
             v-if="topDisciplines"
             :disciplines="topDisciplines"
-            @select-discipline="handleDisciplineSelect"
           />
         </aside>
       </section>
@@ -49,7 +48,8 @@
 </template>
 
 <script setup lang="ts">
-  import type { Discipline, ProfessorData, RatingMetric, ReviewData } from '@/type/ProfessorData'
+
+  import type { TeacherProfileView, TeacherRatingMetric, TeacherDisciplineView, TeacherReviewView } from '@/api/TeacherService'
 
   import { onMounted, ref } from 'vue'
   import { useRoute } from 'vue-router'
@@ -69,16 +69,16 @@
   const isReviewModalOpen = ref(false)
   const isLoading = ref(true)
   
-  const professorInfo = ref<ProfessorData | null>(null)
-  const ratingMetrics = ref<RatingMetric[]>([])
-  const topDisciplines = ref<Discipline[]>([])
-  const reviewsList = ref<ReviewData[]>([])
+  const professorInfo = ref<TeacherProfileView | null>(null)
+  const ratingMetrics = ref<TeacherRatingMetric[]>([])
+  const topDisciplines = ref<TeacherDisciplineView[]>([])
+  const reviewsList = ref<TeacherReviewView[]>([])
 
   onMounted(async () => {
     await fetchPageData(route.params.id)
   })
 
-  function mapToProfessorProfile(data: any): ProfessorData {
+  function mapToProfessorProfile(data: any): TeacherProfileView {
     return {
       id: String(data.teacher_id),
       name: data.user?.name || 'Professor',
@@ -89,7 +89,7 @@
     }
   }
 
-  function mapToReviews(avaliacoes: any[]): ReviewData[] {
+  function mapToReviews(avaliacoes: any[]): TeacherReviewView[] {
     return avaliacoes.map(av => ({
       id: String(av.id),
       authorName: av.student?.user?.name || 'Aluno Anônimo',
@@ -141,9 +141,7 @@
     isReviewModalOpen.value = true
   }
 
-  function handleDisciplineSelect (discipline: Discipline) {
-    // Espaço preparado para filtrar os dados pela disciplina clicada no TopDisciplinesCard
-  }
+
 </script>
 
 <style scoped>

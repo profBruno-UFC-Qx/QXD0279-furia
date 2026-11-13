@@ -25,17 +25,13 @@
 </template>
 
 <script setup lang="ts">
-  import type { Discipline } from '@/type/ProfessorData'
+  import type { TeacherDisciplineView } from '@/api/TeacherService'
+  
+  const props = defineProps<{ disciplines: TeacherDisciplineView[] }>()
+  
+  const emit = defineEmits<{ (e: 'select-discipline', discipline: TeacherDisciplineView): void }>()
 
-  const props = defineProps<{
-    disciplines: Discipline[]
-  }>()
-
-  const emit = defineEmits<{
-    (e: 'select-discipline', discipline: Discipline): void
-  }>()
-
-  function handleDisciplineClick (selectedDiscipline: Discipline) {
+  function handleDisciplineClick (selectedDiscipline: TeacherDisciplineView) {
     emit('select-discipline', selectedDiscipline)
   }
 </script>

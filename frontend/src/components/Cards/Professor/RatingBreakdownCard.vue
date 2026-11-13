@@ -24,10 +24,9 @@
 </template>
 
 <script setup lang="ts">
-  import type { RatingMetric } from '@/type/ProfessorData'
-
-  const props = defineProps<{
-    metrics: RatingMetric[]
+  import type { TeacherRatingMetric } from '@/api/TeacherService'
+  const props = defineProps<{ 
+    metrics: TeacherRatingMetric[] 
   }>()
 
   function calculatePercentage (score: number): string {
