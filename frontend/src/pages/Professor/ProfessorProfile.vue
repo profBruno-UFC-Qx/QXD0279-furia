@@ -16,12 +16,12 @@
       <section class="content-grid">
         <div class="left-column">
           <RatingBreakdownCard
-            v-if="ratingMetrics"
+            v-if="ratingMetrics.length"
             :metrics="ratingMetrics"
           />
 
           <ReviewSection
-            v-if="reviewsList"
+            v-if="reviewsList.length"
             :reviews="reviewsList"
             :disciplines="topDisciplines"
           />
@@ -29,7 +29,7 @@
 
         <aside class="right-column">
           <TopDisciplinesCard
-            v-if="topDisciplines"
+            v-if="topDisciplines.length"
             :disciplines="topDisciplines"
           />
         </aside>
@@ -48,11 +48,10 @@
 </template>
 
 <script setup lang="ts">
-
   import type { TeacherProfileView, TeacherRatingMetric, TeacherDisciplineView, TeacherReviewView } from '@/api/TeacherService'
 
-  import { onMounted, ref } from 'vue'
-  import { useRoute } from 'vue-router'
+  import { onMounted, ref, watch } from 'vue' 
+  import { useRoute, useRouter } from 'vue-router'
   import { TeacherService } from '@/api/TeacherService'
   import { useStoreNotify } from '@/stores/StoreNotify'
   
@@ -64,6 +63,7 @@
   import BaseModal from '@/components/Modais/BaseModal.vue'
 
   const route = useRoute()
+  const router = useRouter()
   const notify = useStoreNotify()
   
   const isReviewModalOpen = ref(false)
@@ -78,11 +78,17 @@
     await fetchPageData(route.params.id)
   })
 
+  watch(() => route.params.id, async (newId) => {
+    if (newId && route.name === 'professorProfile') {
+      await fetchPageData(newId)
+    }
+  })
+
   function mapToProfessorProfile(data: any): TeacherProfileView {
     return {
       id: String(data.teacher_id),
       name: data.user?.name || 'Professor',
-      department: 'Departamento de TI', // No futuro pode vir do seu backend
+      department: 'Departamento de TI', 
       avatarUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent(data.user?.name || 'P')}&background=random`,
       rating: data.media_geral ?? 0,
       reviewCount: data.avaliacoes?.length ?? 0,
@@ -130,8 +136,14 @@
       reviewsList.value = mapToReviews(data.avaliacoes || [])
 
     } catch (error) {
-      console.error(error)
-      notify.notify('Erro ao carregar o perfil do professor. Tente novamente.', 'error')
+      notify.notify('Professor não encontrado.', 'error')
+      
+      professorInfo.value = null
+      ratingMetrics.value = []
+      topDisciplines.value = []
+      reviewsList.value = []
+      
+      router.replace('/404')
     } finally {
       isLoading.value = false
     }
@@ -140,8 +152,6 @@
   function handleOpenReviewModal () {
     isReviewModalOpen.value = true
   }
-
-
 </script>
 
 <style scoped>
