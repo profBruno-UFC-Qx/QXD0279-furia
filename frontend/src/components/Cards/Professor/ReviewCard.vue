@@ -10,7 +10,7 @@
         <h3 class="author">{{ review.authorName }}</h3>
 
         <p class="context">
-          Took {{ review.discipline }} &bull; {{ review.date }}
+          Disciplina {{ review.discipline }} &bull; {{ review.date }}
         </p>
       </div>
 
@@ -37,10 +37,10 @@
 </template>
 
 <script setup lang="ts">
-  import type { ReviewData } from '@/type/ProfessorData'
+  import type { TeacherReviewView } from '@/api/TeacherService'
 
   const props = defineProps<{
-    review: ReviewData
+    review: TeacherReviewView
   }>()
 </script>
 

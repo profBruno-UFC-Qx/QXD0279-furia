@@ -24,7 +24,7 @@ export function createDocumentRouter(documentController: DocumentController) {
     documentRouter.delete(
         "/document/:id",
         AuthMiddleware,
-        AutorizationMiddleware(["teacher", "admin"]),
+        AutorizationMiddleware(["teacher", "admin", "student"]),
         documentController.delete
     );
 

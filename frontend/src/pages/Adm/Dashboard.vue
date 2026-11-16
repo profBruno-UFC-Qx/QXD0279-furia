@@ -141,7 +141,7 @@ onMounted(async () => {
         prepend-icon="mdi-star-check-outline"
         class="admin-btn"
       >
-        Gerenciar Reviews
+        Gerenciar Avaliações
       </v-btn>
 
       <v-btn 

@@ -2,6 +2,7 @@
 import { onMounted, ref, watch } from "vue";
 import Header from "@/components/Header/Header.vue";
 import Ornament from "@/components/Ornament/Ornament.vue";
+import ConfirmDeleteModal from "@/components/Modais/ConfirmDeleteModal.vue";
 import { AvaliacaoService, type AvaliacaoResponse } from "@/api/AvaliacaoService";
 import { useStoreNotify } from "@/stores/StoreNotify";
 import { ApiError } from "@/api/ApiError";
@@ -16,6 +17,9 @@ const pageError = ref<string | null>(null);
 
 const showDialog = ref(false);
 const selectedComment = ref("");
+
+const isDeleteModalOpen = ref(false);
+const reviewSelected = ref<AvaliacaoResponse | null>(null);
 
 function openCommentModal(comment: string) {
   selectedComment.value = comment;
@@ -33,51 +37,52 @@ async function fetchAllReviews() {
     );
 
     const res = response as any;
-    let arrayReal = [];
     
     if (Array.isArray(res)) {
-      arrayReal = res;
+      avaliacoes.value = res;
     } else if (res.data && Array.isArray(res.data)) {
-      arrayReal = res.data;
+      avaliacoes.value = res.data;
     } else if (res.data?.data && Array.isArray(res.data.data)) {
-      arrayReal = res.data.data;
+      avaliacoes.value = res.data.data;
+    } else {
+      avaliacoes.value = [];
     }
-
-    avaliacoes.value = arrayReal;
     
-    totalPages.value = res.meta?.totalPages 
-                      || res.data?.meta?.totalPages 
-                      || 1;
+    totalPages.value = res.meta?.totalPages || res.data?.meta?.totalPages || 1;
                       
   } catch (error) {
-    if (error instanceof ApiError) {
-      pageError.value = error.message;
-    } else {
-      pageError.value = "Não foi possível carregar as avaliações.";
-    }
+    pageError.value = error instanceof ApiError 
+      ? error.message 
+      : "Não foi possível carregar as avaliações.";
   } finally {
     notify.endLoad();
   }
 }
 
-async function deleteReview(id: number) {
-  const confirmDelete = confirm("Tem certeza que deseja excluir esta avaliação?");
-  if (!confirmDelete) return;
+function promptDelete(avaliacao: AvaliacaoResponse) {
+  reviewSelected.value = avaliacao;
+  isDeleteModalOpen.value = true;
+}
+
+async function confirmDelete() {
+  if (!reviewSelected.value) return;
 
   notify.startLoad();
   pageError.value = null;
 
   try {
-    await AvaliacaoService.delete(id);
+    await AvaliacaoService.delete(reviewSelected.value.id);
+    isDeleteModalOpen.value = false;
+    
     await fetchAllReviews();
+    notify.notify("Avaliação apagada com sucesso.", "alert");
   } catch (error) {
-    if (error instanceof ApiError) {
-      pageError.value = error.message;
-    } else {
-      pageError.value = "Erro ao deletar avaliação.";
-    }
+    pageError.value = error instanceof ApiError 
+      ? error.message 
+      : "Erro ao deletar avaliação.";
   } finally {
     notify.endLoad();
+    reviewSelected.value = null;
   }
 }
 
@@ -93,7 +98,7 @@ onMounted(async () => {
 <template>
   <div class="admin-reviews-page container">
     <Header
-      title="Gerenciar Reviews"
+      title="Gerenciar Avaliações"
       description="Visualize, modere e remova as avaliações feitas pelos alunos na plataforma."
     />
 
@@ -103,7 +108,7 @@ onMounted(async () => {
       </v-btn>
     </div>
 
-    <v-alert v-if="pageError" type="error" class="mb-4">
+    <v-alert v-if="pageError" type="error" density="compact" class="mb-4">
       {{ pageError }}
     </v-alert>
 
@@ -146,7 +151,7 @@ onMounted(async () => {
                     size="x-small" 
                     variant="text" 
                     color="primary" 
-                    class="ml-1 px-1"
+                    class="ml-1 px-1 text-none"
                     @click="openCommentModal(avaliacao.comment)"
                   >
                     Ver mais
@@ -161,7 +166,8 @@ onMounted(async () => {
                     color="error"
                     variant="text"
                     size="small"
-                    @click="deleteReview(avaliacao.id)"
+                    title="Apagar Avaliação"
+                    @click="promptDelete(avaliacao)"
                   />
                 </td>
               </tr>
@@ -170,12 +176,12 @@ onMounted(async () => {
 
           <div v-if="totalPages > 1" class="d-flex justify-center mt-6">
             <v-pagination
-                v-model="currentPage"
-                :length="totalPages"
-                :disabled="notify.loading"
-                :total-visible="5"
-                rounded="circle"
-                />
+              v-model="currentPage"
+              :length="totalPages"
+              :disabled="notify.loading"
+              :total-visible="5"
+              rounded="circle"
+            />
           </div>
 
         </div>
@@ -190,10 +196,22 @@ onMounted(async () => {
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" variant="text" @click="showDialog = false">Fechar</v-btn>
+          <v-btn color="primary" variant="text" class="text-none" @click="showDialog = false">Fechar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
+    
+    <ConfirmDeleteModal
+      v-model:modal="isDeleteModalOpen"
+      title="Apagar esta avaliação?"
+      :loading="notify.loading"
+      @confirm="confirmDelete"
+    >
+      <template #message>
+        Tem a certeza que deseja remover a avaliação <strong>#{{ reviewSelected?.id }}</strong> do professor {{ reviewSelected?.teacher?.user?.name }}?<br>
+        Esta ação não poderá ser desfeita.
+      </template>
+    </ConfirmDeleteModal>
 
   </div>
 </template>

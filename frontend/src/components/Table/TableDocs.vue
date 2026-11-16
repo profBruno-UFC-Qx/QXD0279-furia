@@ -9,6 +9,9 @@ const props = defineProps<{
   totalPages?: number
 }>()
 
+const currentPage = defineModel<number>('currentPage', { default: 1 })
+const totalPages = defineModel<number>('totalPages', { default: 1 })
+
 const emit = defineEmits<{
   (e: 'delete', document: DocumentResponse): void
   (e: 'update:currentPage', page: number): void
@@ -63,31 +66,25 @@ const headers = [
           ></v-btn>
 
           <v-btn
-            v-if="item.student_id === currentUserId"
+            v-if="item.student_id === currentUserId || auth.role === 'admin'"
             color="error"
             icon="mdi-delete"
             size="small"
             variant="text"
-            title="Apagar meu documento"
+            :title="auth.role === 'admin' ? 'Apagar documento (Admin)' : 'Apagar meu documento'"
             @click="emit('delete', item)"
           ></v-btn>
         </div>
       </template>
     </v-data-table-virtual>
 
-    <div v-if="totalPages" class="d-flex justify-space-between align-center mt-4 px-2">
-      <span class="text-caption text-grey-darken-1">
-        Página {{ currentPage }} de {{ totalPages }}
-      </span>
-      
+    <div v-if="totalPages > 1" class="d-flex justify-center mt-6 mb-4">
       <v-pagination
-        :model-value="currentPage"
-        @update:model-value="emit('update:currentPage', $event)"
+        v-model="currentPage"
         :length="totalPages"
         :total-visible="5"
-        density="compact"
-        color="primary"
-      ></v-pagination>
+        rounded="circle"
+      />
     </div>
   </div>
 </template>

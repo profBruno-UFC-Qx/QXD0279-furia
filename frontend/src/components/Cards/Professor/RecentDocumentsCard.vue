@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { RecentDocument } from '@/type/ProfessorData'
+  import type { RecentDocument } from '@/api/TeacherService'
 
   defineProps<{
     documents: RecentDocument[]

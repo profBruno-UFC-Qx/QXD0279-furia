@@ -36,7 +36,7 @@
       </section>
     </template>
 
-    <BaseModal v-model:modal="isReviewModalOpen" title="Write a Review">
+    <BaseModal v-model:modal="isReviewModalOpen" title="Escrever Avaliação">
       <ReviewForm 
         :teacherId="Number(route.params.id)"
         :disciplines="topDisciplines"

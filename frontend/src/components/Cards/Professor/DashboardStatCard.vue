@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { DashboardStat } from '@/type/ProfessorData'
+  import type { DashboardStat } from '@/api/TeacherService'
 
   defineProps<{
     stat: DashboardStat

@@ -53,6 +53,28 @@ export interface TeacherReviewView {
   subRatings: TeacherRatingMetric[];
 }
 
+export interface DashboardStat {
+  label: string;
+  value: number | string;
+  suffix?: string;
+  subtitle?: string;
+  icon: string;
+}
+
+export interface ActiveDiscipline {
+  id: number;
+  name: string;
+  code: string;
+  averageRating?: number;
+  studentCount?: number;
+}
+
+export interface RecentDocument {
+  id: string | number;
+  fileName: string;
+  disciplineName: string;
+}
+
 export const TeacherService = {
   getAll: async (
     limit: number,

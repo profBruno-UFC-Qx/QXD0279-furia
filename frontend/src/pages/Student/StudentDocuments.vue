@@ -94,7 +94,7 @@ onMounted(loadDocuments);
     <div class="content container">
       <Header
         description="Explore, filtre e baixe materiais de estudo da sua instituição."
-        title="Documentos academicos"
+        title="Documentos acadêmicos"
       />
 
       <Filters

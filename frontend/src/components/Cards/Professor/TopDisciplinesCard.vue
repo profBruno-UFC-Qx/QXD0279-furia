@@ -2,7 +2,7 @@
   <div class="top-disciplines-card">
     <div class="header">
       <v-icon color="grey-darken-1" icon="mdi-sitemap-outline" size="18" />
-      <h2 class="title">TOP DISCIPLINES</h2>
+      <h2 class="title">PRINCIPAIS DISCIPLINAS</h2>
     </div>
 
     <ul class="disciplines-list">

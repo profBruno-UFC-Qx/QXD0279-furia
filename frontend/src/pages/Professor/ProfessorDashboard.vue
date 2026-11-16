@@ -6,7 +6,7 @@
         <h1 class="welcome-title">Olá, {{ professorName }}!</h1>
 
         <p class="welcome-subtitle">
-          O seu impacto académico este semestre é excecional. Aqui está o seu resumo.
+          O seu impacto acadêmico este semestre é excecional. Aqui está o seu resumo.
         </p>
       </div>
 
@@ -17,11 +17,11 @@
         </button>
 
         <button class="btn-primary" @click="handleUploadMaterial">
-          + Upload Material
+          + Enviar Material
         </button>
 
         <button class="btn-secondary" @click="handleExportReport">
-          Export Report
+          Exportar Relatório
         </button>
       </div>
     </section>
@@ -58,7 +58,7 @@
       </aside>
     </section>
 
-    <BaseModal v-model:modal="isUploadModalOpen" title="Upload Material">
+    <BaseModal v-model:modal="isUploadModalOpen" title="Enviar Material">
       <DocumentForm 
         @close="isUploadModalOpen = false" 
         :is-dashboard="true" 
@@ -73,14 +73,8 @@
 </template>
 
 <script setup lang="ts">
-  import type {
-    ActiveDiscipline,
-    DashboardStat,
-    RecentDocument,
-    ReviewData 
-  } from '@/type/ProfessorData'
-
   import { onMounted, ref } from 'vue'
+  
   import ActiveDisciplinesCard from '@/components/Cards/Professor/ActiveDisciplinesCard.vue'
   import DashboardStatCard from '@/components/Cards/Professor/DashboardStatCard.vue'
   import RecentDocumentsCard from '@/components/Cards/Professor/RecentDocumentsCard.vue'
@@ -90,14 +84,24 @@
   import ManageDisciplinesModal from '@/components/Modais/ManageDisciplinesModal.vue'
 
   import { authStore } from '@/stores/StoreAuth'
+  import { useStoreNotify } from '@/stores/StoreNotify'
   import { TeacherService } from '@/api/TeacherService'
+  
+  import type { 
+    TeacherReviewView, 
+    DashboardStat, 
+    ActiveDiscipline, 
+    RecentDocument 
+  } from '@/api/TeacherService'
 
   const auth = authStore()
+  const notify = useStoreNotify()
+  
   const professorName = ref(auth.username || 'Professor')
   const isLoading = ref(true)
 
   const statsList = ref<DashboardStat[]>([])
-  const recentReviews = ref<ReviewData[]>([]) 
+  const recentReviews = ref<TeacherReviewView[]>([]) 
   const activeDisciplines = ref<ActiveDiscipline[]>([])
   const recentDocuments = ref<RecentDocument[]>([])
   const isUploadModalOpen = ref(false)
@@ -107,7 +111,7 @@
     await fetchDashboardData()
   })
 
-  function mapToReviews(avaliacoes: any[]): ReviewData[] {
+  function mapToReviews(avaliacoes: any[]): TeacherReviewView[] {
     return avaliacoes.map(av => ({
       id: String(av.id), 
       authorName: av.student?.user?.name || 'Aluno Anônimo',
@@ -115,11 +119,11 @@
       discipline: av.discipline?.name || 'Geral',
       date: new Date(av.creat_at || av.created_at || new Date()).toLocaleDateString('pt-BR'),
       rawDate: av.creat_at || av.created_at || new Date(), 
-      overallRating: av.nota_geral ?? 5,
+      overallRating: av.nota_geral ?? 0,
       content: av.comment || 'Sem comentário escrito.',
       subRatings: [
-        { label: 'Didática', score: av.nota_didatica ?? 5 },
-        { label: 'Metodologia', score: av.nota_metodologia ?? 5 },
+        { label: 'Didática', score: av.nota_didatica ?? 0 },
+        { label: 'Metodologia', score: av.nota_metodologia ?? 0 },
       ],
     }))
   }
@@ -155,8 +159,8 @@
       recentReviews.value = mapToReviews(data.recentReviews || [])
 
       activeDisciplines.value = data.activeDisciplines.map((d: any) => ({
-        ...d,
         id: Number(d.discipline_id || d.id),
+        name: d.name,
         code: d.name.substring(0, 3).toUpperCase(),
         averageRating: d.averageRating || 0, 
         studentCount: d.studentCount || 0
@@ -170,6 +174,7 @@
 
     } catch (error) {
       console.error("Erro ao carregar o dashboard:", error)
+      notify.notify("Erro ao carregar os dados do painel.", "error")
     } finally {
       isLoading.value = false
     }
@@ -179,7 +184,10 @@
     isUploadModalOpen.value = true
   }
   
-  const handleExportReport = () => alert('Exportar relatório!')
+  const handleExportReport = () => {
+    // TODO: Implementar rota de exportação PDF/CSV no backend
+    alert('Exportar relatório!')
+  }
 </script>
 
 <style scoped>

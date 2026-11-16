@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { ActiveDiscipline } from '@/type/ProfessorData'
+  import type { ActiveDiscipline } from '@/api/TeacherService'
 
   defineProps<{
     disciplines: ActiveDiscipline[]

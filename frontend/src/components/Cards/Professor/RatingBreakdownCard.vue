@@ -2,7 +2,7 @@
   <div class="rating-breakdown-card">
     <h2 class="title">
       <v-icon color="primary" icon="mdi-chart-bar" size="22" />
-      Rating Breakdown
+      Notas por Critério
     </h2>
 
     <div class="metrics-container">
