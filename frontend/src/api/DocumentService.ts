@@ -33,8 +33,8 @@ export interface GetDocumentsParams {
   page?: number;
   limit?: number;
   search?: string;
-  discipline?: string;
-  teacher?: string;
+  discipline?: string | null;
+  teacher?: string | null; 
 }
 
 export const DocumentService = {

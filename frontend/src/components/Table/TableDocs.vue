@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { type DocumentResponse } from '@/api/DocumentService'
+import { authStore } from '@/stores/StoreAuth'
 
 const props = defineProps<{ 
   documents: DocumentResponse[]
@@ -13,6 +14,9 @@ const emit = defineEmits<{
   (e: 'update:currentPage', page: number): void
   (e: 'update:itemsPerPage', limit: number): void
 }>()
+
+const auth = authStore()
+const currentUserId = Number(auth.userId)
 
 const headers = [
   { title: "Título", align: "start", key: "titulo", sortable: false },
@@ -31,9 +35,14 @@ const headers = [
       item-value="id"
       fixed-header
       class="tabela"
+      :row-props="(item: any) => {
+        if (item.item.student_id === currentUserId) {
+          return { class: 'minha-linha' }
+        }
+        return {}
+      }"
     >
       <template v-slot:item.teacher="{ item }">
-        <!-- Corrigida a duplicação que tinha no nome do professor -->
         {{ item.teacher?.user?.name || 'Não informado' }}
       </template>
 
@@ -53,20 +62,19 @@ const headers = [
             title="Abrir documento"
           ></v-btn>
 
-          <!-- Novo botão de Deletar para o Admin -->
           <v-btn
+            v-if="item.student_id === currentUserId"
             color="error"
             icon="mdi-delete"
             size="small"
             variant="text"
-            title="Apagar documento"
+            title="Apagar meu documento"
             @click="emit('delete', item)"
           ></v-btn>
         </div>
       </template>
     </v-data-table-virtual>
 
-    <!-- Rodapé com Paginação -->
     <div v-if="totalPages" class="d-flex justify-space-between align-center mt-4 px-2">
       <span class="text-caption text-grey-darken-1">
         Página {{ currentPage }} de {{ totalPages }}
@@ -85,6 +93,11 @@ const headers = [
 </template>
 
 <style scoped>
+
+.tabela :deep(.minha-linha td:first-child) {
+  box-shadow: inset 4px 0 0 0 rgb(26, 105, 195) !important;
+}
+
 .tableComponente {
   display: flex;
   flex-direction: column;

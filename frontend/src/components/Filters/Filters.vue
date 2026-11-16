@@ -12,9 +12,9 @@ interface InputItems {
 }
 
 interface FilterSearch {
-  search: string;
-  discipline?: string;
-  teacher?: string;
+  search: string ;
+  discipline?: string | null;
+  teacher?: string | null;
 }
 
 const { inputs } = defineProps<{
@@ -71,8 +71,8 @@ async function loadFilterData() {
 
 function clearFilters() {
   filters.value.search = "";
-  if (inputs.discipline) filters.value.discipline = "";
-  if (inputs.teacher) filters.value.teacher = "";
+  if (inputs.discipline) filters.value.discipline = null;
+  if (inputs.teacher) filters.value.teacher = null;
   emit("submitFilter");
 }
 
@@ -92,7 +92,8 @@ onMounted(loadFilterData);
             v-if="inputs.text"
             v-model="filters.search"
             class="text"
-            placeholder="Title, concept, or topic..."
+            label="Buscar"
+            placeholder="Título, conceito ou tópico..."
             prepend-inner-icon="mdi-magnify"
             variant="outlined"
             density="compact"
@@ -104,7 +105,7 @@ onMounted(loadFilterData);
           <v-select
             v-if="inputs.discipline"
             v-model="filters.discipline"
-            :placeholder="isLoadingData ? 'Loading' : 'Todas Disciplinas'"
+            :label="isLoadingData ? 'Carregando...' : 'Todas as Disciplinas'"
             :items="disciplines"
             variant="outlined"
             density="compact"
@@ -116,7 +117,7 @@ onMounted(loadFilterData);
           <v-select
             v-if="inputs.teacher"
             v-model="filters.teacher"
-            :placeholder="isLoadingData ? 'Loading' : 'Todos Professores'"
+            :label="isLoadingData ? 'Carregando...' : 'Todos os Professores'"
             :items="teachers"
             item-title="user.name"
             item-value="teacher_id"
@@ -129,7 +130,7 @@ onMounted(loadFilterData);
 
           <v-select
             v-if="inputs.course"
-            placeholder="Todos os Cursos"
+            label="Todos os Cursos"
             :items="[]"
             variant="outlined"
             density="compact"
@@ -145,7 +146,7 @@ onMounted(loadFilterData);
             :disabled="isLoadingData"
             @click="clearFilters"
           >
-            Clear Filters
+            Limpar Filtros
           </v-btn>
 
           <v-btn

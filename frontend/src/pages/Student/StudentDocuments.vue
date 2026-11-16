@@ -1,25 +1,31 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from "vue";
 import { type DocumentResponse, DocumentService } from "@/api/DocumentService";
+import { useStoreNotify } from "@/stores/StoreNotify";
 import Filters from "@/components/Filters/Filters.vue";
 import DocumentForm from "@/components/Forms/DocumentForm.vue";
 import Header from "@/components/Header/Header.vue";
 import BaseModal from "@/components/Modais/BaseModal.vue";
 import Ornament from "@/components/Ornament/Ornament.vue";
 import TableDocs from "@/components/Table/TableDocs.vue";
+import ConfirmDeleteModal from '@/components/Modais/ConfirmDeleteModal.vue'
 
+const notify = useStoreNotify();
 const documents = ref<DocumentResponse[]>([]);
 const isLoading = ref(true);
-const modal = ref(false);
+const isModalOpen = ref(false);
+
+const isDeleteModalOpen = ref(false);
+const documentToDelete = ref<DocumentResponse | null>(null);
 
 const page = ref(1);
 const totalPages = ref(1);
-const limit = 2;
+const limit = 5;
 
 const filters = ref({
   search: "",
-  discipline: "",
-  teacher: "",
+  discipline: null,
+  teacher: null,
 });
 
 async function loadDocuments() {
@@ -33,11 +39,9 @@ async function loadDocuments() {
       teacher: filters.value.teacher,
     });
     documents.value = response.data || [];
-    if (response.meta) {
-      totalPages.value = response.meta.totalPages || 1;
-    }
+    totalPages.value = response.meta?.totalPages || 1;
   } catch (error) {
-    console.error(error);
+    notify.notify("Erro ao carregar documentos", "error");
   } finally {
     isLoading.value = false;
   }
@@ -48,16 +52,38 @@ watch(page, () => {
 });
 
 function handleFilterSubmit() {
-  if (page.value !== 1) {
-    page.value = 1;
-  } else {
+  if (page.value === 1) {
     loadDocuments();
+  } else {
+    page.value = 1; 
   }
 }
 
-function handleModalClose() {
-  modal.value = false;
+function handleUploadSuccess() {
+  isModalOpen.value = false;
   loadDocuments();
+}
+
+function promptDelete(document: DocumentResponse) {
+  documentToDelete.value = document;
+  isDeleteModalOpen.value = true;
+}
+
+async function confirmDelete() {
+  if (!documentToDelete.value) return;
+  
+  try {
+    isLoading.value = true;
+    await DocumentService.delete(documentToDelete.value.id);
+    notify.notify("Documento apagado com sucesso", "alert");
+    isDeleteModalOpen.value = false;
+    documentToDelete.value = null;
+    loadDocuments();
+  } catch (error) {
+    notify.notify("Não foi possível apagar o documento", "error");
+  } finally {
+    isLoading.value = false;
+  }
 }
 
 onMounted(loadDocuments);
@@ -82,9 +108,9 @@ onMounted(loadDocuments);
         @submit-filter="handleFilterSubmit"
       />
 
-      <button class="addDocument" @click="modal = true">
+      <button class="addDocument" @click="isModalOpen = true">
         <v-icon icon="mdi-upload" />
-        Upload a new Document
+        Enviar novo documento
       </button>
 
       <Ornament :text="'Documentos'">
@@ -94,7 +120,7 @@ onMounted(loadDocuments);
           </div>
 
           <div v-else>
-            <TableDocs :documents="documents" />
+            <TableDocs :documents="documents" @delete="promptDelete" />
             <div class="d-flex justify-center mt-6">
               <v-pagination
                 v-if="totalPages > 1"
@@ -110,9 +136,18 @@ onMounted(loadDocuments);
       </Ornament>
     </div>
 
-    <BaseModal v-model:modal="modal" title="Faça o upload de um documento">
-      <DocumentForm @close="handleModalClose" />
+    <BaseModal v-model:modal="isModalOpen" title="Faça o upload de um documento">
+      <DocumentForm @success="handleUploadSuccess" @close="isModalOpen = false" />
     </BaseModal>
+
+    <ConfirmDeleteModal
+      v-model:modal="isDeleteModalOpen"
+      title="Apagar este documento?"
+      :item-name="documentToDelete?.titulo"
+      :loading="isLoading"
+      @confirm="confirmDelete"
+    />
+
   </div>
 </template>
 
