@@ -2,7 +2,7 @@
   <div class="rating-breakdown-card">
     <h2 class="title">
       <v-icon color="primary" icon="mdi-chart-bar" size="22" />
-      Rating Breakdown
+      Notas por Critério
     </h2>
 
     <div class="metrics-container">
@@ -24,10 +24,9 @@
 </template>
 
 <script setup lang="ts">
-  import type { RatingMetric } from '@/type/ProfessorData'
-
-  const props = defineProps<{
-    metrics: RatingMetric[]
+  import type { TeacherRatingMetric } from '@/api/TeacherService'
+  const props = defineProps<{ 
+    metrics: TeacherRatingMetric[] 
   }>()
 
   function calculatePercentage (score: number): string {

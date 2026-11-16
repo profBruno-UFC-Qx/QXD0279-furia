@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { type DocumentResponse } from '@/@types/documents';
+import { type DocumentResponse } from '@/api/DocumentService'
+import { authStore } from '@/stores/StoreAuth'
 
 const props = defineProps<{ 
   documents: DocumentResponse[]
@@ -8,11 +9,17 @@ const props = defineProps<{
   totalPages?: number
 }>()
 
+const currentPage = defineModel<number>('currentPage', { default: 1 })
+const totalPages = defineModel<number>('totalPages', { default: 1 })
+
 const emit = defineEmits<{
   (e: 'delete', document: DocumentResponse): void
   (e: 'update:currentPage', page: number): void
   (e: 'update:itemsPerPage', limit: number): void
 }>()
+
+const auth = authStore()
+const currentUserId = Number(auth.userId)
 
 const headers = [
   { title: "Título", align: "start", key: "titulo", sortable: false },
@@ -31,9 +38,14 @@ const headers = [
       item-value="id"
       fixed-header
       class="tabela"
+      :row-props="(item: any) => {
+        if (item.item.student_id === currentUserId) {
+          return { class: 'minha-linha' }
+        }
+        return {}
+      }"
     >
       <template v-slot:item.teacher="{ item }">
-        <!-- Corrigida a duplicação que tinha no nome do professor -->
         {{ item.teacher?.user?.name || 'Não informado' }}
       </template>
 
@@ -53,38 +65,36 @@ const headers = [
             title="Abrir documento"
           ></v-btn>
 
-          <!-- Novo botão de Deletar para o Admin -->
           <v-btn
+            v-if="item.student_id === currentUserId || auth.role === 'admin'"
             color="error"
             icon="mdi-delete"
             size="small"
             variant="text"
-            title="Apagar documento"
+            :title="auth.role === 'admin' ? 'Apagar documento (Admin)' : 'Apagar meu documento'"
             @click="emit('delete', item)"
           ></v-btn>
         </div>
       </template>
     </v-data-table-virtual>
 
-    <!-- Rodapé com Paginação -->
-    <div v-if="totalPages" class="d-flex justify-space-between align-center mt-4 px-2">
-      <span class="text-caption text-grey-darken-1">
-        Página {{ currentPage }} de {{ totalPages }}
-      </span>
-      
+    <div v-if="totalPages > 1" class="d-flex justify-center mt-6 mb-4">
       <v-pagination
-        :model-value="currentPage"
-        @update:model-value="emit('update:currentPage', $event)"
+        v-model="currentPage"
         :length="totalPages"
         :total-visible="5"
-        density="compact"
-        color="primary"
-      ></v-pagination>
+        rounded="circle"
+      />
     </div>
   </div>
 </template>
 
 <style scoped>
+
+.tabela :deep(.minha-linha td:first-child) {
+  box-shadow: inset 4px 0 0 0 rgb(26, 105, 195) !important;
+}
+
 .tableComponente {
   display: flex;
   flex-direction: column;

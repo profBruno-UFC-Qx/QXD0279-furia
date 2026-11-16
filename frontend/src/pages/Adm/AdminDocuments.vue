@@ -1,16 +1,11 @@
 <script setup lang="ts">
-import { onMounted, ref, watch, reactive } from "vue";
+import { onMounted, ref, watch } from "vue";
 import Header from "@/components/Header/Header.vue";
 import Ornament from "@/components/Ornament/Ornament.vue";
 import TableDocument from "@/components/Table/TableDocs.vue";
-import { DocumentService } from "@/api/DocumentService";
-import { type DocumentResponse } from "@/@types/documents";
-import BaseModal from "@/components/Modais/BaseModal.vue";
+import ConfirmDeleteModal from "@/components/Modais/ConfirmDeleteModal.vue";
+import { DocumentService, type DocumentResponse } from "@/api/DocumentService";
 import { useStoreNotify } from "@/stores/StoreNotify";
-
-interface Modals {
-  delete: boolean;
-}
 
 const notify = useStoreNotify();
 const currentPage = ref(1);
@@ -19,10 +14,7 @@ const totalPages = ref(0);
 const documents = ref<DocumentResponse[]>([]);
 const documentErrors = ref<string | null>(null);
 
-const modals = reactive<Modals>({
-  delete: false,
-});
-
+const isDeleteModalOpen = ref(false);
 const documentSelected = ref<DocumentResponse | null>(null);
 
 async function fetchDocuments() {
@@ -32,8 +24,8 @@ async function fetchDocuments() {
       limit: itemsPerPage.value,
       page: currentPage.value,
     });
-    documents.value = response.data;
-    totalPages.value = response.meta.totalPages;
+    documents.value = response.data || [];
+    totalPages.value = response.meta?.totalPages || 1;
     documentErrors.value = null;
   } catch (error) {
     documentErrors.value = "Não foi possível obter os documentos.";
@@ -42,21 +34,26 @@ async function fetchDocuments() {
   }
 }
 
-async function Delete(document: DocumentResponse | null) {
-  if (!document) return;
+function promptDelete(doc: DocumentResponse) {
+  documentSelected.value = doc;
+  isDeleteModalOpen.value = true;
+}
+
+async function confirmDelete() {
+  if (!documentSelected.value) return;
 
   notify.startLoad();
   try {
-    const { id } = document;
-    await DocumentService.delete(id);
-    modals.delete = false;
-
+    await DocumentService.delete(documentSelected.value.id);
+    isDeleteModalOpen.value = false;
+    
     await fetchDocuments();
-    notify.notify("Documento deletado com sucesso", "alert");
+    notify.notify("Documento apagado com sucesso.", "alert");
   } catch (error) {
-    notify.notify("Não foi possível apagar o documento", "error");
+    notify.notify("Não foi possível apagar o documento.", "error");
   } finally {
     notify.endLoad();
+    documentSelected.value = null;
   }
 }
 
@@ -72,62 +69,47 @@ onMounted(async () => {
 <template>
   <div class="dashboard-page">
     <Header
-      :title="'Admin Documentos'"
-      :description="'Visão geral e gestão dos materiais e documentos compartilhados no sistema.'"
+      title="Admin Documentos"
+      description="Visão geral e gestão dos materiais e documentos compartilhados no sistema."
     />
 
-    <v-alert v-if="documentErrors" type="error">
-      <div>{{ documentErrors }}</div>
+    <div class="mb-4">
+      <v-btn variant="text" prepend-icon="mdi-arrow-left" to="/adm/dashboard">
+        Voltar para o Dashboard
+      </v-btn>
+    </div>
+
+    <v-alert v-if="documentErrors" type="error" density="compact">
+      {{ documentErrors }}
     </v-alert>
 
     <Ornament text="Documentos Cadastrados">
       <template #content>
-        <div class="table-wrapper">
-          <TableDocument
-            :documents="documents"
-            v-model:current-page="currentPage"
-            v-model:itemsPerPage="itemsPerPage"
-            v-model:totalPages="totalPages"
-            @delete="
-              (doc) => {
-                modals.delete = true;
-                documentSelected = doc;
-              }
-            "
-          />
+        <div class="pa-4">
+          <div class="table-wrapper">
+            <TableDocument
+              :documents="documents"
+              v-model:current-page="currentPage"
+              v-model:totalPages="totalPages"
+              @delete="promptDelete"
+            />
+          </div>
         </div>
       </template>
     </Ornament>
   </div>
 
-  <BaseModal
-    :title="'Deseja apagar este documento?'"
-    v-model:modal="modals.delete"
-    @close="documentSelected = null"
+  <ConfirmDeleteModal
+    v-model:modal="isDeleteModalOpen"
+    title="Apagar este documento?"
+    :loading="notify.loading"
+    @confirm="confirmDelete"
   >
-    <div class="d-flex align-center ga-3">
-      <div class="flex-grow-1">
-        <div class="font-weight-bold">{{ documentSelected?.titulo }}</div>
-        <div class="text-caption text-medium-emphasis">
-          Enviado por: {{ documentSelected?.teacher?.user?.name || "Aluno" }} ·
-          {{ documentSelected?.discipline?.name || "Geral" }}
-        </div>
-      </div>
-
-      <v-btn
-        color="error"
-        icon="mdi-delete"
-        size="large"
-        variant="text"
-        aria-label="Excluir documento"
-        @click="
-          () => {
-            Delete(documentSelected);
-          }
-        "
-      />
-    </div>
-  </BaseModal>
+    <template #message>
+      Tem a certeza que deseja remover o documento <strong>"{{ documentSelected?.titulo }}"</strong>?<br>
+      Enviado por: {{ documentSelected?.teacher?.user?.name || 'Aluno' }} ({{ documentSelected?.discipline?.name || 'Geral' }}).
+    </template>
+  </ConfirmDeleteModal>
 </template>
 
 <style scoped>

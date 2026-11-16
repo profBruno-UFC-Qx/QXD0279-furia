@@ -20,8 +20,8 @@ export class DocumentController {
                 );
             }
 
-            const userId = res.locals.user?.id || (req as any).user?.id; 
-            const role = res.locals.user?.role || (req as any).user?.role;
+            const userId = req.user!.id;
+            const role = req.user!.role;
 
             if (role === 'student') {
                 validatedData.data.student_id = userId;
@@ -66,8 +66,8 @@ export class DocumentController {
             const page = parseInt(req.query.page as string) || 1;
             const limit = parseInt(req.query.limit as string) || 10;
             
-            const userId = res.locals.user?.id || (req as any).user?.id; 
-            const role = res.locals.user?.role || (req as any).user?.role;
+            const userId = req.user!.id; 
+            const role = req.user!.role;
 
             if (!userId) {
                 throw new AppError(401, "Usuário não autenticado");
@@ -83,7 +83,12 @@ export class DocumentController {
     delete = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = parseInt(req.params.id as string);
-            await this.service.deleteDocument(id);
+            
+            const loggedUserId = req.user!.id; 
+            const role = req.user!.role;
+
+            await this.service.deleteDocument(id, loggedUserId, role);
+            
             return res.status(204).send();
         } catch (error) {
             return next(error);

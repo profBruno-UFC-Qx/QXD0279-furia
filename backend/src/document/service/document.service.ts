@@ -51,8 +51,13 @@ export class DocumentService {
         return this.repository.findMine(page, limit, userId, role);
     }
 
-    async deleteDocument(id: number) {
-        await this.getDocumentById(id);
+    async deleteDocument(id: number, loggedUserId: number, role: string) {
+        const document = await this.getDocumentById(id);
+
+        if (role !== 'admin' && document.student_id !== loggedUserId) {
+            throw new Error("Sem autorizacao para acessar recurso"); 
+        }
+
         return this.repository.delete(id);
     }
 }

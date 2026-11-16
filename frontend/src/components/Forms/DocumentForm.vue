@@ -16,16 +16,18 @@
 
   const emit = defineEmits<{
     (e: 'close'): void
+    (e: 'success'): void
   }>()
 
   const auth = authStore() 
   const notify = useStoreNotify()
+  
   const isLoading = ref(true)
   const isSubmitting = ref(false)
-  const errorMessage = ref('')
-  const successMessage = ref('')
+  
   const teachers = ref<TeacherResponse[]>([])
   const disciplines = ref<DisciplineResponse[]>([])
+  
   const formData = ref({
     title: '',
     discipline: null as number | null,
@@ -33,12 +35,16 @@
     file: [] as File[],
   })
 
+  const titleRules = [
+    (v: string) => !!v || 'O título é obrigatório',
+    (v: string) => (v && v.trim().length >= 3) || 'No mínimo 3 caracteres'
+  ]
+
   onMounted(async () => {
     isLoading.value = true
-    errorMessage.value = ''
     try {
       if (props.isDashboard) {
-        formData.value.teacher = Number(auth.userId) || Number(localStorage.getItem('userId')) || null
+        formData.value.teacher = Number(auth.userId) || null
         
         const disciplineResponse = await DisciplineService.getAll(100, 1)
         disciplines.value = disciplineResponse.data || []
@@ -51,43 +57,40 @@
         disciplines.value = disciplineResponse.data || []
       }
     } catch (error) {
-      errorMessage.value = getErrorMessage(error, 'Não foi possível carregar os dados.')
+      notify.notify('Não foi possível carregar as opções do formulário.', 'error')
     } finally {
       isLoading.value = false
     }
   })
 
-  function getErrorMessage (error: unknown, fallback: string): string {
-    return error instanceof ApiError ? error.message : fallback
-  }
-
   async function handleSubmit () {
-    errorMessage.value = ''
-    successMessage.value = ''
-    
     const resolvedTeacherId = props.isDashboard 
-      ? (Number(auth.userId) || Number(localStorage.getItem('userId')))
+      ? Number(auth.userId)
       : formData.value.teacher;
-
-    if (!formData.value.title || !formData.value.discipline || !resolvedTeacherId || !formData.value.file) {
-      errorMessage.value = 'Preencha todos os campos obrigatórios.'
-      return
-    }
 
     const fileToUpload = Array.isArray(formData.value.file)
       ? formData.value.file[0]
-      : formData.value.file
+      : formData.value.file;
 
-    if (!fileToUpload) return
+    if (!formData.value.title || !formData.value.discipline || !resolvedTeacherId || !fileToUpload) {
+      notify.notify('Preencha todos os campos obrigatórios.', 'error')
+      return
+    }
+
+    if (formData.value.title.trim().length < 3) {
+      return
+    }
 
     const validExtensions = ['.pdf', '.doc', '.docx']
     const extension = fileToUpload.name.slice(fileToUpload.name.lastIndexOf('.')).toLowerCase()
+    
     if (!validExtensions.includes(extension)) {
-      errorMessage.value = 'Selecione um arquivo PDF, DOC ou DOCX.'
+      notify.notify('Selecione um arquivo PDF, DOC ou DOCX.', 'error')
       return
     }
+    
     if (fileToUpload.size > 5 * 1024 * 1024) {
-      errorMessage.value = 'O arquivo deve ter no máximo 5 MB.'
+      notify.notify('O arquivo deve ter no máximo 5 MB.', 'error')
       return
     }
 
@@ -101,16 +104,17 @@
         file: fileToUpload,
       })
 
-      successMessage.value = 'Documento enviado com sucesso.'
-      notify.notify(successMessage.value, 'alert')
+      notify.notify('Documento enviado com sucesso.', 'alert')
       
       formData.value.title = ''
       formData.value.file = []
+      formData.value.discipline = null
       if (!props.isDashboard) formData.value.teacher = null
       
-      emit('close')
+      emit('success')
     } catch (error) {
-      errorMessage.value = getErrorMessage(error, 'Não foi possível enviar o documento.')
+      const msg = error instanceof ApiError ? error.message : 'Não foi possível enviar o documento.'
+      notify.notify(msg, 'error')
     } finally {
       isSubmitting.value = false
     }
@@ -119,25 +123,6 @@
 
 <template>
   <form class="upload-layout" @submit.prevent="handleSubmit">
-    <v-alert
-      v-if="errorMessage"
-      density="compact"
-      role="alert"
-      type="error"
-      variant="tonal"
-    >
-      {{ errorMessage }}
-    </v-alert>
-
-    <v-alert
-      v-if="successMessage"
-      density="compact"
-      role="status"
-      type="success"
-      variant="tonal"
-    >
-      {{ successMessage }}
-    </v-alert>
 
     <v-progress-linear v-if="isLoading" color="primary" indeterminate />
 
@@ -148,10 +133,11 @@
         v-model="formData.title"
         density="comfortable"
         :disabled="isLoading || isSubmitting"
-        hide-details
+        hide-details="auto"
         placeholder="Ex: Lista de Exercícios 01 - Árvores Binárias"
         required
         variant="outlined"
+        :rules="titleRules"
       />
     </div>
 

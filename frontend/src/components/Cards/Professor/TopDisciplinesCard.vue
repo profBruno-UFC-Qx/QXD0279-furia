@@ -2,7 +2,7 @@
   <div class="top-disciplines-card">
     <div class="header">
       <v-icon color="grey-darken-1" icon="mdi-sitemap-outline" size="18" />
-      <h2 class="title">TOP DISCIPLINES</h2>
+      <h2 class="title">PRINCIPAIS DISCIPLINAS</h2>
     </div>
 
     <ul class="disciplines-list">
@@ -25,17 +25,13 @@
 </template>
 
 <script setup lang="ts">
-  import type { Discipline } from '@/type/ProfessorData'
+  import type { TeacherDisciplineView } from '@/api/TeacherService'
+  
+  const props = defineProps<{ disciplines: TeacherDisciplineView[] }>()
+  
+  const emit = defineEmits<{ (e: 'select-discipline', discipline: TeacherDisciplineView): void }>()
 
-  const props = defineProps<{
-    disciplines: Discipline[]
-  }>()
-
-  const emit = defineEmits<{
-    (e: 'select-discipline', discipline: Discipline): void
-  }>()
-
-  function handleDisciplineClick (selectedDiscipline: Discipline) {
+  function handleDisciplineClick (selectedDiscipline: TeacherDisciplineView) {
     emit('select-discipline', selectedDiscipline)
   }
 </script>

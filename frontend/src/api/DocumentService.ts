@@ -1,8 +1,41 @@
-import type { RequestResponse } from "@/@types/metaData";
-import { request } from "./request";
-import { type CreateDocumentPayload } from "@/@types/documents";
-import { type DocumentResponse } from "@/@types/documents";
-import { type GetDocumentsParams } from "@/@types/documents";
+import type { RequestResponse } from '@/@types/metaData'
+import { request } from './request'
+
+export interface CreateDocumentPayload {
+  titulo: string
+  teacher_id: number
+  discipline_id: number
+  student_id?: number
+  file: File
+}
+
+export interface DocumentResponse {
+  id: number
+  titulo: string
+  file_url: string
+  data_publicacao: string
+  student_id: number | null
+  teacher_id: number
+  discipline_id: number
+  discipline?: {
+    id: number
+    name: string 
+  }
+  teacher?: {
+    id: number
+    user?: {
+      name: string
+    }
+  }
+}
+
+export interface GetDocumentsParams {
+  page?: number;
+  limit?: number;
+  search?: string;
+  discipline?: string | null;
+  teacher?: string | null; 
+}
 
 export const DocumentService = {
   upload: async (payload: CreateDocumentPayload): Promise<DocumentResponse> => {

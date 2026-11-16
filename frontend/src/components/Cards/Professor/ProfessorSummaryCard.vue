@@ -19,23 +19,23 @@
           </span>
 
           <span class="divider">|</span>
-          <span class="review-count">Based on {{ professor.reviewCount }} student reviews</span>
+          <span class="review-count">Baseado em {{ professor.reviewCount }} avaliações</span>
         </div>
       </div>
     </div>
 
     <button class="btn-review" @click="handleReviewClick">
       <v-icon icon="mdi-message-draw" size="18" />
-      Write a Review
+      Escrever Avaliação
     </button>
   </div>
 </template>
 
 <script setup lang="ts">
-  import type { ProfessorData } from '@/type/ProfessorData'
-
-  const props = defineProps<{
-    professor: ProfessorData
+  import type { TeacherProfileView } from '@/api/TeacherService'
+  
+  const props = defineProps<{ 
+    professor: TeacherProfileView 
   }>()
 
   const emit = defineEmits<{
