@@ -1,24 +1,8 @@
 import { request } from "./request";
-
 import { type RequestResponse } from "@/@types/metaData";
-
-export interface DisciplineResponse {
-  discipline_id: number;
-  name: string;
-  course: string;
-  hours: number;
-}
-
-export interface DisciplineName {
-  discipline_id: number;
-  name: string;
-}
-
-export interface Discipline {
-  name: string;
-  course: string;
-  hours: number;
-}
+import { type DisciplineResponse } from "@/@types/discipline";
+import { type Discipline } from "@/@types/discipline";
+import { type DisciplineName } from "@/@types/discipline";
 
 export const DisciplineService = {
   getAll: async (

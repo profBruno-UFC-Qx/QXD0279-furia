@@ -7,11 +7,10 @@ import ReviewsCard from "@/components/Cards/ReviewsCard.vue";
 import Ornament from "@/components/Ornament/Ornament.vue";
 import { AvaliacaoService } from "@/api/AvaliacaoService";
 import { StatisticsService } from "@/api/StatisticsService";
-import { type metaData } from "@/@types/metaData";
-import { type AvaliacaoResponse } from "@/api/AvaliacaoService";
-import { type AvaliacaoResponseWithData } from "@/api/AvaliacaoService";
-import { type statisticsHomeResponse } from "@/api/StatisticsService";
-import { DocumentService, type DocumentResponse } from "@/api/DocumentService";
+import { type AvaliacaoResponseWithData } from "@/@types/avaliacao";
+import { type statisticsHomeResponse } from "@/@types/estatistic";
+import { type DocumentResponse } from "@/@types/documents";
+import { DocumentService } from "@/api/DocumentService";
 
 const avaliacoes = ref<AvaliacaoResponseWithData[]>([]);
 const currentPage = ref(1);
@@ -41,7 +40,7 @@ async function fetchEvaluations() {
   }
 }
 
-const meusDocumentos = ref<DocumentResponse[]>([]); 
+const meusDocumentos = ref<DocumentResponse[]>([]);
 const docsLoading = ref(false);
 const docsError = ref<string | null>(null);
 
@@ -50,9 +49,9 @@ async function fetchDocuments() {
   docsError.value = null;
 
   try {
-    const response = await DocumentService.getMine(); 
-  
-    meusDocumentos.value = response.data; 
+    const response = await DocumentService.getMine();
+
+    meusDocumentos.value = response.data;
   } catch {
     docsError.value = "Não foi possível obter os documentos.";
   } finally {
@@ -62,8 +61,8 @@ async function fetchDocuments() {
 
 const statistics = ref<statisticsHomeResponse>({
   qtd_avaliacoes: 0,
-  qtd_downloaded: 0,
-  qtd_uploades: 0,
+  qtd_myUploades: 0,
+  qtd_allUploades: 0,
 });
 const statisticsLoading = ref<boolean>(false);
 const statisticsError = ref<string | null>(null);
@@ -103,13 +102,13 @@ onMounted(async () => {
         icon="mdi-star"
       />
       <StatsCard
-        title="Documentos Uploaded"
-        :value="statistics.qtd_uploades | 0"
+        title="Meus Documentos"
+        :value="statistics.qtd_myUploades | 0"
         icon="mdi-upload"
       />
       <StatsCard
-        title="Documentos Downloaded"
-        :value="statistics.qtd_downloaded | 0"
+        title="Todos os Documentos"
+        :value="statistics.qtd_allUploades | 0"
         icon="mdi-upload"
       />
     </div>
@@ -124,7 +123,7 @@ onMounted(async () => {
           <v-alert v-else-if="docsError" type="error">
             {{ docsError }}
           </v-alert>
-          
+
           <p v-else-if="meusDocumentos.length === 0" class="text-center py-4">
             Você ainda não fez upload de nenhum documento.
           </p>

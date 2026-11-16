@@ -22,7 +22,7 @@ async function fetchDocuments() {
   try {
     const response = await DocumentService.getAll({
       limit: itemsPerPage.value,
-      page: currentPage.value
+      page: currentPage.value,
     });
     documents.value = response.data || [];
     totalPages.value = response.meta?.totalPages || 1;

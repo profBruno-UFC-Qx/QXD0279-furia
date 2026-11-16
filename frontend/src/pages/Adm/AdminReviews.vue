@@ -33,7 +33,7 @@ async function fetchAllReviews() {
   try {
     const response = await AvaliacaoService.getAll(
       itemsPerPage.value,
-      currentPage.value
+      currentPage.value,
     );
 
     const res = response as any;
@@ -115,8 +115,10 @@ onMounted(async () => {
     <Ornament text="Todas as Avaliações">
       <template #content>
         <div class="pa-4">
-          
-          <div v-if="avaliacoes.length === 0 && !notify.loading" class="text-center py-8 text-grey">
+          <div
+            v-if="avaliacoes.length === 0 && !notify.loading"
+            class="text-center py-8 text-grey"
+          >
             Nenhuma avaliação encontrada na plataforma.
           </div>
 
@@ -135,15 +137,22 @@ onMounted(async () => {
             <tbody>
               <tr v-for="avaliacao in avaliacoes" :key="avaliacao.id">
                 <td>#{{ avaliacao.id }}</td>
-                <td>{{ avaliacao.teacher?.user?.name || 'Desconhecido' }}</td>
-                <td>{{ avaliacao.discipline?.name || 'N/A' }}</td>
+                <td>{{ avaliacao.teacher?.user?.name || "Desconhecido" }}</td>
+                <td>{{ avaliacao.discipline?.name || "N/A" }}</td>
                 <td class="text-center font-weight-bold">
-                  {{ (avaliacao.nota_geral != null ? Number(avaliacao.nota_geral) : 0).toFixed(1) }} ⭐
+                  {{
+                    (avaliacao.nota_geral != null
+                      ? Number(avaliacao.nota_geral)
+                      : 0
+                    ).toFixed(1)
+                  }}
+                  ⭐
                 </td>
                 <td class="comment-cell">
-                  {{ avaliacao.comment?.length > 30 
-                      ? avaliacao.comment.substring(0, 30) + '...' 
-                      : avaliacao.comment || 'Sem comentário' 
+                  {{
+                    avaliacao.comment?.length > 30
+                      ? avaliacao.comment.substring(0, 30) + "..."
+                      : avaliacao.comment || "Sem comentário"
                   }}
                   
                   <v-btn 
@@ -158,7 +167,7 @@ onMounted(async () => {
                   </v-btn>
                 </td>
                 <td class="text-center">
-                  {{ new Date(avaliacao.creat_at).toLocaleDateString('pt-BR') }}
+                  {{ new Date(avaliacao.creat_at).toLocaleDateString("pt-BR") }}
                 </td>
                 <td class="text-center">
                   <v-btn
@@ -183,14 +192,15 @@ onMounted(async () => {
               rounded="circle"
             />
           </div>
-
         </div>
       </template>
     </Ornament>
 
     <v-dialog v-model="showDialog" max-width="500">
       <v-card>
-        <v-card-title class="text-h6 pb-2 mt-2">Comentário Completo</v-card-title>
+        <v-card-title class="text-h6 pb-2 mt-2"
+          >Comentário Completo</v-card-title
+        >
         <v-card-text class="text-body-1 pb-4">
           {{ selectedComment }}
         </v-card-text>

@@ -16,8 +16,7 @@ async function register(registerData: registerData) {
     if (user.userResponse.role == "student") {
       router.push({ name: "studentHome" });
     } else if (user.userResponse.role == "teacher") {
-      // JULIO, COLOCAR O NOME DA ROTA DO PROF AKI!!!
-      router.push({ name: "studentTeachers" });
+      router.replace({ name: "professorDashboard" });
     }
   } catch (e) {
     if (e instanceof ApiError) {

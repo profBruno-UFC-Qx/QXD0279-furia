@@ -1,5 +1,4 @@
 import { request } from "./request";
-
 import { type RequestResponse } from "@/@types/metaData";
 
 export interface TeacherResponse {

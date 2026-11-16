@@ -1,5 +1,6 @@
 import { UserDTO } from "./dto/user.dto.ts";
 import { DataBase } from "../database/dataBase.ts";
+import { InternalServerError } from "../errors/errors.ts";
 
 export class UserRepository {
   constructor(private database: DataBase) {}
@@ -64,20 +65,18 @@ export class UserRepository {
       await this.database.user.delete({
         where: { user_id: userId },
       });
-      return true;
-    } catch {
-      return false;
+    } catch (e) {
+      throw new InternalServerError();
     }
   }
 
   async deleteUserByEmail(email: string) {
     try {
-      const a = await this.database.user.delete({
+      await this.database.user.delete({
         where: { email },
       });
-      return true;
     } catch (e) {
-      return false;
+      throw new InternalServerError();
     }
   }
 
@@ -109,19 +108,22 @@ export class UserRepository {
   }
 
   async getsStatsHome(id: number) {
-    const [qtd_avaliacoes, qtd_uploades] = await Promise.all([
-      this.database.avaliacao.count({
-        where: { student_id: id },
-      }),
-      this.database.documents.count({
-        where: { student_id: id },
-      }),
-    ]);
+    const [qtd_avaliacoes, qtd_myUploades, qtd_allUploades] = await Promise.all(
+      [
+        this.database.avaliacao.count({
+          where: { student_id: id },
+        }),
+        this.database.documents.count({
+          where: { student_id: id },
+        }),
+        this.database.documents.count(),
+      ],
+    );
 
     return {
       qtd_avaliacoes,
-      qtd_downloaded: qtd_uploades,
-      qtd_uploades,
+      qtd_myUploades,
+      qtd_allUploades,
     };
   }
 }

@@ -13,7 +13,7 @@ export class TeacherService {
     private userService: UserService,
     private teacherRepository: TeacherRepository,
     private database: DataBase,
-  ) { }
+  ) {}
 
   async createTeacher(teacherData: TeacherRegisterDTO) {
     const { email, password, name, role, disciplines } = teacherData;
@@ -38,8 +38,8 @@ export class TeacherService {
   }
 
   async findAll(take: number, skip: number, filters: filterTeacher) {
-    const total = await this.teacherRepository.count();
     const data = await this.teacherRepository.findAll(take, skip, filters);
+    const total = await this.teacherRepository.count(filters);
 
     const NotasGerais = data.map((prof) => {
       return {
@@ -68,7 +68,10 @@ export class TeacherService {
       throw new NotFoundError("Professor não encontrado");
     }
 
-    return await this.teacherRepository.updateDisciplines(teacherId, disciplineIds);
+    return await this.teacherRepository.updateDisciplines(
+      teacherId,
+      disciplineIds,
+    );
   }
 
   async getDashboard(userId: number) {
@@ -80,16 +83,20 @@ export class TeacherService {
 
     const totalReviews = teacherData.avaliacoes.length;
     const mediaGeral = calculateAverage(
-      teacherData.avaliacoes.map((av) => av.nota_geral)
+      teacherData.avaliacoes.map((av) => av.nota_geral),
     );
 
-    const activeDisciplines = teacherData.disciplines.map(d => {
-      const reviewsDaDisciplina = teacherData.avaliacoes.filter(av => av.discipline_id === d.discipline_id);
+    const activeDisciplines = teacherData.disciplines.map((d) => {
+      const reviewsDaDisciplina = teacherData.avaliacoes.filter(
+        (av) => av.discipline_id === d.discipline_id,
+      );
       return {
         id: d.discipline_id.toString(),
         name: d.name,
         studentCount: reviewsDaDisciplina.length, // Usando número de reviews como aproximação
-        averageRating: calculateAverage(reviewsDaDisciplina.map(av => av.nota_geral))
+        averageRating: calculateAverage(
+          reviewsDaDisciplina.map((av) => av.nota_geral),
+        ),
       };
     });
 
@@ -99,15 +106,15 @@ export class TeacherService {
         averageRating: mediaGeral,
         totalReviews: totalReviews,
         activeDocuments: teacherData.documents.length,
-        activeDisciplinesCount: teacherData.disciplines.length
+        activeDisciplinesCount: teacherData.disciplines.length,
       },
       recentReviews: teacherData.avaliacoes.slice(0, 5),
       activeDisciplines: activeDisciplines,
-      recentDocuments: teacherData.documents.map(doc => ({
+      recentDocuments: teacherData.documents.map((doc) => ({
         id: doc.id.toString(),
         fileName: doc.titulo,
-        disciplineName: doc.discipline?.name || 'Geral',
-      }))
+        disciplineName: doc.discipline?.name || "Geral",
+      })),
     };
   }
 
@@ -131,13 +138,13 @@ export class TeacherService {
     const avaliacoesFormatadas = {
       ...teacherProfile,
       media_geral: calculateAverage(
-        teacherProfile.avaliacoes.map((av) => av.nota_geral)
+        teacherProfile.avaliacoes.map((av) => av.nota_geral),
       ),
       media_didatica: calculateAverage(
-        teacherProfile.avaliacoes.map((av) => av.nota_didatica)
+        teacherProfile.avaliacoes.map((av) => av.nota_didatica),
       ),
       media_metodologia: calculateAverage(
-        teacherProfile.avaliacoes.map((av) => av.nota_metodologia)
+        teacherProfile.avaliacoes.map((av) => av.nota_metodologia),
       ),
     };
 
@@ -181,12 +188,6 @@ export class TeacherService {
       throw new NotFoundError("Professor nao encontrado");
     }
 
-    const deleted = await this.userService.deleteUser(teacher.user.user_id);
-
-    if (!deleted) {
-      throw new NotFoundError("Nao foi possivel deletar o professor");
-    }
-
-    return deleted;
+    await this.userService.deleteUser(teacher.user.user_id);
   }
 }
