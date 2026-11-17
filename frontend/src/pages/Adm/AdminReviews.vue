@@ -3,7 +3,8 @@ import { onMounted, ref, watch } from "vue";
 import Header from "@/components/Header/Header.vue";
 import Ornament from "@/components/Ornament/Ornament.vue";
 import ConfirmDeleteModal from "@/components/Modais/ConfirmDeleteModal.vue";
-import { AvaliacaoService, type AvaliacaoResponse } from "@/api/AvaliacaoService";
+import { AvaliacaoService } from "@/api/AvaliacaoService";
+import type { AvaliacaoResponse } from "@/@types/avaliacao";
 import { useStoreNotify } from "@/stores/StoreNotify";
 import { ApiError } from "@/api/ApiError";
 
