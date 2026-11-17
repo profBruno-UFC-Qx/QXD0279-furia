@@ -1,7 +1,8 @@
 <script setup lang="ts">
   import { onMounted, ref } from 'vue'
   import { ApiError } from '@/api/ApiError'
-  import { type DisciplineResponse, DisciplineService } from '@/api/DisciplineService'
+  import { DisciplineService } from '@/api/DisciplineService'
+  import type { DisciplineResponse } from '@/@types/discipline'
   import { DocumentService } from '@/api/DocumentService'
   import { type TeacherResponse, TeacherService } from '@/api/TeacherService'
   import { useStoreNotify } from '@/stores/StoreNotify'

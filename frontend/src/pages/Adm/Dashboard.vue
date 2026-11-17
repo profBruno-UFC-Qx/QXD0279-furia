@@ -132,32 +132,9 @@ onMounted(async () => {
 <template>
   <div class="dashboard-page">
     <Header
-      :title="'Admin DashBoard'"
+      :title="'DashBoard'"
       :description="'Visão geral da atividade, crescimento e gestão do site.'"
     />
-
-    <section class="quick-actions">
-      <v-btn
-        color="primary"
-        elevation="0"
-        to="/adm/reviews"
-        prepend-icon="mdi-star-check-outline"
-        class="admin-btn"
-      >
-        Gerenciar Avaliações
-      </v-btn>
-
-      <v-btn
-        color="primary"
-        variant="tonal"
-        elevation="0"
-        to="/adm/documents"
-        prepend-icon="mdi-file-document-multiple"
-        class="admin-btn"
-      >
-        Gerenciar Documentos
-      </v-btn>
-    </section>
 
     <v-alert
       v-if="

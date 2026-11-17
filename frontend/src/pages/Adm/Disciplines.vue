@@ -129,7 +129,7 @@ onMounted(async () => {
 <template>
   <div class="discipline-page">
     <Header
-      :title="'Admin Disciplinas'"
+      :title="'Gerenciar Disciplinas'"
       :description="'Visão geral das diciplinas cadastradas no sistema.'"
     />
 

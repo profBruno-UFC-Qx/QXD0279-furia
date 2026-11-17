@@ -69,7 +69,7 @@ onMounted(async () => {
 <template>
   <div class="dashboard-page">
     <Header
-      title="Admin Documentos"
+      title="Gerenciar Documentos"
       description="Visão geral e gestão dos materiais e documentos compartilhados no sistema."
     />
 

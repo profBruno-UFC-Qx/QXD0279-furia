@@ -32,6 +32,20 @@ const logout = () => {
               text="Disciplina"
             />
           </li>
+          <li>
+            <v-btn
+              variant="plain"
+              to="/adm/reviews"
+              text="Avaliações"
+            />
+          </li>
+          <li>
+            <v-btn
+              variant="plain"
+              to="/adm/documents"
+              text="Documentos"
+            />
+          </li>
         </ul>
       </nav>
       <nav class="navigation" v-if="storeAuth.role == 'student'">
