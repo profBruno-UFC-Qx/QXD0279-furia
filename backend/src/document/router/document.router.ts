@@ -5,28 +5,36 @@ import { AutorizationMiddleware } from "../../middlewares/autorization.middlewar
 import { uploadMiddleware } from "../../middlewares/upload.middleware.ts";
 
 export function createDocumentRouter(documentController: DocumentController) {
-    const documentRouter = Router();
+  const documentRouter = Router();
 
-    documentRouter.post(
-        "/document",
-        AuthMiddleware,
-        AutorizationMiddleware(["teacher", "student", "admin"]),
-        uploadMiddleware.single("file"),
-        documentController.create
-    );
+  documentRouter.post(
+    "/document",
+    AuthMiddleware,
+    AutorizationMiddleware(["teacher", "student", "admin"]),
+    uploadMiddleware.single("file"),
+    documentController.create,
+  );
 
-    documentRouter.get("/document", AuthMiddleware, documentController.list);
+  documentRouter.get("/document", AuthMiddleware, documentController.list);
 
-    documentRouter.get("/document/mine", AuthMiddleware, documentController.getMine);
+  documentRouter.get(
+    "/document/mine",
+    AuthMiddleware,
+    documentController.getMine,
+  );
 
-    documentRouter.get("/document/:id", AuthMiddleware, documentController.getById);
+  documentRouter.get(
+    "/document/:id",
+    AuthMiddleware,
+    documentController.getById,
+  );
 
-    documentRouter.delete(
-        "/document/:id",
-        AuthMiddleware,
-        AutorizationMiddleware(["teacher", "admin", "student"]),
-        documentController.delete
-    );
+  documentRouter.delete(
+    "/document/:id",
+    AuthMiddleware,
+    AutorizationMiddleware(["teacher", "admin", "student"]),
+    documentController.delete,
+  );
 
-    return documentRouter;
+  return documentRouter;
 }

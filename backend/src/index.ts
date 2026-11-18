@@ -5,7 +5,7 @@ import { disciplineRouter } from "./discipline/discipline.module.ts";
 import { teacherRouter } from "./teacher/teacher.module.ts";
 import { studentRouter } from "./student/student.module.ts";
 import { avaliacaoRouter } from "./avaliacao/avaliacao.module.ts";
-import { userRouter } from "./user/user.module.ts";import { AuthMiddleware } from "./auth/middlewares/auth.middleware.ts";
+import { userRouter } from "./user/user.module.ts";
 import cors from "cors";
 
 import { DocumentController } from "./document/controller/document.controller.ts";
@@ -14,7 +14,6 @@ import { DocumentService } from "./document/service/document.service.ts";
 import { DocumentRepository } from "./document/repository/document.repository.ts";
 import { databaseInstance } from "./database/dataBase.ts";
 import { uploadFileToStorage } from "./utils/storage.ts";
-import { disciplineControllerInstance } from "./discipline/discipline.module.ts";
 const app = express();
 
 app.use(
@@ -35,14 +34,9 @@ const documentService = new DocumentService(
 const documentController = new DocumentController(documentService);
 const documentRouter = createDocumentRouter(documentController);
 
-// Rotas publicas
-app.get("/public/discipline/name", disciplineControllerInstance.findAllNames);
-
 app.use(authRouter);
-app.use(AuthMiddleware);
 app.use(userRouter);
 app.use(disciplineRouter);
-app.use(userRouter);
 app.use(studentRouter);
 app.use(teacherRouter);
 app.use(avaliacaoRouter);

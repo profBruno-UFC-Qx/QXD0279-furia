@@ -38,7 +38,7 @@ async function login(login: loginData) {
       <div class="card">
         <div class="text">
           <h1>Login</h1>
-          <p>Welcome back. Please enter your details.</p>
+          <p>Bem-vindo de volta. Por favor, coloque suas credenciais</p>
         </div>
         <div class="forms-container">
           <LoginForm @submit="login" />

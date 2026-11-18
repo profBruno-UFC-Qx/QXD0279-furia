@@ -70,7 +70,6 @@ e outros critérios para encontrar o perfil acadêmico ideal para você."
       <Ornament :text="'Professores buscados:'">
         <template #content>
           <div class="headerTable">
-            <p>{{ pageSize * totalPages }} resultados</p>
           </div>
           <div class="contentTable">
             <div v-if="professoresLogin" class="text-center pa-4 full-center">

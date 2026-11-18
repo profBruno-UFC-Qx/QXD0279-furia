@@ -9,6 +9,13 @@ const logout = () => {
   storeAuth.logout();
   router.push({ name: "login" });
 };
+
+function naveToProfile() {
+  if (storeAuth.role == "student") {
+    router.push({ name: "studentProfile" });
+  } else if (storeAuth.role == "teacher") {
+  }
+}
 </script>
 
 <template>
@@ -69,7 +76,7 @@ const logout = () => {
 
       <div class="profile" v-if="storeAuth.isLoged == true">
         <div class="user">
-          <p class="name">{{ storeAuth.username }}</p>
+          <p class="name" @click="naveToProfile">{{ storeAuth.username }}</p>
           <v-icon icon="mdi-account-circle" />
         </div>
         <div class="logout">
@@ -111,6 +118,7 @@ const logout = () => {
 }
 
 .profile .name {
+  cursor: pointer;
   color: #004ac6;
   font-weight: bold;
 }
@@ -158,10 +166,6 @@ const logout = () => {
   align-items: center;
 }
 
-.buttons * {
-  box-shadow: none;
-}
-
 .logIn {
   color: #434655;
   padding: 5px 10px;
@@ -175,7 +179,7 @@ const logout = () => {
 }
 
 @media (max-width: 832px) {
-  .header{
+  .header {
     flex-direction: column;
     gap: 20px;
   }

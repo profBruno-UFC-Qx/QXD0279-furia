@@ -1,6 +1,8 @@
 import { UserDTO } from "./dto/user.dto.ts";
 import { DataBase } from "../database/dataBase.ts";
 import { InternalServerError } from "../errors/errors.ts";
+import { UserTypeRoles } from "../enums/roles.ts";
+import { payloadProfile } from "./dto/payloadProfile.dto.ts";
 
 export class UserRepository {
   constructor(private database: DataBase) {}
@@ -40,6 +42,21 @@ export class UserRepository {
     });
   }
 
+  async findMe(id: number, role: UserTypeRoles) {
+    return await this.database.user.findUnique({
+      where: {
+        user_id: id,
+      },
+      omit: {
+        password: true,
+      },
+      include: {
+        student: role == "student",
+        teacher: role == "teacher",
+      },
+    });
+  }
+
   async createUser(userData: UserDTO, tx?: any) {
     const prisma = tx ?? this.database;
 
@@ -57,6 +74,20 @@ export class UserRepository {
     return await this.database.user.update({
       where: { user_id: userId },
       data: { ...userData },
+    });
+  }
+
+  async updateProfileStudent(userId: number, payload: payloadProfile) {
+    return await this.database.user.update({
+      where: { user_id: userId },
+      data: {
+        name: payload.name,
+        student: {
+          update: {
+            course: payload.course,
+          },
+        },
+      },
     });
   }
 

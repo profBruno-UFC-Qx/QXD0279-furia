@@ -35,7 +35,7 @@ async function register(registerData: registerData) {
       <div class="card">
         <div class="text">
           <h1>Register</h1>
-          <p>Welcome. create a acount.</p>
+          <p>Bem-vindo. Crie uma conta.</p>
         </div>
         <div class="forms-container">
           <RegisterForm @submit="register" />

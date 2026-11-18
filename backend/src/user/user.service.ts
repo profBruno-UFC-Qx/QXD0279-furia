@@ -3,6 +3,8 @@ import { UserDTO } from "./dto/user.dto.ts";
 import { Conflict, NotFoundError } from "../errors/errors.ts";
 import { pagWrapper } from "../utils/pagWrapper.ts";
 import bcrypt from "bcrypt";
+import { UserTypeRoles } from "../enums/roles.ts";
+import { payloadProfile } from "./dto/payloadProfile.dto.ts";
 
 export class UserService {
   constructor(private userRepository: UserRepository) {}
@@ -56,8 +58,24 @@ export class UserService {
     return await this.userRepository.getStats();
   }
 
+  async getMe(id: number, role: UserTypeRoles) {
+    return await this.userRepository.findMe(id, role);
+  }
+
   async getsStatsHome(id: number) {
     return await this.userRepository.getsStatsHome(id);
+  }
+
+  async updateMe(id: number, role: UserTypeRoles, payload: payloadProfile) {
+    const user = await this.userRepository.findUserById(id);
+
+    if (!user) {
+      throw new NotFoundError("Usuário não existe");
+    }
+
+    if (role == "student") {
+      await this.userRepository.updateProfileStudent(id, payload);
+    }
   }
 
   async updateUser(userId: number, data: Partial<UserDTO>) {

@@ -5,8 +5,9 @@ import { computed, ref } from "vue";
 import { AuthService } from "@/api/AuthService";
 
 export const authStore = defineStore("auth", () => {
-  
-  const userId = ref<number | null>(Number(localStorage.getItem("userId")) || null);
+  const userId = ref<number | null>(
+    Number(localStorage.getItem("userId")) || null,
+  );
   const username = ref<string | null>(localStorage.getItem("username"));
   const role = ref<string | null>(localStorage.getItem("role"));
   const token = ref<string | null>(localStorage.getItem("token"));
@@ -47,10 +48,15 @@ export const authStore = defineStore("auth", () => {
   }
 
   function persistData() {
-    save("userId", userId.value)
+    save("userId", userId.value);
     save("username", username.value);
     save("token", token.value);
     save("role", role.value);
+  }
+
+  function refreshName(name: string) {
+    username.value = name;
+    save("username", name);
   }
 
   function logout() {
@@ -65,5 +71,14 @@ export const authStore = defineStore("auth", () => {
     localStorage.removeItem("role");
   }
 
-  return { userId, username, role, isLoged, login, register, logout };
+  return {
+    userId,
+    username,
+    role,
+    isLoged,
+    login,
+    register,
+    logout,
+    refreshName,
+  };
 });

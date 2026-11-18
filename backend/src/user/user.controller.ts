@@ -3,6 +3,7 @@ import z from "zod";
 import { BadRequestError } from "../errors/errors.ts";
 import { UserService } from "./user.service.ts";
 import { updateUserSchema } from "./schema/updateUser.schema.ts";
+import { updateProfileUserSchema } from "./schema/updateProfileUser.schema.ts";
 
 export class UserController {
   constructor(private service: UserService) {}
@@ -41,6 +42,47 @@ export class UserController {
 
     const stats = await this.service.getsStatsHome(id);
     return res.status(200).json(stats);
+  };
+
+  getMe = async (req: Request, res: Response) => {
+    const id = req.user?.id;
+    const role = req.user?.role;
+
+    if (!id || !Number.isInteger(id) || Number(id) <= 0) {
+      throw new BadRequestError("ID de usuário inválido");
+    }
+
+    if (!role) {
+      throw new BadRequestError("papel de usuário inválid");
+    }
+
+    const user = await this.service.getMe(id, role);
+    return res.status(200).json(user);
+  };
+
+  updateMe = async (req: Request, res: Response) => {
+    const id = req.user?.id;
+    const role = req.user?.role;
+
+    if (!id || !Number.isInteger(id) || Number(id) <= 0) {
+      throw new BadRequestError("ID de usuário inválido");
+    }
+
+    if (!role) {
+      throw new BadRequestError("papel de usuário inválido");
+    }
+
+    const parsedUser = updateProfileUserSchema.safeParse(req.body);
+
+    if (!parsedUser.success) {
+      throw new BadRequestError(
+        "Dados de atualização do usuário mal formatados",
+        parsedUser.error,
+      );
+    }
+
+    const user = await this.service.updateMe(id, role, parsedUser.data);
+    return res.status(200).json(user);
   };
 
   update = async (req: Request, res: Response) => {

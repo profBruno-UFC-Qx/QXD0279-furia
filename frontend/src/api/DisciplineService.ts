@@ -33,12 +33,12 @@ export const DisciplineService = {
   },
 
   getAllNames: async () => {
-    const data = await request<DisciplineName[]>("/public/discipline/name");
+    const data = await request<DisciplineName[]>("/discipline/name");
     return data;
   },
 
   delete: async (id: number) => {
-    const data = await request<boolean>(`/discipline/${id}`, {
+    const data = await request(`/discipline/${id}`, {
       method: "DELETE",
       auth: true,
     });
