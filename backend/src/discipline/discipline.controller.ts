@@ -12,7 +12,7 @@ export class DisciplineController {
 
     if (!isValiddiscipline.success) {
       throw new BadRequestError(
-        "Dados de diciplina mal formatados",
+        "Dados de disciplina mal formatados",
         isValiddiscipline.error,
       );
     }
@@ -41,7 +41,7 @@ export class DisciplineController {
     const id = Number(req.params.id);
 
     if (dataValidate.error) {
-      throw new BadRequestError("body da requisicao mal formatado");
+      throw new BadRequestError("body da requisicão mal formatado");
     }
 
     if (!Number.isInteger(id) || id <= 0) {
@@ -59,7 +59,7 @@ export class DisciplineController {
       return res.status(400).json({ message: "ID inválido" });
     }
 
-    const result = await this.service.delete(id);
-    return res.status(200).send(result);
+    await this.service.delete(id);
+    return res.status(204).send();
   };
 }

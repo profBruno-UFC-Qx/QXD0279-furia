@@ -47,7 +47,7 @@ export class disciplineRepository {
   async findAllNames() {
     return this.database.discipline.findMany({
       select: {
-        discipline_id:true,
+        discipline_id: true,
         name: true,
       },
     });
@@ -67,14 +67,9 @@ export class disciplineRepository {
     });
   }
 
-  async delete(id: number): Promise<boolean> {
-    try {
-      const result = await this.database.discipline.delete({
-        where: { discipline_id: id },
-      });
-      return true;
-    } catch (e) {
-      return false;
-    }
+  async delete(id: number) {
+    await this.database.discipline.delete({
+      where: { discipline_id: id },
+    });
   }
 }

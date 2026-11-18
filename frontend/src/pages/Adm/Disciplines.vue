@@ -8,6 +8,7 @@ import { DisciplineService } from "@/api/DisciplineService";
 import { type DisciplineResponse } from "@/@types/discipline";
 import BaseModal from "@/components/Modais/BaseModal.vue";
 import { useStoreNotify } from "@/stores/StoreNotify";
+import { ApiError } from "@/api/ApiError";
 
 interface Modals {
   create: boolean;
@@ -53,7 +54,8 @@ async function Create(data: DisciplineCreate) {
     notify.notify("Disciplina cadastrada", "alert");
     await fetchDisciplines();
   } catch (error) {
-    notify.notify("Nao foi possivel adicionar a disciplina", "error");
+    const apiError = error as ApiError;
+    notify.notify(apiError.message, "error");
   } finally {
     modals.create = false;
     notify.endLoad();
@@ -66,16 +68,14 @@ async function Delete(discipline: DisciplineResponse | null) {
   notify.startLoad();
   try {
     const { discipline_id } = discipline;
-    const result = await DisciplineService.delete(discipline_id);
+    await DisciplineService.delete(discipline_id);
     modals.delete = false;
-    if (!result) {
-      throw result;
-    }
 
     await fetchDisciplines();
     notify.notify("Disciplina deletada com sucesso", "alert");
   } catch (error) {
-    notify.notify("Nao foi possivel apagar a disciplina", "error");
+    const apiError = error as ApiError;
+    notify.notify(apiError.message, "error");
   } finally {
     notify.endLoad();
     modals.delete = false;
@@ -94,6 +94,8 @@ async function Update(data: DisciplineUpdate) {
     notify.notify("Disciplina atualizada", "alert");
     await fetchDisciplines();
   } catch (error) {
+    const apiError = error as ApiError;
+    notify.notify(apiError.message, "error");
   } finally {
     modals.update = false;
     notify.endLoad();

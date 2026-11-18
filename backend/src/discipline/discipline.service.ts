@@ -3,9 +3,10 @@ import { createDiscipline } from "./dto/createDiscipline.dto.ts";
 import { Conflict } from "../errors/errors.ts";
 import { pagWrapper } from "../utils/pagWrapper.ts";
 import { disciplineUpdateDTO } from "./dto/disciplineUpdate.dto.ts";
+import { NotFoundError } from "../errors/errors.ts";
 
 export class disciplineService {
-  constructor(private repository: disciplineRepository) { }
+  constructor(private repository: disciplineRepository) {}
 
   async create(data: createDiscipline) {
     const discipline = await this.repository.findByName(data.name);
@@ -27,7 +28,7 @@ export class disciplineService {
     const discipline = await this.repository.findById(id);
 
     if (!discipline) {
-      throw new Error("Disciplina não encontrada");
+      throw new NotFoundError("Disciplina não encontrada");
     }
 
     return discipline;
@@ -41,19 +42,15 @@ export class disciplineService {
     const discipline = await this.repository.update(id, data);
 
     if (!discipline) {
-      throw new Error("Disciplina não encontrada");
+      throw new NotFoundError("Disciplina não encontrada");
     }
 
     return discipline;
   }
 
   async delete(id: number) {
-    const deleted = await this.repository.delete(id);
+    await this.findById(id);
 
-    if (!deleted) {
-      throw new Error("Disciplina não encontrada");
-    }
-
-    return deleted;
+    await this.repository.delete(id);
   }
 }

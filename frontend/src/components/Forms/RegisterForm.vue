@@ -7,13 +7,6 @@ import { ApiError } from "@/api/ApiError";
 import { useStoreNotify } from "@/stores/StoreNotify";
 import { type DisciplineName } from "@/@types/discipline";
 
-interface Discipline {
-  discipline_id: number;
-  name: string;
-  course: string;
-  hours: number;
-}
-
 const notify = useStoreNotify();
 const emit = defineEmits<{
   submit: [registerData: registerData];
@@ -47,19 +40,23 @@ async function onSubmit(e: SubmitEvent) {
   });
 }
 
-onMounted(async () => {
+async function getDisciplines() {
   notify.startLoad();
   try {
     const data = await DisciplineService.getAllNames();
     disciplines.value = data;
   } catch (e) {
     notify.notify(
-      "Nao foi possivel obter as diciplinas, tente recarregar a pagina",
+      "Não foi possível obter as disciplinas, tente recarregar a página",
       "error",
     );
   } finally {
     notify.endLoad();
   }
+}
+
+onMounted(async () => {
+  await getDisciplines();
 });
 
 function required(v: string) {

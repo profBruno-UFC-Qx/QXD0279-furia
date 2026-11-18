@@ -9,6 +9,15 @@ export interface User {
   role: Roles;
 }
 
+export interface Student {
+  student_id: number;
+  course: string;
+}
+
+export interface UserProfile extends User {
+  student: Student;
+}
+
 export const userService = {
   getAll: async (limit: number, page: number) => {
     const data = await request<RequestResponse<User[]>>(
@@ -17,6 +26,27 @@ export const userService = {
         auth: true,
       },
     );
+    return data;
+  },
+
+  getMe: async () => {
+    const data = await request<UserProfile>(`/user/me`, {
+      auth: true,
+    });
+
+    return data;
+  },
+
+  updateMe: async (payload: { name: string; course: string }) => {
+    const data = await request(`/user/me`, {
+      method: "PUT",
+      headers: {
+        "Content-type": "application/json",
+      },
+      auth: true,
+      body: JSON.stringify(payload),
+    });
+
     return data;
   },
 

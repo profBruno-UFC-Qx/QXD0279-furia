@@ -58,18 +58,8 @@ export class AvaliacaoService {
   }
 
   async delete(id: number) {
-    const avaliacao = await this.findById(id);
+    await this.findById(id);
 
-    if (!avaliacao) {
-      throw new NotFoundError("Avaliação não encontrada");
-    }
-
-    const deleted = await this.avaliacaoRepository.deleteAvaliacao(id);
-
-    if (!deleted) {
-      throw new NotFoundError("Nao foi possivel deletar a avaliacao");
-    }
-
-    return deleted;
+    await this.avaliacaoRepository.deleteAvaliacao(id);
   }
 }

@@ -86,12 +86,6 @@ export class StudentService {
       throw new NotFoundError("Aluno nao encontrado");
     }
 
-    const deleted = await this.userService.deleteUser(student.user.user_id);
-
-    if (!deleted) {
-      throw new NotFoundError("Nao foi possivel deletar o professor");
-    }
-
-    return deleted;
+    await this.userService.deleteUser(student.user.user_id);
   }
 }

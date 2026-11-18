@@ -85,7 +85,7 @@ export class AvaliacaoRepository {
         },
         discipline: true,
       },
-      orderBy: { creat_at: 'desc' } 
+      orderBy: { creat_at: "desc" },
     });
 
     const total = await this.count();
@@ -96,8 +96,8 @@ export class AvaliacaoRepository {
         total,
         page,
         limit: take,
-        totalPages: Math.ceil(total / take)
-      }
+        totalPages: Math.ceil(total / take),
+      },
     };
   }
 
@@ -128,14 +128,9 @@ export class AvaliacaoRepository {
   }
 
   async deleteAvaliacao(id: number) {
-    try {
-      await this.database.avaliacao.delete({
-        where: { id },
-      });
-      return true;
-    } catch {
-      return false;
-    }
+    await this.database.avaliacao.delete({
+      where: { id },
+    });
   }
 
   async count() {

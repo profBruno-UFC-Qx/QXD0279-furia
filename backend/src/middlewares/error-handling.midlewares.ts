@@ -16,12 +16,12 @@ export const errorHandling = (
   } else {
     if (erre instanceof multer.MulterError) {
       const status = erre.code === "LIMIT_FILE_SIZE" ? 413 : 400;
-      const message = erre.code === "LIMIT_FILE_SIZE"
-        ? "O arquivo excede o limite de 5 MB"
-        : "Não foi possível processar o arquivo enviado";
+      const message =
+        erre.code === "LIMIT_FILE_SIZE"
+          ? "O arquivo excede o limite de 5 MB"
+          : "Não foi possível processar o arquivo enviado";
       return res.status(status).json({ message });
     }
-    console.log(erre);
-    return res.status(500).json("Something went wrong!!");
+    return res.status(500).json({ message: "Erro interno no servidor" });
   }
 };

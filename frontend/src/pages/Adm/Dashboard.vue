@@ -69,12 +69,8 @@ async function Delete(user: User | null) {
     await fetchStatistics();
     notify.notify("Usuario deletado com sucesso", "alert");
   } catch (error) {
-    if (error instanceof ApiError) {
-      dashboardErrors.value.delete = error.message;
-      notify.notify("Nao foi possivel deletar usuario", "error");
-    } else {
-      notify.notify("Erro ao conectar com o servidor", "error");
-    }
+    const apiError = error as ApiError;
+    notify.notify(apiError.message, "error");
   } finally {
     notify.endLoad();
     modalDelete.value = false;
