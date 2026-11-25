@@ -55,6 +55,12 @@ const router = createRouter({
           name: "professorProfile",
         },
         {
+          path: "profile",
+          component: () => import("@/pages/Professor/Profile.vue"),
+          name: "teacherProfile",
+          meta: { requiresTeacher: true },
+        },
+        {
           path: "dashboard",
           component: () => import("@/pages/Professor/ProfessorDashboard.vue"),
           name: "professorDashboard",
