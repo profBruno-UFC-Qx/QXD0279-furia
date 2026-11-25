@@ -66,16 +66,20 @@ export class UserService {
     return await this.userRepository.getsStatsHome(id);
   }
 
-  async updateMe(id: number, role: UserTypeRoles, payload: payloadProfile) {
+async updateMe(id: number, role: UserTypeRoles, payload: payloadProfile) {
     const user = await this.userRepository.findUserById(id);
 
     if (!user) {
       throw new NotFoundError("Usuário não existe");
     }
 
-    if (role == "student") {
+    if (role === "student") {
       await this.userRepository.updateProfileStudent(id, payload);
+    } else if (role === "teacher") {
+      await this.userRepository.updateUser(id, { name: payload.name });
     }
+
+    return await this.userRepository.findMe(id, role);
   }
 
   async updateUser(userId: number, data: Partial<UserDTO>) {
