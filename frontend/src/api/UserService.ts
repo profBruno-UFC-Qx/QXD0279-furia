@@ -37,7 +37,7 @@ export const userService = {
     return data;
   },
 
-  updateMe: async (payload: { name: string; course: string }) => {
+  updateMe: async (payload: { name: string; course?: string }) => {
     const data = await request(`/user/me`, {
       method: "PUT",
       headers: {

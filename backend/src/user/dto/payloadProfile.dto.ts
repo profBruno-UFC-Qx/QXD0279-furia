@@ -1,4 +1,4 @@
 export interface payloadProfile {
   name: string;
-  course: string;
+  course?: string;
 }

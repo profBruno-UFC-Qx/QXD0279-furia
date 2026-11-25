@@ -11,9 +11,10 @@ const logout = () => {
 };
 
 function naveToProfile() {
-  if (storeAuth.role == "student") {
+  if (storeAuth.role === "student") {
     router.push({ name: "studentProfile" });
-  } else if (storeAuth.role == "teacher") {
+  } else if (storeAuth.role === "teacher") {
+    router.push({ name: "teacherProfile" });
   }
 }
 </script>
